@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --eg-bg: #f6f7f4;
+  --eg-fg: #0f1f17;
+  --eg-muted: #5c6b62;
+  --eg-border: #d6e0d8;
+  --eg-surface: #ffffff;
+  --eg-header: #f0f4f1;
+  --eg-accent: #0d7a5c;
+  --eg-accent-strong: #055a42;
+  --eg-on-accent: #f4fff9;
+  --eg-glow: #7ccf9f;
+}
+
+@theme inline {
+  --color-background: var(--eg-bg);
+  --color-foreground: var(--eg-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --eg-bg: #0c1210;
+    --eg-fg: #e8f1eb;
+    --eg-muted: #9fb0a6;
+    --eg-border: #1f2e28;
+    --eg-surface: #121a16;
+    --eg-header: #0f1713;
+    --eg-accent: #3ecf9c;
+    --eg-accent-strong: #7fe8c3;
+    --eg-on-accent: #042218;
+    --eg-glow: #1f6b4f;
+  }
+}
+
+body {
+  background: var(--eg-bg);
+  color: var(--eg-fg);
+}
+
+.eg-card {
+  @apply rounded-2xl border border-[var(--eg-border)] bg-[var(--eg-surface)] p-6 shadow-sm;
+}
+
+.eg-label {
+  @apply mb-1 block text-sm font-medium text-[var(--eg-muted)];
+}
+
+.eg-input {
+  @apply w-full rounded-xl border border-[var(--eg-border)] bg-[var(--eg-bg)] px-3 py-2 text-sm outline-none ring-[var(--eg-accent)]/30 transition placeholder:text-[var(--eg-muted)] focus:ring-2;
+}
+
+.eg-btn {
+  @apply inline-flex items-center justify-center rounded-full bg-[var(--eg-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--eg-on-accent)] shadow-sm transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.eg-btn-ghost {
+  @apply inline-flex items-center justify-center rounded-full border border-[var(--eg-border)] bg-transparent px-4 py-2 text-sm font-medium text-[var(--eg-fg)] transition hover:bg-[var(--eg-surface)] disabled:opacity-50;
+}

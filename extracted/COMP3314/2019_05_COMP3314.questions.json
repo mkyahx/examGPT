@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2019_05_09_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Learning",
+    "examYearMonth": "2019-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2019_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2019_05_09_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2019-05"
+      },
+      "type": "coding",
+      "questionNo": "1",
+      "prompt": "(total 8 marks)\n1.1 (2 mark): Explain the following equation (with all its components) that is used by Adaline in\nits le缸ning process. How is it used during learning?\nJ(w) =± L;(/;) -¢(z 可\n1.2 (3 mark): Consider the equation shown above in question 1.1. Write down the analogous\nequation used for Logistic Regression and explain all its components.\nUniversity No.:\n1.3 (3 mark): Compare the learning process of Adaline and Logistic Regression (LR). What are\nthe main differences? Which model is generally preferable in real practice and why?\nPage3 of 11\nUniversity No.:\nQuestion 2 (total 14 marks)\n2.1 (2 mark): What is the trade-off between bias and variance?\n2.2 (1 mark for correct answe耳－ 1 mark for incorrect answer): (True/False) Support vector\nmachines, like logistic regression models, give a probability distribution over 由e possible labels\ngiven an input example.\n2.3 (1 mark for correct answer, -1 mark for incorrect answer): (True/False) The maximum\nmargin decision boundaries 由at support vector machines construct have the lowest\ngeneralization error among all linear classifiers.\nPage4 of 11\nUnive內ity No.:\n2.4 (4 mark): We will use 由e dataset below to learn a decision tree which pre也cts if students\npass COMP3314 (Yes or No), based on their cumulative GPA (High, Medium , or Low) and if\nthey studied (True, False).\nCGPA Studied Passed\nL F N\nL T y\nM F N\nM T y\nH F y\nH T y\nDraw the full decision tree that would be learned for this dataset using the entropy. Show all\ncalculations and write down the entropy values (use log2) for all nodes in the tree.\nfi Ti\nFTI O FD e QM Q P\nUniversity No.:\n2.5 (1 mark for correct answer, -0.5 mark for incorrect answer): Select the correct answer.\nIn random forest, ta隘ng a bootstrap sample of n data points in p dimensions me血s:\n口 Sampling p features with replacement\n口 Sampling sqrt(p) features without replacement\n口 Sampl坦g n samples with replacement\n口 Sampling k < n samples without replacement\n2.6 (2 mark for correct answ間， 1 mark for incorrect answer): Select all correct answers.\nWhich of the following statements 缸e true?\n口 Tr刮到ng a k-nearest-neighbors classifier takes more computational time than applying it\n口 The more 甘aining examples，由e more accurate the prediction of a k-nearest-neighbors\n口 k-nearest-neighbors cannot be used for regression\n口 A k-ne缸est-neighbors is sensitive to outliers\n2.7 (3 mark for correct answe島－ 1.5 mark for incorrect answer Select all binary classifiers\nthat are able to correc吐y separate the training data ( circles vs. triangles) given in the figure\nbelow.\n口 Logistic regression\n口 SVM with linear kernel\n口 SVM with RBF kernel\n口 Decision tree\n口 3-nearest-neighbor classifier (with Euclidean distance)\n1.0\n.\n0.8\n0.6\nT\n0.4\n0.2\n0.0\n.\n。。 0.2 。 .4 0.6 0.8\nT\n.\nT\n1.0\nUniversity No.:\nQuestion 3 (total 4 marks)\n3.1 (2 mark): In the context of feature scali嗯， what is the 也fference between standardization\nand normalization? What is the recommended approach for data preprocessing?\n3.2 (2 mark): What is the difference between the Sequential Backward Selection Algorithm and\nthe Sequential Forward Selection Algorithm?\nUniversity No.:\nQuestion 4 (total 6 marks)\n4.1 (2 mark for correct answer, -2 mark for incorrect answer加（True/False) The goal of PCA\nis to interpret the unde甸甸 structure of the data in terms of 由e principal compone的 th前 are\nbest at predicting the output variable.\n4.2 (2 mark for correct answ閏月2 mark for incorrect answer): (True/False) The output of\nPCA is a new representation of the data that is always of lower dimensionality than the original\nfeature representation.\n4.3 (2 mark for correct answe丸，2 mark for incorrect answer): (True/False) Subsequent\nprincipal components in PCA are always orthogonal to each other.\nQuestion 5 (total 4 marks)\n5.1 (2 mark for correct answ間， 1 mark for incorrect answer): Select the correct answer.\nWhat are the 缸es of an ROC C叮ve?\n口 Vertical axis: % of true nega位ves﹔ Horizontal axis:% of false nega世ves\n口 Vertical axis: % of 甘ue positives; Horizontal axis:% of false positives\n口 Vertical axis:% of false negatives; Horizontal axis:% of false positives\n口 Vertical axis: % of false positives; Horizontal a剋s: % of true negatives\n口 None of the above\n5.2 (2 mark for correct answe咚” 1 mark for incorrect answer): In a medical application\ndomain, suppose we build a classifier for patient screening (True means patient has cancer).\nWhich of the following situations would you like your classifier to have? Select all co訂ect\n口 FP >> FN\n口 FN >> FP\n口 FN = FP X TP\n口 TN>>FP\n口 FN X TP >> FP × TN\n口 All of the above\nUniversity No.:\nQuestion 6 (total 7 marks)\n6.1 (3 mark): Suppose we have 5 completely independent binary classifiers, each with an\naccuracy of 75%. Calculate the m吋 ority vote accuracy.\n6.2 (2 mark): Does Bagging reduce bias? Give a short explana泣on of your answer.\n6.3 (2 mark): Does Boosting reduce variance. Give a short explanation of your answer.\nUniversity No.:\nQuestion 7 (total 7 marks)\nConsider the following Multilayer Perceptron (MLP).\n－－－島一－\nf「＼ ~／γ ＼一.／ \\\"\"-.\\ \\/JI'\\ /\nX (in) 一一一－－\nJ\n'-----\"' ＼＂＂－. γ\"7--～迫f ~ \\X 凡／ \\\n/ ＼／玉，’，〈＼＼／ 、、r rv,,<;./ '- ./\n一→︱？\nx／且） 一一－＋\n＼」..／\n／『、＼ －－句－－－’，\nx/ml 一一＋\n7.1 (4 mark): Write down the number of additions （先） and the number of multiplications (#m)\nperformed by a single feed forward operation of a batch of 100 samples. You may assume that\nthe activation function is using a lookup table and no additions/multiplications are performed\nwhen applying the activation function. Show all calculations and explain yo叮 answer.\nPαge 10 of 11\nUniversity No.:\n7.2 (3 mark): With reference to the figure above, write down the formula for the cost function\nthat backpropaga世on is attempting to minimize. Explain every element of this formula.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.167Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 11,
+    "pagesWithText": 11,
+    "chars": 6758
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

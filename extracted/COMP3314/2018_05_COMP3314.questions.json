@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2018_05_15_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Learning",
+    "examYearMonth": "2018-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2018_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2018_05_15_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2018-05"
+      },
+      "type": "coding",
+      "questionNo": "1",
+      "prompt": "[5%]\nThe following picture appears in one of the lecture notes. What is it meant to show? Please try to\nput the erased labels back in the picture: the two axes, the two curves, and areas/regions that have\ncertain special significance·.\nQuestion 2 [10%]\nThe Na\"ive Bayes algorithm selects the best classification given a number of attribute values.\nConsider the following dataset from past cases of car thefts.\n. ~:xam.r:Ie ~o. I Cokrr Type Origin I _Stolen?\nSports Domestic j res\nSports Domestk. J No\nSports Domestic Yes\nSports Domestic ! No\nI\nSports .Imported j Yes\nSUV Imported I No\nSUV Imported Yes\nSUV Domestic No\nl I Red\n2 I Red\n3 i Red\n4 l Yellm,v\n5 I Yellow\n6 I Yellow\n7 I Yellow\nS \\ Yellow\nSUV lrnported No\nSports Imported Yes\n9 I Red\n10 I 1\\i;:d\n(a} Construct the likelihood table.\n(b) Try using the Na\"lve Bayes algorithm to classify a\n11\nRed Domestic SUV\". Show your steps. Looking\nat the probabilities, what can you comment about the result?\nQuestion 3 [10%]\nThe XOR (Exclusive OR) function is well known for its being not linearly separable.\n(a) Show that the Perceptron will not converge to a decision boundary (by trying a few rounds) for\nan XOR training dataset.\n(b) Using an RBF kernel, the XOR dataset can be transformed into one that is linearly separable.\nShow how this is done.\nQuestion 4 [10%]\n(a} Explain the following equation (and all its component terms) that is used by Adaline in its learning\nprocess. How is it used during learning?\n. l (' 'i • (i'j' ')\n2\nJ(w)=-. ~- v\\·l-@(:\"·) , ,. 2 L, .. , , .\n(b) Compare Adaline and Logistic Regression. What are their main differences? Why is Logistic\nRegression generally preferable in real practice?\nQuestion 5 [10%]\n\"You could say that SVMs are successful because of one key insight, one neat trick.\" (Russell &\nNorvig, 2010)\n(a) What is that key insight Russell and Norvig were referring to? Explain why that insight is so \"key\"\nto the success of SVMs.\n(b) The neat trick refers to kernel trick. Explain why it would be dubbed as a \"trick\"? Use the\nexample of a polynomial kernel to illustrate that.\nQuestion 6 [10%]\nSuppose there is this tiny Iris dataset with only 38 samples, of which 13, 16, and 9 are labelled\nSatosa, Versitolor, and Virginica respectively. A classifier predicted all the Satosas and Virginicas\ncorrectly, but only 10 of the Versicolors correctly (the others were classified as Virginica).\n(a) Draw the confusion matrix for this result.\n(b) Now suppose the classifier is converted to a binary one for classifying Versicolor and non­\nVersicolor. Draw the confusion matrix. What is the value of the precision? And of the recall? What\nare the literal meanings of these two values in this particular case here?\nQuestion 7 [10%]\n(a) Based on the following dataset that is related to tax refunds, create using the CART algorithm a\ndecision tree for classifying whether a person would cheat or not. Show your steps, and draw the\ntree where nodes/leaves would display their es·sential information {just like the Iris example in the\nlecture notes). Assume no hyper-parameters have been set to constrain the growth of the tree.\n(b) For the XOR example which we used to prove that the CART algorithm is not optimal (three\nbinary features a, b, c; y =a XOR b; c == y 60% of the time), can you think of a particular dataset\n(with 10 samples) for which CART will produce the optimal tree? Show the dataset, and prove your\ncase.\nQuestion 8 [10%]\nAn ensemble classifier uses 3 base classifiers and simple majority voting for its classification task.\n(a) If these base classifiers are ({accurate\", independent in their decision making, but have the same\nerror rate, prove that the ensemble classifier has better error rate than a single base classifier.\n(b) What about if the base classifiers in the above are not \"accurate\"?\n(c) Diversity is another desired property when combining multiple base classifiers. What are some of\nthe ways of achieving diversity?\n(d) Describe or depict the steps of Ada Boost: using several weak classifiers (e.g., decision tree) to\narrive at a strong classifier for the dataset shown below.\n+\n+\nQuestion 9 (10%]\n(a) Given the MLP as shown below, and the various matrices that are involved including X, A, Z, W,\nand the activation function cf>, (i) write out the equations that connect these various matrices and\nthe activation function together in forming the forward feeding step of the MLP; use superscripts\n(in}, (h}, and (o) to mark and distinguish the matrices pertaining to the input, the hidden, and the\noutput layer respectively; (ii) for each of the matrices that you have included in your answer to (i),\nwrite down its dimensions (i.e., \"? x ?1'}, assuming that there are n samples in a mini-batch.\n(b) Describe how backpropagation is carried out. The equations are option;:jl, but your answer should\ninclude the terms: cost function, error {or error term or sigma), derivative, gradient, weight, eta (or\nthe learning rate} and regularization.\n(c) What are the advantages of dividing the training dataset into mini-batches (i.e., stochastic\ngradient descent}?\nQuestion 10 [10%]\nUse the k-means algorithm and Euclidean distance to cluster the following 8 data points into 3\nclusters: A1={2,10), A2=(2,5), A3=(8,4L A4=(5,8}, A5=(7,5), A6=(6,4), A7=(1,2), A8=(4,9}. The initial\nseeds (centroids) are Al, A4 and A7. Run the k-means algorithm for 1 iteration only. At the end of\nthis iteration show:\n(a) The new clusters (and their data points) and their centroids.\n(b) How many more iterations you think will be needed to converge? Explain or show or prove.\nQuestion 11 [5%]\n(a) Contrast reinforcement learning with supervised and unsupervised learning in aspects including\ntheir goals, supervision, agent, environment, and training.\n(b) Draw a small example of a Markov Decision Process, and use it to describe the various\ncomponents that are in a typical Markov Decision Process.\n(c) Use the example in (b) to explain what is Q-value.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.531Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 5,
+    "pagesWithText": 5,
+    "chars": 6654
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

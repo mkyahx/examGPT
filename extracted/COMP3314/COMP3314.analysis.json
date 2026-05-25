@@ -1,0 +1,566 @@
+{
+  "courseCode": "COMP3314",
+  "courseName": "Machine Learning",
+  "generatedAt": "2026-05-23T12:29:39.942Z",
+  "inputs": {
+    "papersDir": "extracted/COMP3314",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json"
+  },
+  "summary": {
+    "paperCount": 7,
+    "okPaperCount": 7,
+    "questionCount": 34,
+    "questionCountPerPaper": {
+      "min": 1,
+      "max": 13,
+      "average": 4.8571,
+      "median": 1,
+      "mode": 1
+    },
+    "tagging": {
+      "topicStatus": "missing",
+      "knownTopicCount": 0,
+      "taggedQuestionCount": 0,
+      "unknownQuestionCount": 34
+    }
+  },
+  "patterns": {
+    "dominantQuestionTypes": [
+      {
+        "id": "short_answer",
+        "label": "short_answer",
+        "count": 23,
+        "shareOfQuestions": 0.6765,
+        "shareOfTaggedItems": 0.6765
+      },
+      {
+        "id": "multiple_choice",
+        "label": "multiple_choice",
+        "count": 4,
+        "shareOfQuestions": 0.1176,
+        "shareOfTaggedItems": 0.1176
+      },
+      {
+        "id": "coding",
+        "label": "coding",
+        "count": 3,
+        "shareOfQuestions": 0.0882,
+        "shareOfTaggedItems": 0.0882
+      },
+      {
+        "id": "long_answer",
+        "label": "long_answer",
+        "count": 3,
+        "shareOfQuestions": 0.0882,
+        "shareOfTaggedItems": 0.0882
+      },
+      {
+        "id": "fill_blank",
+        "label": "fill_blank",
+        "count": 1,
+        "shareOfQuestions": 0.0294,
+        "shareOfTaggedItems": 0.0294
+      }
+    ],
+    "recurringTopics": [],
+    "uncoveredSyllabusTopics": [],
+    "commonQuestionPositions": [
+      {
+        "questionNo": "1",
+        "questionCount": 7,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 3,
+            "shareOfQuestions": 0.4286,
+            "shareOfTaggedItems": 0.4286
+          },
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 0.2857,
+            "shareOfTaggedItems": 0.2857
+          },
+          {
+            "id": "long_answer",
+            "label": "long_answer",
+            "count": 1,
+            "shareOfQuestions": 0.1429,
+            "shareOfTaggedItems": 0.1429
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 7,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "2",
+        "questionCount": 6,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 3,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          },
+          {
+            "id": "multiple_choice",
+            "label": "multiple_choice",
+            "count": 2,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
+          },
+          {
+            "id": "fill_blank",
+            "label": "fill_blank",
+            "count": 1,
+            "shareOfQuestions": 0.1667,
+            "shareOfTaggedItems": 0.1667
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 6,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "3",
+        "questionCount": 5,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 4,
+            "shareOfQuestions": 0.8,
+            "shareOfTaggedItems": 0.8
+          },
+          {
+            "id": "multiple_choice",
+            "label": "multiple_choice",
+            "count": 1,
+            "shareOfQuestions": 0.2,
+            "shareOfTaggedItems": 0.2
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 5,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "4",
+        "questionCount": 4,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 3,
+            "shareOfQuestions": 0.75,
+            "shareOfTaggedItems": 0.75
+          },
+          {
+            "id": "long_answer",
+            "label": "long_answer",
+            "count": 1,
+            "shareOfQuestions": 0.25,
+            "shareOfTaggedItems": 0.25
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 4,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "5",
+        "questionCount": 3,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 3,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 3,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "6",
+        "questionCount": 3,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 2,
+            "shareOfQuestions": 0.6667,
+            "shareOfTaggedItems": 0.6667
+          },
+          {
+            "id": "long_answer",
+            "label": "long_answer",
+            "count": 1,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 3,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "7",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          },
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "8",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "9",
+        "questionCount": 1,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 1,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 1,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "10",
+        "questionCount": 1,
+        "commonTypes": [
+          {
+            "id": "short_answer",
+            "label": "short_answer",
+            "count": 1,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 1,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      }
+    ]
+  },
+  "distributions": {
+    "questionTypes": {
+      "total": 34,
+      "denominator": 34,
+      "items": [
+        {
+          "id": "short_answer",
+          "label": "short_answer",
+          "count": 23,
+          "shareOfQuestions": 0.6765,
+          "shareOfTaggedItems": 0.6765
+        },
+        {
+          "id": "multiple_choice",
+          "label": "multiple_choice",
+          "count": 4,
+          "shareOfQuestions": 0.1176,
+          "shareOfTaggedItems": 0.1176
+        },
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 3,
+          "shareOfQuestions": 0.0882,
+          "shareOfTaggedItems": 0.0882
+        },
+        {
+          "id": "long_answer",
+          "label": "long_answer",
+          "count": 3,
+          "shareOfQuestions": 0.0882,
+          "shareOfTaggedItems": 0.0882
+        },
+        {
+          "id": "fill_blank",
+          "label": "fill_blank",
+          "count": 1,
+          "shareOfQuestions": 0.0294,
+          "shareOfTaggedItems": 0.0294
+        }
+      ]
+    },
+    "topics": {
+      "primary": {
+        "total": 0,
+        "denominator": 34,
+        "items": []
+      },
+      "allTags": {
+        "total": 0,
+        "denominator": 34,
+        "items": []
+      },
+      "unknownQuestionCount": 34,
+      "uncoveredTopics": []
+    }
+  },
+  "papers": [
+    {
+      "filePath": "extracted/COMP3314/2015_05_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "",
+      "examYearMonth": "2015-05",
+      "questionCount": 8,
+      "questionTypes": [
+        {
+          "id": "short_answer",
+          "label": "short_answer",
+          "count": 4,
+          "shareOfQuestions": 0.5,
+          "shareOfTaggedItems": 0.5
+        },
+        {
+          "id": "long_answer",
+          "label": "long_answer",
+          "count": 2,
+          "shareOfQuestions": 0.25,
+          "shareOfTaggedItems": 0.25
+        },
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 1,
+          "shareOfQuestions": 0.125,
+          "shareOfTaggedItems": 0.125
+        },
+        {
+          "id": "fill_blank",
+          "label": "fill_blank",
+          "count": 1,
+          "shareOfQuestions": 0.125,
+          "shareOfTaggedItems": 0.125
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2018_05_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Learning",
+      "examYearMonth": "2018-05",
+      "questionCount": 1,
+      "questionTypes": [
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2019_05_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Learning",
+      "examYearMonth": "2019-05",
+      "questionCount": 1,
+      "questionTypes": [
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2020_12_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Leaming",
+      "examYearMonth": "2020-12",
+      "questionCount": 1,
+      "questionTypes": [
+        {
+          "id": "multiple_choice",
+          "label": "multiple_choice",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2021_12_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Learning",
+      "examYearMonth": "2021-12",
+      "questionCount": 1,
+      "questionTypes": [
+        {
+          "id": "multiple_choice",
+          "label": "multiple_choice",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2023_05_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Leaming",
+      "examYearMonth": "2023-05",
+      "questionCount": 9,
+      "questionTypes": [
+        {
+          "id": "short_answer",
+          "label": "short_answer",
+          "count": 7,
+          "shareOfQuestions": 0.7778,
+          "shareOfTaggedItems": 0.7778
+        },
+        {
+          "id": "multiple_choice",
+          "label": "multiple_choice",
+          "count": 2,
+          "shareOfQuestions": 0.2222,
+          "shareOfTaggedItems": 0.2222
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3314/2023_12_COMP3314.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3314",
+      "courseName": "Machine Learning",
+      "examYearMonth": "2023-12",
+      "questionCount": 13,
+      "questionTypes": [
+        {
+          "id": "short_answer",
+          "label": "short_answer",
+          "count": 12,
+          "shareOfQuestions": 0.9231,
+          "shareOfTaggedItems": 0.9231
+        },
+        {
+          "id": "long_answer",
+          "label": "long_answer",
+          "count": 1,
+          "shareOfQuestions": 0.0769,
+          "shareOfTaggedItems": 0.0769
+        }
+      ],
+      "topics": []
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "",
+    "examYearMonth": "2015-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2015_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "long_answer",
+      "questionNo": "1",
+      "prompt": "Only approved calculators as announced by the Exan1inations Secretary can be used in this examination. It\nis the candidates' responsibility to ensure that their calculator operates satisfactorily) and candidates must\nrecord the name and type of the calculator used on the front page of the examination script.\nBrand and model of the calculator: -------------------------\n2. Do not remove supplementary sheets) used or unused 1 fro1n the Exa1nination Roon1.\n3. Answer ALL questions. Total mark is 100.\nFor Examiner's use only:\nQ.No. 1 2 3 4 5 6 7 8 Total\nMark\nP.1of18\nP.2 of18\nUNIVERSITY ID . ------------\n1. (12 marks) True or False Questions (Give a short explaination for each answer).:\n(a) The training error for a nearest neighbour (1-NN) classifier is always 0.\n(b) The loss function for logistic regression contains multiple local minima.\n(c) Multilayer perceptrons (MLPs) can only represent nonlinear decision boundaries if they contain nonlinear\nhidden-unit activation functions.\n(d) Making predictions using parameters obtained from MAP estimation accounts for our uncertainty in the\nlearned parameters.\n(e) PCA and MoG models are not useful for classification as they are unsupervised learning 111odels.\n(f) The Naive Bayes assun1ption corresponds to constraining the covariance of a Gaussian distribution to be\ndiagonal. This means it can only be applied to problems V1rith continuous input data.\nUNIVERSITY ID : ---------------",
+      "questionTypeTag": "long_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q2_02",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "fill_blank",
+      "questionNo": "2",
+      "prompt": "(16 marks) Short Answer Questions:\n(a) (3 marks) Discuss differences between generative and discriminative approaches to classification. (Hint:\nConsider the probability distributions modeled by each approach.)\n(b) (2 marks) Name two properties of the clustering model that are learned by the 1nixture-of-Gaussians model\nbut are not captured by the I{-1neans model.\nUNIVERSITY ID : ------------------\n(c) (3 marks) Consider learning the soft margin SVM\nargmin {ct~n+~llwll'} subject to\nw,b,t n=l 2\ntn(w T Xn + b) ?: 1 - En, En ?: 0, Vn.\n\\i\\That\n1\ns the behavior of the inargin ll~ll as C--+ O? Explain.\n(d) (2 marks) Give two examples of ensemble classifiers.\nUNIVERSITY ID : _____________ _\n(e) (3 marks) Describe the role of gating functions in a 1nixture of Experts model. Whafs the consequence of\nusing a softmax gating function on the behavior of the classifier?\n(f) (3 inarks) Explain the exploitation vs. exploration trade-off in reinforcement learning.\nUNIVERSITY ID : ------------------",
+      "questionTypeTag": "fill_blank",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q3_03",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "short_answer",
+      "questionNo": "3",
+      "prompt": "(10 marks) Logistic Regression\nConsider an alternative formulation of logistic regression. Given a training set V \\vith input {x1, ... ,XN} and\noutput { t1, . .. , tN }) where Xi E IRM, ti E { ~ 1, 1 }. We will write the probability of observing ti = 1 given Xi as\nO'(yi) (i.e., P(ti = llxi) =O'(y;)), whereO\"(a) = (l+exp(-a))- 1 ,y; =wTx,+b.\nAssume the training data is IID (independent and identically distributed), show that the negative log-likelihood\n. vN can be wntten as L.m~ 1 log(l + exp(-y;t;)).\nUNIVERSITY ID : ---------------",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q4_04",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "long_answer",
+      "questionNo": "4",
+      "prompt": "(12 marks) Decision Trees\nWe will build a decision tree to classify 1.vhether a student will attend today's lecture or not using the data set\nbelow. Recall that the entropy of a collection of training examples of K classes is defined as\nK\nI= - LPk log2 pc,\nk=l\nwhere Pk is the proportion of examples in class k. Note that 0 log2 0 = 0.\nAir Quality Te1nperature Humidity Wind\nAverage War1n Low No\nPoor Warm Medi urn Yes\nGood Hot Medium No\nGood Cold High Yes\nPoor Cold Low Yes\nPoor Warm High No\nAttend Lecture\nYes\nYes\nYes\nYes\nNo\nNo\n(a) (2 marks) What's the entropy of the training examples with respect to the target label \"Attend Lecture\"?\nUNIVERSITY ID : -----------------\n(b) (5 marks) What are the information gains for each of the 4 attributes? Which attribute should be used as\nthe root node of the decision tree?\nUNIVERSITY ID : ------------------\n(c) (5 marks) Draw the entire decision tree using the learning algorith1n described in class. Show your steps.\nUNIVERSITY ID : --------",
+      "questionTypeTag": "long_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q5_05",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "short_answer",
+      "questionNo": "5",
+      "prompt": "(12 marks) PCA\n(a) (5 marks) Consider the projection of a high-dimesional data set into a 2-dimensional space using standard\nPCA. Which of the following result(s) is( are) impossible? Explain.\n'\"\"., ,. '•\n'\",•' c\"\n;,,''\nI II III\nUNIVERSITY ID : -----------------\n(b) (4 marks) PCA relies on the eigendecomposition of the sample covariance matrix S = UAUT. What are the\ncontents of matrices U and A? Explain in terms of the variance of the data distribution.\n(c) (3 marks) Consider applying PCA to a 10 dimensional input data set, suppose we obtained the following\nsorted eigenvalues after the eigendecomposition step {1500, 200, 15, 10, 2, 0.5, 0.1, 0.01, 0.01, 0.01 }. How many\ncomponents would you need to keep in order to retain 903 of the total data variance?\nUNIVERSITY ID : -----------------",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q6_06",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "short_answer",
+      "questionNo": "6",
+      "prompt": "(15 marks) Mixture of Gaussians\nConsider a mixture-of-Gaussians (MoG) model with K components) a data vector x E JRD and a corresponding\nlatent indicator variable z E {O, l}K, I:~~i Zk = 1.\n(a) (2 marks) Write p(x) in terms of P(z) and p(xjz) using rules of probability.\n(b) (5 marks) Define the distributions:\nShow that\nK\nP(z) = II 7r;'\nk=l\nK\np(xjz) = II N(xjµ,. ~k)\".\nk=l\nK\np(x) = L 7rkN(xjµk, ~k)·\nk=l\nUNIVERSITY ID : --------------\n(c) (3 marks) Explain the meaning of P(zk = llx) in the MoG model, then show that\n(d) (5 marks) Derive and simplify the expression for logp(x, z). Why might this expression be easier to work\nwith than logp(x)?\nUNIVERSITY ID : ----------------",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q7_07",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "coding",
+      "questionNo": "7",
+      "prompt": "(13 marks) EM and Free Energy\nConsider a model with continuous observed data X = [x11 ••• , XN jT and corresponding discrete latent variables\nz = [zi, ... , ZN F. Let 8 denote parameters of the model. The incomplete log-likelihood is given by\n£.(8) = logp(Xl8) =log LP(X, ZIB).\nz\nLet q(Z) denote a probability distribution over latent variables. The free energy of the model is defined by\nF(q, 8) = L q(Z) logp(X, Zl8) - L q(Z) log q(Z).\nz z\nLet e(i-l) denote model parameters estimated from the (i - 1)-th iteration of the EM algorithm.\n(a) ( 4 marks) In the E-step of the i-th iteration, set qli) = p(Z]X, 8(i-l) ). Show that\n(b) (2 marks) In the M-step, set 8(i) to maximize the expected complete log-likelihood\n8(i) = argm:x LP(ZIX, 8(i-l)) logp(X, Z]e).\nz\nExplain why e(il is also a maximizer of F(q(i), 8).\nUNIVERSITY ID : ---------------\n(c) (3 marks) Show that L(eCil) :> L(e(i-t)) using parts (a) and (b). (Hint: You can assume L(8) :> F(q,8) -\nfree energy is a lower bound on the log likelihood.)\n(d) (4 marks) Below is a graph of the log incomplete likelihood L(8) vs. model parameter value (assume e is\nlD). Given the labeled parameter value at iteration i - 1, first sketch a plausbile curve representing F(q(i) 1 8) as\na function of e)) then draw a vertical line at a plausible location for fJ(i).\n8(i-1)\nUNIVERSITY ID : ----------------",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2015_05_Q8_08",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2015_05_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "",
+        "examYearMonth": "2015-05"
+      },
+      "type": "short_answer",
+      "questionNo": "8",
+      "prompt": "(10 marks) Kernels\n(a) (5 marks) Show that k(x,z) = (xTz) 2 is a valid kernel function by identifying a feature mapping if> such that\nk(x,z) = i!>(x)Tif>(x), where x,z E JR2 .\nP. 17 oflS\nUNIVERSITY ID : -----------------\n(b) (5 marks) The nearest-neighbour (NN) classifier a;;signs new input vector x to the same class as the nearest\ninput vector Xn frorn the training set, where the distance is defined by llx- Xn 11 2 . Forn1ulate a generalized version\nof the NN classifier using the kernel trick.",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:12.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 18,
+    "pagesWithText": 17,
+    "chars": 7811
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

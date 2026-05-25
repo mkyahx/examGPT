@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2020_12_10_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Leaming",
+    "examYearMonth": "2020-12"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2020_12_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2020_12_10_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2020-12"
+      },
+      "type": "multiple_choice",
+      "questionNo": "1",
+      "prompt": "1.1 (4 marks): Write down 5 classifiers discussed in class that are able to achieve 100% accuracy on the\ndata below. Also, write down 3 classifiers discussed in class that are not able to achieve 100% accuracy on\nthis data.\n•\no�-------------\n1.2 (2 marks for correct answer, -2 mark for incorrect answer): (True/False) The goal of PCA is to\ninterpret the underlying structure of the data in terms of the principal components that are best at predicting\nthe output variable.\n1.3 (2 marks for correct answer, -2 mark for incorrect answer): (True/False) The output of PCA is a new\nrepresentation of the data that is always of lower dimensionality than the original feature representation.\n1.4 (2 marks): In a medical application domain, suppose we build a classifier for patient screening (True\nmeans patient has cancer). Which of the following situations would you like your classifier to have? Select\nall correct answers. (FP: false positive, FN: false negative, TP: true positive, TN: true negative)\na) FP>>FN\nb) FN>>FP\nc) FN=FP x TP\nd) TN>>FP\ne) FN x TP >> FP x TN\nf) All of the above\n1.5 (2 marks): Suppose that there are a total of 50 machine learning related documents in a library of 200\ndocuments. Now, suppose that a search engine retrieves 10 documents after a user enters 'machine learning'\nas a query, of which 5 are machine learning related documents. Write down the precision and recall for this\nexample.\nPage 2 o/5\nQuestion 2:\n2.1 (2 marks): Say we have three models in an ensemble. We got the following results on a binary\nclassification task.\nModel Name Class -1 Class -0\nProbability Probability\nModel-1 0.49 0.51\nModel-2 0.99 0.01\nModel-3 0.49 0.51\nApply soft voting and hard voting to this ensemble.\n2.2 (2 marks): If AdaBoost underfits the training data, which hyp erparameter should be changed and how?\n2.3 (3 marks): For binary classification, which of the following statement(s) are true of AdaBoost with\ndecision trees?\na) It usually has lower bias than a single decision tree\nb) It can train multiple decision trees in parallel\nc) It is popular because it usually works well even before any hyp erparameter tuning\n2.4 (3 marks): For binary classification, which of the following statement(s) are true of AdaBoost?\na) It can be applied to neural networks\nb) It uses the majority vote of learners to predict the class of a data point\nc) The metaleamer provides not just a classification, but also an estimate of the posterior probability\nQuestion 3:\n3.1 (3 marks): Why would you want to use:\na) Ridge Regression instead of plain Linear Regression?\nb) Lasso instead of Ridge Regression?\nc) Elastic Net instead of Lasso?\n3.2 (3 marks): Consider the following prediabetic data.\nAge (x) Glucose Level (y)\n43 99\n21 65\n25 79\n42 75\n57 87\n59 81\nCalculate the Pearson product-moment correlation coefficient for this data.\nPage 3 o/5\nQuestion 4:\n4.1 (3 marks): Consider a Multilayer Perceptron (MLP) with a number of hidden layers. Explain why\nbackpropagation would fail if the weights of the hidden layer are not randomly initialized.\n4.2 (3 marks): Write down all hyperparameters that you can adjust in a Multilayer Perceptron (MLP). Say\nyour MLP underfits the data, how would you change those hyperparameters that you have listed?\n4.3 (2 marks): If you are using dropout in your network, would it slow down training?\nQuestion 5:\n5.1 (2 marks): Consider the following two TensorFlow programs A and B. Write down the output for both\nprograms and explain the difference between the two programs.\nA:\nB:\n1 import tensorflow as tf\n2 x = tf. data. Dataset. from_tensor _slices (tf. random. uni form( [ 5, 2]))\n3 y = tf.data.Dataset.fro m_tensor_slices(tf.range(S))\n4 ds_joint = tf.data.Dataset.zip((x, y))\n5 ds = ds_joint.batch(4).repeat(count=2)\n6 for i, (batch_x, batch_y) in enumerate(ds):\n7 print(i, batch_x.shape, batch_y.numpy())\n1 import tensorflow as tf\n2 x = tf.data.Dataset.from_tensor_slices(tf.random.uniform([S, 2]) )\n3 y = tf.data.Dataset.from_tensor _slices(tf.range(S))\n4 ds_joint = tf.data.Dataset. zip((x, y))\n5 ds = ds_joint.repeat(count=2).batch( 4, True)\n6 for i, (batch_x, batch_y) in enumerate(ds):\n7 print(i, batch_x.shape, batch_y.numpy())\n5.2 (2 marks): Consider the following TensorFlow program. What is the purpose of line 5?\n1 import tensorflow as tf\n2 x = tf .data.Dataset.from_tensor _slices(tf .random.uniform( [5, 2]))\n3 y = tf. data. Dataset. from_tensor _slices(tf. range( 5))\n4 ds_joint = tf.data.Dataset. zip((x, y))\n5 ds trans = ds_joint.map(lambda x, y: (x*2-1.0, y))\nPage 4 o/5\n5.3 (3 marks): Consider the following TensorFlow/Keras program. How many input nodes, output nodes\nand total parameters are in the model?\n1 import tensorflow as tf\n2model = tf.keras.Sequential([\n3 tf. keras. layers. Dense(16, activation= ' sigmoid', name=' fcl', input_shape=(12, )),\n4 tf.keras.layers.Dense(32, activation='sigmoid', name='fc2'),\n5 tf. keras. layers. Dense ( 9, name=' fc3', activation= ' softmax')])\n6 model. summary ()\n5.4 (3 marks): Consider the following TensorFlow/Keras program. For each layer of the CNN, write down\nthe number of parameters.\n1 import tensorflow as tf\n2 model = tf. keras. Sequential( [\n3 tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu'),\n4 tf.keras.layers.MaxPooling2D((2, 2)),\n5 tf.keras.layers.Dropout(rate=0.5),\n6 tf. keras. layers. Conv2D( 32, ( 3, 3}, padding=' same', activation= 'relu' ) ,\n7 tf.keras.layers.MaxPooling2D((2, 2)),\n8 tf.keras.layers .Dropout(rate=0.5),\n9 tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),\n10 tf.keras.layers.MaxPooling2D((2, 2)),\n11 tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),\n12 ] )\n13 model.build(input_shape=(None, 64, 64, 3))\n5.5 (4 marks): Write down four things you could try if your GPU runs out of memory while training a CNN.\nPage 5 o/5",
+      "questionTypeTag": "multiple_choice",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.329Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 5,
+    "pagesWithText": 5,
+    "chars": 6956
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

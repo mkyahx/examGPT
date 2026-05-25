@@ -1,0 +1,38 @@
+{
+  "name": "examgpt-hku",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "download": "node scripts/download-exambase-pastpapers.mjs",
+    "download:quick": "./scripts/quick-download.sh",
+    "download:interactive": "./scripts/download.sh",
+    "download:comp": "npm run download -- --prefix COMP",
+    "download:math": "npm run download -- --prefix MATH",
+    "download:stat": "npm run download -- --prefix STAT",
+    "download:course": "npm run download -- --prefix",
+    "download:debug": "node scripts/debug-login.mjs --headful",
+    "download:debug:courses": "node scripts/debug-courses.mjs",
+    "extract:questions": "node scripts/extract-questions.mjs",
+    "analyze:course": "node scripts/analyze-course-patterns.mjs"
+  },
+  "dependencies": {
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "playwright": "^1.60.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

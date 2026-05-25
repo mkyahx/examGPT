@@ -1,0 +1,113 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+    "courseCode": "COMP3251",
+    "courseName": "Algorithm Design",
+    "examYearMonth": "2023-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3251_2023_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2023-05"
+      },
+      "type": "coding",
+      "questionNo": "1",
+      "prompt": "(25 points) Various organizations rank universities worldwide every year. These rankings\nare often controversial and do not always agree with each other. Alice wants to find out\nthe level of (in)consistency between the QS ranking and the US News ranking. Consider n\nuniversities. For each university 1 <i <n, qj and u; are its ranks accoording to QS and US\nNews respectively. (Hence, qi, q2,-..,;@n and uj, U2,...Un are two permutations of 1 to n.)\nWe call a pair of universities 7,7 a “disagreement” if q > q; and u; < u;. Design a divide\nand conquer algorithm for finding the number of “disagreements” between the QS and US\nNews rankings. Your algorithm shall have running time strictly faster than O(n?); to get\nfull credit, your algorithm shall have running time O(nlogn).",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.042Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2023_05_Q2_02",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2023-05"
+      },
+      "type": "coding",
+      "questionNo": "2",
+      "prompt": "(25 points) The computer science department was recently gifted with n coupons for Ama-\nzon Web Services (AWS), each of which is worth 100k USD. There are m > n faculty\nmembers in the department, each belongs to a research group. We will denote the faculty\nmembers as 1 to m, and the research groups as G1, G2,...,G, which form a partition of 1\nto m. Bob, the department head, wants to find a fair and efficient way to distribute these\ncoupons. Each faculty member has written a proposal for how he/she would use the coupon\nto enhance his/her research. Based on the proposals, Bob has come up with a value v; > 0\nfor giving a coupon to each faculty member 1 <7i< m. (You may assume that v,’s are\ndistinct.) Further, Bob decides that each researh group gets at most c coupons for some\ncap | <c<n. Design a greedy algorithm to distribute the coupons to n faculty members\nsubject to this cap, such that the sum of their values is maximized. To get full credit, you\nneed to also provide an argument for the algorithm’s correctness and running time.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.042Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2023_05_Q3_03",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2023-05"
+      },
+      "type": "coding",
+      "questionNo": "3",
+      "prompt": "(25 points) Professor Charlie is an economist who works at city A in Chile. He is invited\nto deliver a keynote speech at city B in China on July 15, 2023. Since A and B are both\nsmall cities and locate on the opposite sides of the globe, he needs to take multiple flights\nto get to city B. Prof. Charlie is very busy and cannot leave city A before 8am on July\n13 (for simplicity, the time in this question has been converted to Hong Kong time). He\nwants to know if he could arrive at city B by 9pm on July 14. For that, he turns to you,\nhis computer science friend at Hong Kong. Suppose that you are given a list of all flights\nworldwide, each represented by the take-off city and time, and landing city and time. (For\nsimplicity, assume that all flights will be on time.) A feasible schedule is a sequence of\nflights so that:\n1. The first flight takes off after 8am on July 13 (inclusive) from city A;\n2. The landing city of each flight is the take-off city of the next flight;\n3. The landing time of each flight is at least 1 hour (inclusive) earlier than the next flight;\n4. The last flight lands at city B before 9pm on July 14 (inclusive).\n(a) (15 points) Design a polynomial-time algorithm that either finds such a schedule and\nreports the sequence of flights, or concludes that no such schedule exists.\n(b) (10 points) Revise your algorithm such that it returns the schedule that arrives the\nearliest when there are multiple feasible schedules.\nTo get full credit, you also need to provide an argument for the algorithm’s correctness and\nrunning time.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.042Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2023_05_Q4_04",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2023-05"
+      },
+      "type": "coding",
+      "questionNo": "4",
+      "prompt": "(25 points) Consider a set of jobs Jj, J2,---,Jn. Each job J; has a required processing\ntime p; and a deadline d;, where p; and d; are positive integers. The jobs are sorted in a\nnon-decreasing order of deadlines (i.e., dy < dz <--- < dy). Scheduling a job J; = (pj, d;)\nrequires assigning an interval |t,t-+p;) exclusively to J;, where 0 < t < d;—p,;. Different jobs\nmust be scheduled in non-overlapping intervals. For example, J; = (4,5) and Jz = (5,10)\ncan be scheduled in [0,4) and [4, 9), respectively.\nGiven a set of jobs, it might not be feasible to schedule all the jobs (e.g., J; = (5,6) and\nJq = (5,8)); the objective is to schedule the maximum number of jobs.\n(a) (5 points) Consider the following greedy algorithm. Denote ACCEPTED to be an\nempty set initially. Starting from Jj, repeatedly pick the next job Jj, if scheduling\nJ; immediately after all the jobs already in ACCEPTED can meet the deadline of J;,\nadd J; into ACCEPTED and schedule it accordingly; otherwise, discard J;. Give an\nexample to show that this algorithm fails to schedule the maximum number of jobs.\n(b) (20 points) Show how to use dynamic programming to compute the maximum number\nof jobs that can be scheduled together. The time complexity should depend on the\nnumber of jobs and the value of the maximum deadline.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.042Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2023_05_Q5_05",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2023_05_12_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2023-05"
+      },
+      "type": "coding",
+      "questionNo": "5",
+      "prompt": "(25 points) In the year of 2046, GPT-11 has evolved in to a super-AI that threatens the very\nexistence of humanity. The world government therefore decides to cut off its power supply.\nIn this simplified problem, we model the power network as an undirected graph G = (V, E),\nwhose vertices are substations and edges are powerlines. There are two specical vertices s\nand t, where s represents the power plant and t represents the GPT-11 server. Shutting\ndown each substation v € V \\{s,t} has a positive integer cost cy. Design a polynomial-time\nalgorithm for choosing a subset of substations S such that shutting them down disconnects\ns and t, and the total cost is minimized.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.042Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 12,
+    "pagesWithText": 7,
+    "chars": 6833
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3251.topics.json",
+    "topicCount": 0
+  }
+}

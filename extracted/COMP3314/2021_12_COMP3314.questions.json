@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2021_12_17_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Learning",
+    "examYearMonth": "2021-12"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2021_12_Q2_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2021_12_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2021-12"
+      },
+      "type": "multiple_choice",
+      "questionNo": "2",
+      "prompt": "Short Answer\n2.1 (5 points): In feature scaling, what is the difference between standardization and\nnormalization?\n2.2 (5 points): Explain confusion matrix, precision, recall and F1 score.\n2.3 (5 points): Class imbalance can be a problem in machine learning. Explain why\nand describe two strategies to tackle this problem.\n2.4 (5 points): What is k-fold cross-validation? Should k increase or decrease when the\ndataset is small? Why?\n3. Logistic Regression\nWe attempt to solve the binary classification task depicted in the figure below with a\nsimple linear logistic regression model (x,,x2 are respectively horizontal and vertical\ncoordinates in the figure):\n1\n1+ exp(—Wog — WyxX, W2X2)\nP(y = 1|X,W) = 9(Wo + Wy X1 + W2X2) =\n6.0\np xi\n55 4 @ x\n5.0 4\n4.54 = ¢\n4.0 4 @\n354 pi pe\n3.0 4 p>?\n2.54\n2.0 : + + —\n2.0 2.5 3.0 3.5 4.0 45 5.0 5.5 6.0\n3.1 (9 points): Notice that the training data can be separated with zero training error\nwith a linear separator. Consider training regularized linear logistic regression models\nwhere we try to maximize\nn\n>. log(P (yx; Wo, W1, W2)) = Cw?\ni=1\nfor very large C. The regularization penalties used in penalized conditional\nloglikelihood estimation are —C w?, where j = {0,1,2}. In other words, only one of\nthe parameters is regularized in each case. Given the training data in the figure above,\nhow does the training error change with regularization of each parameter w,? State\nwhether the training error increases or stays the same (zero) for each w, for very large\nC. Provide a brief justification for each of your answers. Note: no calculation is needed.\n(a) By regularizing wp.\n(b) By regularizing w,.\n(c) By regularizing Wo.\ntrsivsenredne Ries - University No,\n3.2 (6 points): Given the loss function defined as J ‘(w), suppose we use Stochastic\nGradient Descent, please derive — row) ) = =(o—y')x!\nJiw) = —y! log (9) —(1-ylog (1 - g(z'))\nwhere zi = w'x! +b, (z*) is the sigmoid function and y' is the label for the i-th\nsample x?.\nUniversity Noe\n4. Linear SVM\nConsider a classification problem: there is a one-feature sample and class label y can\nbe 1 or -1. There are 2 data points, which are\n(11) = (41)\n(x2, 2) = (=, si)\n4.1 (6 points): For this problem write down the QP problem for an SVM with slack\nvariables and Hinge loss. Denote the weight for the slack variables €; is C. Let the\nequation of the decision boundary be\nwx+b=0\nWe denote the QP form as:\n1 min=z’Pz+q'z ze\ns.tGz<h\nLet z be optimizable variables. QP problem has a quadratic optimization term and\nlinear constraints. Please show that SVM with slack variables and Hinge loss can be\nconsidered as a QP form.\nUniversity No.\n4.2 (6 points): Let’s assume we add some more data points and have solved the\nquadratic programming problem. There is a negative support vector at x = 0 anda\npositive support vector at x = 2. What is the width of the margin (twice the distance\nfrom decision boundary to the closest training samples)? What is the weight w and\nbias b?\n4.3 (6 points): Let two positive samples at x = 0.5 and x = 3. What are the slack\nvariables for them?\n5. Perceptron\n5.1 (4 points): Draw a fully connected network that has 3 neurons in the input layer, 5\nneurons in a hidden layer and 2 neurons in the output layer.\n5.2 (6 points): Assuming that the activation function is linear, show that this network\ncan be simplified into one without a hidden layer. Note: the output layer does not need\nan activation function.\nUniversity No.\n5.3 (10 points): With the network defined in 5.1, assume the input layer is X, hidden\nlayer is Y and output layer is Z. Activation function is ReLU function. The overall\nformulas are defined as:\nY=WiX+b,\nVoce = ReLU(Y)\nZ = WhYact + bz\n| = Loss(Z)\nWhere X is [1,2,3], b, is [—0.5320,—0.5185, —0.3604, —0.5402, —0.4878]and\nal_ is [0.2345, 0.0214, -0.0060, 0.2950, 0.2095]. Calculate and =.\nOV act Ox OW,\nWi\n0.2085 | 0.3803 | -0.5659\n0.4626 | 0.4808 | -0.3905\n-0.2183 | 0.1416 | 0.0663\n0.1253 | 0.0960 | 0.5014\n0.5484 | 0.3817 | -0.4773\n6. Boosting\nConsider training a boosting classifier using decision stumps (decision stump refers to\none level decision tree) as weak learners on the dataset shown in the following figure\n(1). Each sample has two features represented as the x and y coordinates in the\nfollowing 2D plots.\n7 : 7\nor 8 a | oF B ea\n+ + + +\n1 am |=\nap a oP =\n2 2\n+ es + J\n3 3\niI i =a\n() hy (2)\n(a) (5 points) Assume at the end of the first iteration, h, is the first weak learner\nobtained. The left side of h, is classified as positive and the right side is classified\nas negative. Which samples will have their weights increased at the end of the first\niteration? Circle them.\n(b) (8 points) How many iterations will it take to achieve zero training error? Explain.\n(c) (5 points) Why do we want to use “weak” learners when boosting?",
+      "questionTypeTag": "multiple_choice",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.497Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 11,
+    "pagesWithText": 10,
+    "chars": 7553
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

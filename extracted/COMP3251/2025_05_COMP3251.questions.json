@@ -1,0 +1,113 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+    "courseCode": "COMP3251",
+    "courseName": "Algorithm Design",
+    "examYearMonth": "2025-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3251_2025_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2025-05"
+      },
+      "type": "coding",
+      "questionNo": "1",
+      "prompt": "(25 points) Martin just finished a long novel with n chapters, where chapter i is ni pages\nlong. The publisher told Martin that publishing each book costs C dollars, and they allow a\nmaximum number of P pages in each book. The chapters must appear in sequential order.\n(a) (15 points) Suppose Martin wishes to minimize the total cost of publishing his novel,\ni.e., minimizing the number of books needed to publish his novel. He decides to greedily\nfit the first k1 chapters into the first book for the largest possible k1, i.e., I:;t,1 ni :S\nP < I:7;,t1 ni, and then fit as many chapters as possible into the second, and so forth.\nDoes his greedy approach always minimize the number of books? Why or why not?\n(b) ( 10 points) Martin does not want to break the story at unnatural points. Suppose\nMartin can quantify the cost c(i) (in terms of dollars) of breaking chapters i and i + 1\ninto two books. In other words, if the first book ends at chapter k1, the second book\nends at chapter k2, and so forth, until the last book m ends at chapter km = n, the\ntotal cost would be C-m+c(k1)+c(k2)+· · ·+c(km_i). Design a dynamic programming\nalgorithm to help Martin minimize this cost, and argue for the correctness and running\ntime of your algorithm.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.247Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2025_05_Q2_02",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2025-05"
+      },
+      "type": "coding",
+      "questionNo": "2",
+      "prompt": "(25 points) HKU will launch a new undergraduate program in \"Future Technologies.\" The\nprogram director, Alice, has come up with a preliminary design of the curriculum. We use\na directed graph G = (V, E) to represent the courses and prerequisite requirements each\ncourse i corresponds to a vertex i E V, and let there be a directed edge from i to j if course\ni is a prerequisite to course j.\nBefore submitting the curriculum for the university's approval, Alice would like to run a\nfew tests. She has already used DFS to verify that graph G is acyclic, i.e., the curriculum\nis free of cyclic prerequisite requirements. Next, she wants to know if there is any directed\npath with strictly more than k = 8 vertices/courses on it. If such a path exists, then the\nstudents would not be able to complete their studies within 8 semesters.\nCan you help Alice design a polynomial-time (in IVI, IEI, and a general value of k) algorithm\nfor her problem? To get full credit, you need to argue for the correctness and running time\nof the algorithm.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.247Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2025_05_Q3_03",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2025-05"
+      },
+      "type": "coding",
+      "questionNo": "3",
+      "prompt": "(25 points) This question considers the Weighted Interval Scheduling problem. There are\nn jobs. Each job 1 ::::; j ::=:; n has a start time Sj 2 0, finish time Jj > Sj, and a positive\nweighte Wj > 0. Two jobs j and j' are compatible if their intervals (sj, Jj) and (sj,, fF) are\ndisjoint. We hope to find a set of mutually compatible jobs such that the total weight of\nthese jobs is maximized. Design a polynomial-time algorithm for this problem, and argue\nfor the correctness and running time of your algorithm.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.247Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2025_05_Q4_04",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2025-05"
+      },
+      "type": "coding",
+      "questionNo": "4",
+      "prompt": "(25 points) The School of Computing and Data Science needs to decide on the teaching\nassignment for the 2025-26 academic year. A set of undergraduate (UG) courses U and\npostgraduate (PG) courses P will be offered. There are n teachers. Each teacher 1 ::; i ::; n\nhas his/her own expertise and can teach only a subset of the courses. Let Ui ~ U and\nPi ~ P be the subsets of UG and PG courses teacher i can teach. Each teacher shall teach\n3 courses, within which there must be at least 1 UG course. Each course needs to be taught\nby a teacher. (You may assume IUI + jPj = 3n.) Design a polynomial-time algorithm for\nfinding a feasible teaching assignment whenever one exists.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.247Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3251_2025_05_Q5_05",
+      "source": {
+        "pdfPath": "downloads/COMP3251/2025_05_17_COMP3251.pdf",
+        "courseCode": "COMP3251",
+        "courseName": "Algorithm Design",
+        "examYearMonth": "2025-05"
+      },
+      "type": "coding",
+      "questionNo": "5",
+      "prompt": "(25 points) Suppose there are n portfolios, each of which is associated with a pair of non­\nnegative numbers (ai, bi), where ai 2 0 is the return in one year, and bi 2 0 is the return in\nten years. You can also invest in multiple portfolios by splitting your assets. For example,\ninvesting one-third and two-thirds in the first two portfolios yields ai ~ 2a 2 in one year, and\nbi ~Zbz in ten years. Given a pair of targets (A, B), you want to know whether you can get\na return of at least A in one year, and a return of at least B in ten years.\n(a) (10 points) Show that it suffices to consider pairs of portfolios. That is, if the targets\nare achievable, then there are two portfolios i and j and a fraction p E [O, 1], such that:\np · ai + (1 - p) · aj 2 A, p ·bi+ (1 - p) · bj 2 B .\nUse this fact to design an O(n 2 ) time algorithm.\n(b) (15 points) Design an O(nlogn) divide and conquer algorithm for this problem.",
+      "questionTypeTag": "coding",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:02.247Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 12,
+    "pagesWithText": 11,
+    "chars": 5996
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3251.topics.json",
+    "topicCount": 0
+  }
+}

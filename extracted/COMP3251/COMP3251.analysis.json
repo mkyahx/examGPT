@@ -1,0 +1,219 @@
+{
+  "courseCode": "COMP3251",
+  "courseName": "Algorithm Design",
+  "generatedAt": "2026-05-23T12:29:39.930Z",
+  "inputs": {
+    "papersDir": "extracted/COMP3251",
+    "topicsPath": "extracted/course-topics/COMP3251.topics.json"
+  },
+  "summary": {
+    "paperCount": 2,
+    "okPaperCount": 2,
+    "questionCount": 10,
+    "questionCountPerPaper": {
+      "min": 5,
+      "max": 5,
+      "average": 5,
+      "median": 5,
+      "mode": 5
+    },
+    "tagging": {
+      "topicStatus": "missing",
+      "knownTopicCount": 0,
+      "taggedQuestionCount": 0,
+      "unknownQuestionCount": 10
+    }
+  },
+  "patterns": {
+    "dominantQuestionTypes": [
+      {
+        "id": "coding",
+        "label": "coding",
+        "count": 10,
+        "shareOfQuestions": 1,
+        "shareOfTaggedItems": 1
+      }
+    ],
+    "recurringTopics": [],
+    "uncoveredSyllabusTopics": [],
+    "commonQuestionPositions": [
+      {
+        "questionNo": "1",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "2",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "3",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "4",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      },
+      {
+        "questionNo": "5",
+        "questionCount": 2,
+        "commonTypes": [
+          {
+            "id": "coding",
+            "label": "coding",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ],
+        "commonPrimaryTopics": [
+          {
+            "id": "unknown",
+            "label": "unknown",
+            "count": 2,
+            "shareOfQuestions": 1,
+            "shareOfTaggedItems": 1
+          }
+        ]
+      }
+    ]
+  },
+  "distributions": {
+    "questionTypes": {
+      "total": 10,
+      "denominator": 10,
+      "items": [
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 10,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ]
+    },
+    "topics": {
+      "primary": {
+        "total": 0,
+        "denominator": 10,
+        "items": []
+      },
+      "allTags": {
+        "total": 0,
+        "denominator": 10,
+        "items": []
+      },
+      "unknownQuestionCount": 10,
+      "uncoveredTopics": []
+    }
+  },
+  "papers": [
+    {
+      "filePath": "extracted/COMP3251/2023_05_COMP3251.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3251",
+      "courseName": "Algorithm Design",
+      "examYearMonth": "2023-05",
+      "questionCount": 5,
+      "questionTypes": [
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 5,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    },
+    {
+      "filePath": "extracted/COMP3251/2025_05_COMP3251.questions.json",
+      "status": "ok",
+      "courseCode": "COMP3251",
+      "courseName": "Algorithm Design",
+      "examYearMonth": "2025-05",
+      "questionCount": 5,
+      "questionTypes": [
+        {
+          "id": "coding",
+          "label": "coding",
+          "count": 5,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1
+        }
+      ],
+      "topics": []
+    }
+  ]
+}

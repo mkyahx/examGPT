@@ -1,0 +1,185 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Leaming",
+    "examYearMonth": "2023-05"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2023_05_Q1_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "1",
+      "prompt": "| 16points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q2_02",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "2",
+      "prompt": "| 8points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q3_03",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "3",
+      "prompt": "| 16points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q4_04",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "4",
+      "prompt": "| 16points |\n|\n|\n|",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q5_05",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "5",
+      "prompt": "| 15 points",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q6_06",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "6",
+      "prompt": "| 29 points\nTotal | 100 points\nUID:\nProblem 1\nTRUE or FALSE questions.",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q1_07",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "short_answer",
+      "questionNo": "1",
+      "prompt": "(2 points) For two random variables, the expectation of their sum is equal to the sum of their\nexpected values, and the expectation of their product is equal to the product of their expected\nvalues.\n. (2 points) Increasing the size of training datasets always reduces overfitting.\n. (2 points) K-means is a supervised learning technique, while K-Nearest Neighbor is an unsu-\npervised learning technique.\n. (2 points) Increasing the batch size when using mini-batch Stochastic Gradient Descent (SGD)\nalways improves training.\n. (2 points) In terms of expressiveness, a 5-layer neural network with only linear activation\nfunctions is equivalent to one single-layer neural network.\n. (2 points) Cross validation will guarantee that our model does not overfit.\n. (2 points) A logistic regression model is equivalent to a one-layer neural network, which has\na single output unit with sigmoid activation and is optimized with a cross-entropy loss func-\ntion.\n. (2 points) Suppose we use a simple linear regression model to perform classification, where\nthe objective is simply the squared-error loss. If we achieve 100% accuracy on the training\nset, then the training loss must also be zero.\n1.\n2.\nProblem 2\nMultiple Choice Questions (one or more choices are correct)\n1. (4 points) Suppose the training error of a neural network with two hidden layers is high.\nWhich of the following, if done in isolation, has a better-than-tiny chance of reducing the\ntraining error?\nA. Training on more data\nB. Adding more units to hidden layers\nC. Decreasing the number of hidden layers\nD. Normalizing the input data",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q2_08",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "multiple_choice",
+      "questionNo": "2",
+      "prompt": "(4 points) Which of the following are true for the k-nearest neighbor (k-NN) algorithm?\nA. As k increases, the variance usually increases.\nB. As k increases, variance and bias usually decrease.\nC. As k increases, the bias usually increases.\nD. The decision boundary looks less smoother with smaller values of k.\nProblem 3\nIn this question, you want to figure out what makes people click on online advertisements via de-\ncision trees. You try a variety of different advertisements and record user behavior in the following\ntable. The middle three columns (“Animated,” “Popup,” and “Colorful”) are the features; the last\ncolumn, “Clicked,” is the label you want to predict by constructing a decision tree.\nTable 1: The recorded 8 data points.\nAdvertisement || Animated? | Popup? | Colorful? || Clicked\n1 | Yes | Yes | No | No\n2 | No | Yes | Yes || No\n3 | No | Yes | No || No\n4 | No | No | Yes || Yes\n5 | Yes | No | Yes || Yes\n6 | Yes | No | No | Yes\n7 | No | No | Yes || Yes\n8 | No | No | No || No\n1. (4 points) What is the entropy H(Clicked) at the root node? [Note: Your expression can con-\ntain logarithms and fractions.]\n2. (6 points) Which feature should you split on at the root of the decision tree to maximize the\ninformation gain? Write an expression for the information gain of the best split. [Note: Your\nexpression can contain logarithms and fractions. ]\nUID:",
+      "questionTypeTag": "multiple_choice",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_05_Q3_09",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_05_17_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Leaming",
+        "examYearMonth": "2023-05"
+      },
+      "type": "multiple_choice",
+      "questionNo": "3",
+      "prompt": "(6 points) Complete decision tree that maximizes information gain at each split by filling in\ntraining points (the ID of advertisements) to the blank boxes. (Do not include entropies or\ninformation gains.)\nAre advertisements\npopup?\nAre advertisements\ncolorful?\noe\nAre advertisements\nanimated?\nai pe\n1\nPA of 12\nAre advertisements\npopup?\nAre advertisements\ncolorful?\nAre advertisements\nanimated?\n一\nProblem 4\nConsider a simple XNOR dataset consisting of four data points. Each data point has two binary\nfeatures x, and x2, and the class label would be 1 if x, = x2 and vice versa. We also annotate each\ndata point by a unique identifier (the first column of Table 2), which is unrelated to the learning\nprocess and only for ease of your reference.\nTable 2: The XNOR dataset consisting of four points.\nID | a | x2 | y\na |0|0|1\nb |0|1|0\nc |1|0|0\nd|1|1|1\n1. (5 points) Consider a 1-Nearest Neighbor (1-NN) algorithm with leave-one-out cross validation.\nCompute the top-1 nearest neighbor for each of these four points and explain your answer. Is\n1-NN able to accurately classify the dataset? [Hint: you can think of it as running the 1-NN\nalgorithm four times, where each time we leave one point out as the test point and use the\nremaining three points as the training set.]\n2. (5 points) Suppose you are given a simple linear classifier with weights w1, we, and bias b.\nThe classifier outputs 9 = wir, + w222 + b, where it would predict class label to 1 if 9 > 0\nand predict 0 if § < 0. By considering all of these four points, write the set of inequalities\nwhich these weights must satisfy so that the classifier can accurately classify the dataset.\nDoes a feasible solution (or a set of solutions) exist for such constraints? If yes, give a set of\nthe weights and biases which can correctly classify all four examples; if not, explain why that\nis the case.\n3. (6 points) Now, we employ a simple 2-layer neural network to solve the XNOR problem. The\nneural network is defined as follows (the first layer does not have bias terms)\nhy = wy x1 + wor\nha = wgr1 + ware\n2, = o(h,)\nz = o(he)\nY = W521 + W620 + b3,\nwhere h; and hz are two hidden units and o(z) = max{0, x} is the ReLU activation function.\nWe would predict class label to 1 if § > 0 and predict 0 if 7 < 0. Suppose we have chosen\nbs = 10, ws = —10, and wg = —10. Does there exist a feasible solution (or a set of solutions) for\nUID:\nWi, W2, wW3, and wa such that the neural network could classify all four data points correctly?\nIf yes, provide one possible value for each of wi, wo, w3, and w4 and demonstrate that the\nresulting neural network can accurately classify all four data points; if not, explain why\nthis is the case.\n1.\nProblem 5\nYou want to train a neural network to recognize the age and sex based on the face image. Your\ntraining data consists of grayscale 32 x 32 pixel images. The training labels include the age and sex\nof each person. Your neural network consists of an input layer with 32 x 32 = 1,024 units, a hidden\nlayer with 2,048 units, and an output layer with 2 units. You use the ReLU activation function for\nthe hidden units and no activation function for the outputs (or inputs). You train your network\nwith the cost function J = $|ly — z||?. Please use the following notations to answer questions:\ne x is a training image (input) vector with a 1 component appended to the end (as a bias), y is\na training label (input) vector, and z is the output vector. All vectors are column vectors.\n° r(y) = max{0, 7} is the ReLU activation function, r’(+7) is its derivative (1 if y > 0, 0 other-\nwise), and r(v) is r(-) applied component-wise to a vector.\ne gis the vector of hidden unit values before the ReLU activation functions are applied, and\nh = r(g) is the vector of hidden unit values after they are applied (but we append a 1 com-\nponent to the end of h as the bias term).\ne V is the weight matrix mapping the input layer to the hidden layer; g = Vx.\ne W is the weight matrix mapping the hidden layer to the output layer; z = Wh.\nQuestions:\n1. (2 points) Calculate the number of parameters (weights) in this network. You can leave your\nUID:\n。 ° oJ\n2. (4 points) Derive 20\n3. (2 points) Write a as an outer product of two vectors. — is a matrix with the same dimen-\nsions as W; it is just like a gradient, except that W and 二 are matrices rather than vectors.\nOJ 4, (7 points) Derive BV5\"\n1.\nProblem 6\nK-means is a popular method to cluster (or partition) a set of N data points into K clusters, so that\neach data point belongs to the cluster with the nearest cluster center (or called centroids).\nTechnically, let us denote the K clusters as p11,...,4x € R and the set of N data points as\nZ1,X2,...,£n € R. To cluster the data such that each data point is assigned to its closest centroid,\nthe algorithm proceeds as follows:\n(1) Randomly initialize the cluster centroids py, for each k = 1,2,...,K;\n(2) For each data point x, with n = 1,2,...,N, compute the index z,, of its closest centroid,\nas 2\nZn = arg min |lan — el)\";\n(3) Given the information contained in data points, we compute the new cluster centroids as\n1\nUn = Ny 》, In,\nWHza=k\nUID:\nwhere N;, is the number of data points that are assigned to the k-th cluster.\n(4) Compare the old and new cluster centroids, and if their difference is small enough (say less\nthan le-8), then the algorithm has converged and terminates; otherwise, return to step (2)\nand iterate over the entire data set. In both cases, update the centroids as\nUe ep”, k=1,2,...,K.\nAn important metric to reflect the clustering quality is the distortion, which measures how indi-\nvidual data points deviate from their assigned cluster centroids. It is just the mean of the squared\ndistance between each data point and its assigned centroid,\n1 N\nJ - 一 一 一 al — z 2 e WX le — A\nFor now, suppose we have computed the cluster assignments z, for each data point in Step 2\nand we would like to update the cluster centroids.\n1. (5 points) Show that the update rule in Steps 3 & 4 is equivalent to minimizing the distortion\nJ. [Hint: break the sum. os into Soe Dae\n2. (12 points) We now consider a modified K-means algorithm, where instead of employing the\ncentroid update rule in Steps 3 & 4, we update centroids by directly minimizing the distortion\nwith gradient descent.\n(a) (6 points) Assume we use a stochastic variant of gradient descent; that is, only a single\ndata point is used to calculate the gradient. Derive the gradient descent rule for each\ncentroid j,...,4 On a particular data point 2;, with a per-cluster learning rate ay.\n[Note: the data point x; can only be assigned to one cluster with index z;.]\n(b) (6 points) Suppose we utilize all data points to execute gradient descent once for updat-\ning centroids (in contrast to stochastic gradient descent, which employs a single data\npoint at each update). Derive the learning rate a; for each cluster so that the resulting\ngradient descent update will be equivalent to the update rule in Steps 3 & 4.\n3. (12 points) We further consider adapting K-means to a streaming setting, where data usually\ncomes in a stream. At each time step t, a single data point 2; is received, which would get\nprocessed and then dropped (not stored in memory). The streaming K-means proceeds as\nfollows: at each time step ¢ = 1,2,...,\ne Find the cluster centroid ju; that is the closest to the received data point z,; and then\nassign x; to the corresponding cluster k;\n¢ Update 1, so that it equals the mean of all points that have been assigned to cluster k.\nDevise an algorithm that implements streaming K-means. Requirement: the algorithm’s\nmemory should be independent of the stream length.\n(a) (4 points) List the variables that need to be stored in the memory and their initial values.\n(b) (4 points) When a data point z, is received, write down the update rules on the defined\nvariables.\n(c) (4 points) At each time step t, suppose we not only receive the data point «;, but also\na weight w; > 0. We want the centroid to be the weighted average of all previous data\npoints. Modify the update rules in (b) to process the weighted data. [Note: weighted\naverage here refers to the normalized version. For example, assume there are three data\npoints x1, £2, and x3 with weights w 1, we, and ws, respectively. Then their weighted\nie W111 TW2X2+W3x3B average is ete\nUID:\n1.\nUID:",
+      "questionTypeTag": "multiple_choice",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.675Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 12,
+    "pagesWithText": 10,
+    "chars": 13140
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}

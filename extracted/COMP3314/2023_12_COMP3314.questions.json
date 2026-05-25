@@ -1,0 +1,257 @@
+{
+  "status": "ok",
+  "source": {
+    "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+    "courseCode": "COMP3314",
+    "courseName": "Machine Learning",
+    "examYearMonth": "2023-12"
+  },
+  "questions": [
+    {
+      "id": "COMP3314_2023_12_Q2_01",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "2",
+      "prompt": "| 16points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.860Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q3_02",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "3",
+      "prompt": "| 12 points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.860Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q4_03",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "4",
+      "prompt": "| 16points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.860Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q5_04",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "5",
+      "prompt": "| 20points |",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.860Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q6_05",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "long_answer",
+      "questionNo": "6",
+      "prompt": "| 16points |\nTotal | 100 points |\nUID:\nProblem 1\nTRUE or FALSE questions.\ni, (2 points) For three random variables, X,Y, Z. If X ,Y,and Z are pariwise independent, then\nthe three variables are mutual independent, i.e., p(X, Y, Z ) = p(X)p(Y)p(Z).\n2. (2 points) Given a 2-dimensional dataset with N points (x;, y;)_,, the label of each point is\neither positive or negative. There exists a neural network fo(z,y) = wx + woy + b, where\n0 = [w1, wa, b], wi, we, b € R, that can separate all positive and negative points.\n3. (2 points) Bayes’ rule could be written as likelihood « posterior x prior\n4. (2 points) You are training a neural network on the ImageNet dataset, and you are thinking of\nusing gradient descent as your optimization function. It is not possible for Adam optimizer\nto converge faster than Stochastic Gradient Descent optimizer.\n5. (2 points) L1 regularization leads to weight sparsity, while L2 regularization leads to smaller\nweights.\n6. (2 points) After training a neural network, you observe a large gap between the training ac-\ncuracy (100%) and the test accuracy (42%). You can decrease the batch size to reduce the\n52P-",
+      "questionTypeTag": "long_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q7_06",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "7",
+      "prompt": "(2 points) During backpropagation, as the gradient flows backward through a sigmoid non-\nlinearity, the gradient will always decrease in magnitude.",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q8_07",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "8",
+      "prompt": "(2 points) Generative models can be used for classification.",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q9_08",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "9",
+      "prompt": "(2 points) In KNN implementation, You can’t save memory of stored points without compro-\nmising performance.",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q10_09",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "10",
+      "prompt": "(2 points) If k-means clustering is run long enough, it will always terminate.\n1.\n2.\n3\n4.\n5\n6.\n7.\n8.\n9.\n10.\nUID:\nProblem 2\nMultiple Choice Questions (one or more choices are correct)",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q1_10",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "1",
+      "prompt": "(4 points) Let us assume we implement an AND function to a single neuron. Below is a tabu-\nlar representation of an AND function:\nTable 1: The AND dataset consisting of four points.\nID | 21 | x2 | y\na | 0 |0|0\nb |0|1|0\nc | 1|0 |0\nd|1|1|1\nThe activation function of our neuron is denoted as:\nf(a) = ( for 之 <0\n1, forx>0\nNow we express the neuron as y = f(wi21 + wer2 + b) and use this single-neuron to classify\nthe dataset. What would be the weights and bias?\nA. b=-1.5, w1 =1, wg = 1\nB. b= 1.5, w, =2, wo =2\nC.b=1, w, = 1.5, wg = 1.5\nD. None of the above",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q2_11",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "2",
+      "prompt": "(4 points) Which of the following would you consider to be valid activation functions (non-\nlinearities) to train a neural net in practice?\nA. f(x) = — min(2, z)\nB. f(z) =0.92 +1\nmin(z, .1lx xz >=0\nC. f(a) = 412) |min(z,.lz) |x2<0\nmax(z,.1lx x>=0\nD. fl) = ¢ Xie)min(z,.lr) |2<0",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q3_12",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "3",
+      "prompt": "(4 points) Suppose we are given data comprising points of several different classes. Each class\nhas a different probability distribution from which the sample points are drawn. We do not\nhave the class labels. We use k-means clustering to try to guess the classes. Which of the\nfollowing circumstances would undermine its effectiveness?\nA. Some of the classes are not normally distributed.\nB. The variance of each distribution is small in all directions.\nC. Each class has the same mean.\nD. You choose k = n, the number of sample points.\n4, (4 points) Assume the vectors v and u are defined as numpy arrays. The vectors are multiplied\ntogether using the * operator: v*u. Which of the following shapes are valid, meaning the\noperation will succeed without errors?\nA. v = (4,1), u= (4, 1)\nB. v = (1, 4), u = (50, 4)\nC. v = (1, 1), u = (50, 4)\nD. v = (1, 4), u = (50, 1)\nUID:\n1.\n2.\n3.\n4,\nProblem 3\n(Naive Bayes CLassifier)\nIn this question, you are given the following set of data and try to solve a series of problems. You\nneed to determine how three different features contribute to whether an advertisement is clicked\nby users. In this table, there are 8 data points representing typical users.\nTable 2: The recorded 8 data points.\nAdvertisement || Animated? | Popup? | Colorful? || Clicked\n1 | Yes | Yes | No || No\n2 | No | Yes | Yes | No\n3 | No | Yes | No | No\n4 | No | No | Yes | Yes\n5 | Yes | No | Yes || Yes\n6 | Yes | No | No || Yes\n7 | = No | No | Yes | Yes\n8 | No | No | No || No\n1. (4 points) According to the naive Bayes classifier, what is a user clicks a popup ads P(Clicked =\n1|Popup = 1)?\n2. (4 points) According to the naive Bayes classifier, what is the probability that a clicked ads is\ncolorful and animated, i.e. P(Animated = 1, Colorful = 1|Clicked = 1)?\n3. (4 points) How many parameters are there in the naive bayes classifier P(Clicked|Popup) ?\n1.\nUID:\nProblem 4\n(k-nearest neighbor) In the following questions you will consider a k-nearest neighbor classifier using\nEuclidean distance metric on a binary classification task. We assign the class of the test point to be\nthe class of the majority of the k nearest neighbors. Note that a point can be its own neighbor.\n1. (6 points) What value of k minimizes the training set error for this dataset? What is the result-\ning training error?\n2. (6 points) Why might using too large values k be bad in this dataset? Why might too small\nvalues of k also be bad?\n3. (4 points) Sketch the 1-nearest neighbor decision boundary for this dataset.\n1.\n3.Plot in the figure above\nUID:\nProblem 5 (Exploding/Vanishing Gradients of RNN)\nConsider the following RNN, which has a scalar input at the first time step, makes a scalar predic-\ntion at the last time step, and uses a shifted logistic activation function:\nZ=Weh\nhtyi = O(%),t < T\niy =x\ny=hr\nd(z) = o(z) 一 0.5\n[Note: All expressions should be in terms of ED o’(x) and variables specified above, e.g input\ninto activation function at time t, z;.]\n1. (4 points) Compute the gradient of L(j, y) with respect to hy_; using the back-propagation\nalgorithm.\n2. (4 points) Let h, be the gradient of h, to weights, i.e., hy = 94+ , express hy as a function of hy,\nwhen t < T, using the back-propagation algorithm.\n3. (6 points) Explain with the expression of the gradient PEG Y) why the gradients of RNN often\nexplodes -> oo or vanishes — 0 during training. [Hint, you will be using the chain rule, i.e.\nwhen z is dependent on y, which itself depends on z, gz — = ou)",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    },
+    {
+      "id": "COMP3314_2023_12_Q4_13",
+      "source": {
+        "pdfPath": "downloads/COMP3314/2023_12_18_COMP3314.pdf",
+        "courseCode": "COMP3314",
+        "courseName": "Machine Learning",
+        "examYearMonth": "2023-12"
+      },
+      "type": "short_answer",
+      "questionNo": "4",
+      "prompt": "(6 points) Suppose the input to the network is z = 0. Notice that h; = 0 for all t. Determine\nthe value a such thatif W < a, the gradient vanishes, while if W > a, the gradient explodes.\nYou may use the fact that o/(0) = 1/4.\n7\n(-WO—GO)= ~ +6)\n1\n1.\nUID:\nUID:\nProblem 6\n(Gradient Descent for k-means Clustering)\nK-means is a popular method to cluster (or partition) a set of N data points into K clusters, so\nthat each data point belongs to the cluster with the nearest cluster center (or called centroids).\nTechnically, let us denote the K clusters as j1,... 44K € R and the set of N data points as\n%1,%2,...,£N € R. To cluster the data such that each data point is assigned to its closest centroid,\nthe algorithm proceeds as follows:\n(1) Randomly initialize the cluster centroids py, for each k = 1,2,...,K;\n(2) For each data point z, with n = 1,2,... , V, compute the index z, of its closest centroid,\n。 2\n%m = argmin le 一 用\n(3) Given the information contained in data points, we compute the new cluster centroids as\n1\nLe = N, Dd. tn\n1Z,=k\nwhere Nj; is the number of data points that are assigned to the k-th cluster.\n(4) Compare the old and new cluster centroids and if their difference is small enough (say less\nthan 1le-8), then the algorithm has converged and terminates; otherwise, return to step **2**\nand iterate over the entire data set. In both cases, update the centroids as\nUt we”, k=1,2,...,K.\nAn important metric to reflect the clustering quality is the distortion, which measures how indj-\nvidual data points deviate from their assigned cluster centroids. It is just the mean of the squared\ndistance between each data point and its assigned centroid,\n1 N\nee _ 2\nJ= N 2 [Zn Hz, |\nFor now, suppose we have computed the cluster assignments z,, for each data point in Step 2\nand we would like to update the cluster centroids.\n1. (4 points) Show that the update rule in Step 3 & 4 is equivalent to minimizing the distortion\nJ. [Hint: break the sum 5 into 》 2 <kel\n2. (6 points) We now consider a modified K-means algorithm, where instead of employing the\ncentroid update rule in Step 3 & 4, we update centroids by directly minimizing the distortion\nwith stochastic gradient descent (SGD). Derive the gradient descent rule for each centroid\n/41,--.,/4K Ona single data point z;, witha per-cluster learning rate a,. [Hint: the data point\nz; can only be assigned to one cluster with index 2;.]\n3. (6 points) Assume we use an SGD strategy where we simply iterate all data points from 2;\nto xy (each data point will be visited once and only once). Compute the learning rate a; for\neach cluster so that the resulting SGD update will be equivalent to the update rule in Step\n3 & 4 after it has iterated over all data points.\n1.\nUID:",
+      "questionTypeTag": "short_answer",
+      "topicTags": [],
+      "taggingStatus": "unknown",
+      "taggedAt": "2026-05-23T12:29:13.861Z",
+      "tagSource": "none",
+      "taggingError": "No syllabus topics available during extraction."
+    }
+  ],
+  "stats": {
+    "pages": 9,
+    "pagesWithText": 7,
+    "chars": 9876
+  },
+  "internalTagging": {
+    "status": "missing",
+    "threshold": 0.65,
+    "source": "online-syllabus-lookup",
+    "topicsPath": "extracted/course-topics/COMP3314.topics.json",
+    "topicCount": 0
+  }
+}
