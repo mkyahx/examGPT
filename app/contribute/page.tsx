@@ -6,14 +6,14 @@ import { useExamGPT } from "@/components/providers/ExamGPTProvider";
 import { CREDITS } from "@/lib/constants";
 
 export default function ContributePage() {
-  const { contributeQuestion, contributePastExam, credits, hydrated } = useExamGPT();
+  const { contributeQuestion, uploadPastExamForReview, credits, hydrated } = useExamGPT();
   const [courseCode, setCourseCode] = useState("COMP3278");
   const [text, setText] = useState("");
   const [solutionSketch, setSolutionSketch] = useState("");
   const [contributorNote, setContributorNote] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null);
-  const [paperCourseCode, setPaperCourseCode] = useState("COMP3278");
+  const [paperCourseCode, setPaperCourseCode] = useState("");
   const [academicYear, setAcademicYear] = useState("2025/26");
   const [semester, setSemester] = useState("Semester 1");
   const [examType, setExamType] = useState("Final");
@@ -21,6 +21,7 @@ export default function ContributePage() {
   const [paperNote, setPaperNote] = useState("");
   const [paperError, setPaperError] = useState<string | null>(null);
   const [paperDone, setPaperDone] = useState<string | null>(null);
+  const [paperBusy, setPaperBusy] = useState(false);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -42,23 +43,30 @@ export default function ContributePage() {
     setContributorNote("");
   }
 
-  function onPaperSubmit(e: React.FormEvent) {
+  async function onPaperSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPaperError(null);
     setPaperDone(null);
-    const result = contributePastExam({
+    setPaperBusy(true);
+    const result = await uploadPastExamForReview({
       courseCode: paperCourseCode,
       academicYear,
       semester,
       examType,
       files: paperFiles,
       contributorNote: paperNote,
-    });
+    }).catch((err) => ({
+      ok: false as const,
+      reason: err instanceof Error ? err.message : "Could not upload paper for review.",
+    }));
+    setPaperBusy(false);
     if (!result.ok) {
       setPaperError(result.reason);
       return;
     }
-    setPaperDone(`Paper archive · +${CREDITS.pastPaperContribution} cr`);
+    setPaperDone(
+      `Review layer · ${result.uploads.length} file(s), ${result.questions} extracted question(s). Open Bank to approve.`,
+    );
     setPaperFiles([]);
     setPaperNote("");
   }
@@ -80,8 +88,8 @@ export default function ContributePage() {
           <h2 className="text-base font-semibold">Upload past paper</h2>
           <InfoAside ariaLabel="About paper uploads">
             <p>
-              This MVP stores file metadata and exam labels locally. Production would upload files
-              to object storage, OCR them, and create embeddings for retrieval.
+              Upload a PDF; the server extracts questions into a review layer. Approved questions
+              are then written to the Supabase bank.
             </p>
           </InfoAside>
         </div>
@@ -89,16 +97,18 @@ export default function ContributePage() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm font-medium text-[var(--eg-muted)]" htmlFor="paper-course">
-              Course
+              Course override
             </label>
             <input
               id="paper-course"
               className="eg-input font-mono uppercase"
               value={paperCourseCode}
               onChange={(e) => setPaperCourseCode(e.target.value)}
-              placeholder="COMP3278"
-              required
+              placeholder="Auto-detect, or type COMP3251"
             />
+            <p className="mt-1 text-xs text-[var(--eg-muted)]">
+              Leave blank to detect from the file name or PDF text.
+            </p>
           </div>
 
           <div>
@@ -164,7 +174,7 @@ export default function ContributePage() {
             id="paper-files"
             type="file"
             multiple
-            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt,application/pdf,image/*"
+            accept=".pdf,application/pdf"
             className="block w-full text-sm text-[var(--eg-muted)] file:mr-3 file:rounded-full file:border-0 file:bg-[var(--eg-accent)] file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[var(--eg-on-accent)] sm:file:px-4 sm:file:text-sm"
             onChange={(e) => setPaperFiles(Array.from(e.target.files ?? []))}
             required
@@ -206,10 +216,11 @@ export default function ContributePage() {
 
         <div className="flex flex-col gap-3 border-t border-[var(--eg-border)] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <p className="text-sm text-[var(--eg-muted)]">
-            +{CREDITS.pastPaperContribution} cr · {!hydrated ? "…" : credits}
+            Review first · +{CREDITS.pastPaperContribution} cr after approval ·{" "}
+            {!hydrated ? "…" : credits}
           </p>
-          <button type="submit" className="eg-btn w-full sm:w-auto">
-            Upload paper
+          <button type="submit" className="eg-btn w-full sm:w-auto" disabled={paperBusy}>
+            {paperBusy ? "Extracting…" : "Upload for review"}
           </button>
         </div>
       </form>

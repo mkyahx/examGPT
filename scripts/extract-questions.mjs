@@ -31,12 +31,15 @@ if (!pdfPath) {
 
 await assertReadable(pdfPath);
 
-const metadata = metadataFromPdfPath(pdfPath);
+const metadata = applyMetadataOverrides(metadataFromPdfPath(pdfPath), argv);
 const extracted = extractPdfText(pdfPath);
 const source = {
-  pdfPath: path.relative(process.cwd(), pdfPath),
+  pdfPath: argv.sourcePdfPath ? String(argv.sourcePdfPath) : path.relative(process.cwd(), pdfPath),
   courseCode: metadata.courseCode,
-  courseName: extractCourseName(extracted.pages[0]?.text ?? "", metadata.courseCode),
+  courseName:
+    typeof argv.courseName === "string"
+      ? argv.courseName
+      : extractCourseName(extracted.pages[0]?.text ?? "", metadata.courseCode),
   examYearMonth: metadata.examYearMonth,
 };
 const taggingConfig = await buildTaggingConfig({
@@ -92,6 +95,7 @@ function buildOutput({ source, pages, textStats, taggingConfig }) {
 
     const type = classifyQuestion(question.prompt, question.sectionHint);
     const prompt = normalizePrompt(question.prompt);
+    const marks = marksForPrompt(prompt, defaultMarksForQuestionType(type));
     const tagResult = taggingConfig.enabled
       ? tagExtractedQuestion({ type, prompt }, taggingConfig)
       : null;
@@ -102,6 +106,7 @@ function buildOutput({ source, pages, textStats, taggingConfig }) {
       type,
       questionNo,
       prompt,
+      marks,
       ...(tagResult ?? {}),
     };
   }).filter((question) => question.prompt.length > 0);
@@ -128,7 +133,7 @@ async function buildTaggingConfig({
   disabled,
   skipSyllabusLookup,
 }) {
-  const threshold = Number(process.env.EXTRACT_TOPIC_THRESHOLD ?? 0.65);
+  const threshold = Number(process.env.EXTRACT_TOPIC_THRESHOLD ?? 0.5);
   const defaultTopicsPath = getCourseTopicsPath(courseCode);
   if (disabled) {
     return {
@@ -164,8 +169,6 @@ async function buildTaggingConfig({
   if (
     cached?.status === "ready" &&
     cached.topics.length > 0 &&
-    cached.source === "online-syllabus-lookup" &&
-    isSpecificOnlineSyllabusCache(cached) &&
     !isCourseNameFallbackCache(cached, courseName)
   ) {
     return {
@@ -243,10 +246,6 @@ function isCourseNameFallbackCache(cache, courseName) {
     cache.topics[0].id === normalizedCourseTopic &&
     /fallback topic inferred from the course name/i.test(cache.topics[0].description)
   );
-}
-
-function isSpecificOnlineSyllabusCache(cache) {
-  return typeof cache.sourceUrl === "string" && cache.sourceUrl.includes("infile=");
 }
 
 async function writeCourseTopicsFile(
@@ -766,6 +765,19 @@ function normalizePrompt(prompt) {
     .trim();
 }
 
+function defaultMarksForQuestionType(type) {
+  if (type === "multiple_choice" || type === "fill_blank") return 4;
+  if (type === "coding" || type === "long_answer") return 20;
+  if (type === "short_answer") return 10;
+  return 10;
+}
+
+function marksForPrompt(prompt, fallback) {
+  const explicit = prompt.match(/\((\d{1,3})\s*(?:points?|marks?)\)/i);
+  if (explicit) return Number(explicit[1]);
+  return fallback;
+}
+
 function extractCourseName(firstPageText, courseCode) {
   const normalizedCode = courseCode.replace(/([A-Z]+)(\d+)/, "$1\\s*$2");
   const pattern = new RegExp(`\\b${normalizedCode}\\b\\s*:?\\s+(.+)`, "i");
@@ -812,6 +824,24 @@ function metadataFromPdfPath(pdfPath) {
     examYearMonth: `${year}-${month}`,
     fileYearMonth: `${year}_${month}`,
   };
+}
+
+function applyMetadataOverrides(metadata, args) {
+  const courseCode = normalizeCourseCode(args.courseCode ?? metadata.courseCode);
+  const examYearMonth = normalizeExamYearMonth(args.examYearMonth ?? metadata.examYearMonth);
+  return {
+    ...metadata,
+    courseCode: courseCode || "UNKNOWN",
+    examYearMonth,
+    fileYearMonth: examYearMonth.replace("-", "_"),
+  };
+}
+
+function normalizeExamYearMonth(value) {
+  const text = String(value ?? "").trim();
+  const match = text.match(/^(\d{4})[-_](\d{2})$/);
+  if (match) return `${match[1]}-${match[2]}`;
+  return text || "unknown-unknown";
 }
 
 function buildQuestionId({ courseCode, examYearMonth, questionNo, index }) {
@@ -956,6 +986,14 @@ function printHelp() {
 Options:
   --pdf PATH       Input PDF path.
   --out PATH       Output JSON path. Default: extracted/{course}/{yyyy_mm_course}.questions.json
+  --course-code CODE
+                  Override course code inferred from the PDF path.
+  --course-name NAME
+                  Override course name inferred from the PDF text.
+  --exam-year-month YYYY-MM
+                  Override exam year/month inferred from the PDF path.
+  --source-pdf-path PATH
+                  Source path to store in output JSON instead of the physical input path.
   --topics PATH    Optional JSON topic list. Also saves it to extracted/course-topics/{course}.topics.json.
   --no-tags        Disable extraction-time topic tagging.
   --no-syllabus-lookup
@@ -964,7 +1002,7 @@ Options:
 
 Environment:
   EXTRACT_PYTHON           Optional Python executable with pypdf installed.
-  EXTRACT_TOPIC_THRESHOLD  Optional topic confidence threshold. Default: 0.65.
+  EXTRACT_TOPIC_THRESHOLD  Optional topic confidence threshold. Default: 0.5.
   EXTRACT_SYLLABUS_TIMEOUT_MS
                            Optional per-source online syllabus lookup timeout. Default: 3000.`);
 }

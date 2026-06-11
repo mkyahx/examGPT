@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { usePathname } from "next/navigation";
 import { InfoAside } from "@/components/InfoAside";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useExamGPT } from "@/components/providers/ExamGPTProvider";
 import { CREDITS } from "@/lib/constants";
 
@@ -18,6 +19,7 @@ const nav = [
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { credits, byok, hydrated } = useExamGPT();
+  const { user, hydrated: authHydrated, logout } = useAuth();
 
   return (
     <div className="flex min-h-full flex-col bg-[var(--eg-bg)] text-[var(--eg-fg)]">
@@ -31,7 +33,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               HKU Edition
             </span>
           </a>
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
             <div className="flex items-center gap-1 rounded-full border border-[var(--eg-border)] bg-[var(--eg-surface)] px-1.5 py-1 text-xs font-medium text-[var(--eg-muted)] sm:gap-1 sm:px-2">
               <span className="hidden px-1 sm:inline sm:px-2">Credits</span>
               <span className="rounded-full bg-[var(--eg-accent)]/15 px-1.5 py-0.5 text-[var(--eg-accent-strong)] sm:px-2 sm:py-0.5">
@@ -47,6 +49,34 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <InfoAside ariaLabel="About credits">
               <p>Demo balance in this browser. BYOK skips credit charges for generate and partial regen.</p>
             </InfoAside>
+            <div className="hidden items-center gap-1.5 sm:flex">
+              {!authHydrated ? (
+                <span className="rounded-full border border-[var(--eg-border)] px-3 py-1.5 text-xs text-[var(--eg-muted)]">
+                  Account…
+                </span>
+              ) : user ? (
+                <>
+                  <a
+                    href="/login"
+                    className="max-w-36 truncate rounded-full border border-[var(--eg-border)] px-3 py-1.5 text-xs font-medium text-[var(--eg-fg)] hover:bg-[var(--eg-surface)]"
+                    title={user.email}
+                  >
+                    {user.displayName}
+                  </a>
+                  <button
+                    type="button"
+                    className="rounded-full border border-[var(--eg-border)] px-3 py-1.5 text-xs font-medium text-[var(--eg-muted)] hover:bg-[var(--eg-surface)]"
+                    onClick={() => void logout()}
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <a className="eg-btn-ghost px-3 py-1.5 text-xs" href="/login">
+                  Sign in
+                </a>
+              )}
+            </div>
           </div>
         </div>
         <nav className="mx-auto flex max-w-6xl flex-wrap gap-1 px-3 pb-2 sm:gap-1 sm:px-4">
@@ -66,6 +96,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </a>
             );
           })}
+          <a
+            href="/login"
+            className={`rounded-full px-2 py-1 text-xs transition sm:hidden ${
+              pathname === "/login"
+                ? "bg-[var(--eg-accent)] text-[var(--eg-on-accent)]"
+                : "text-[var(--eg-muted)] hover:bg-[var(--eg-surface)] hover:text-[var(--eg-fg)]"
+            }`}
+          >
+            {user ? "Account" : "Sign in"}
+          </a>
         </nav>
       </header>
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-0 py-4 sm:px-4 sm:py-6">

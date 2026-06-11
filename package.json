@@ -16,8 +16,14 @@
     "download:course": "npm run download -- --prefix",
     "download:debug": "node scripts/debug-login.mjs --headful",
     "download:debug:courses": "node scripts/debug-courses.mjs",
+    "topics:fetch": "node scripts/fetch-course-topics.mjs",
     "extract:questions": "node scripts/extract-questions.mjs",
-    "analyze:course": "node scripts/analyze-course-patterns.mjs"
+    "analyze:course": "node scripts/analyze-course-patterns.mjs",
+    "db:schema": "node scripts/print-db-schema.mjs",
+    "upload:extracted": "node scripts/upload-extracted-to-db.mjs",
+    "upload:extracted:dry": "node scripts/upload-extracted-to-db.mjs --dry-run",
+    "analysis:refresh": "node scripts/refresh-course-analysis.mjs",
+    "verify:generate-ui": "node scripts/verify-generate-ui.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

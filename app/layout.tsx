@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ExamGPTProvider } from "@/components/providers/ExamGPTProvider";
 import "./globals.css";
 
@@ -31,9 +32,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans">
-        <ExamGPTProvider>
-          <Shell>{children}</Shell>
-        </ExamGPTProvider>
+        <AuthProvider>
+          <ExamGPTProvider>
+            <Shell>{children}</Shell>
+          </ExamGPTProvider>
+        </AuthProvider>
       </body>
     </html>
   );

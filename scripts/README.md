@@ -202,6 +202,73 @@ npm run extract:questions -- \
 
 当前版本优先使用 PDF 自带文本层，不调用外部 AI API。
 
+## 批量抓取课程考点 Topics
+
+在提取题目前，可以先按 `downloads/` 里的课程目录联网查询 HKU syllabus，并生成每门课的 topics 缓存：
+
+```bash
+npm run topics:fetch
+```
+
+输出位置：
+
+```text
+extracted/course-topics/{COURSE}.topics.json
+```
+
+只处理指定课程：
+
+```bash
+npm run topics:fetch -- --course COMP3251
+```
+
+先查看会处理哪些课程，不联网：
+
+```bash
+npm run topics:fetch -- --dry-run
+```
+
+如果已存在 `status = ready` 的 topics 文件，脚本默认跳过；需要强制刷新：
+
+```bash
+npm run topics:fetch -- --overwrite
+```
+
+建议顺序：
+
+```bash
+npm run topics:fetch
+npm run extract:questions -- --pdf downloads/COMP3251/2025_05_17_COMP3251.pdf
+```
+
+`extract:questions` 会读取 `extracted/course-topics/{COURSE}.topics.json`，并用里面的 topics 给每道题生成 `topicTags`。
+
+## 同步 Supabase 课程库 / 卷子库
+
+先在 Supabase SQL Editor 执行：
+
+```text
+db/schema.sql
+```
+
+然后上传 extracted 题库。脚本会写入 `courses`、`exam_papers`、`staging_questions`，并刷新 `courses.analysis`：
+
+```bash
+npm run upload:extracted
+```
+
+只同步一门课：
+
+```bash
+npm run upload:extracted -- --course COMP3251
+```
+
+如果只是想重新计算课程 analysis：
+
+```bash
+npm run analysis:refresh -- --course COMP3251
+```
+
 ## 在网页里使用导入题库生成 Mock
 
 1. 先提取题目：

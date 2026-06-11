@@ -1,9 +1,84 @@
 {
   "courseCode": "COMP3251",
-  "courseName": "Algorithm Design",
-  "status": "missing",
+  "courseName": "Algorithm design",
+  "status": "ready",
   "source": "online-syllabus-lookup",
-  "extractedAt": "2026-05-23T12:29:02.245Z",
-  "error": "No syllabus topics available from online syllabus lookup.",
-  "topics": []
+  "sourceUrl": "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2025%2Fcomp3251.html",
+  "searchedUrls": [
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2025%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2024%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2023%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2022%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2021%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2020%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2019%2Fcomp3251.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2018%2Fcomp3251.html",
+    "https://www4.hku.hk/pubunit/drcd/?q=COMP3251",
+    "https://ug.hkubs.hku.hk/course/?q=COMP3251",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?q=COMP3251",
+    "https://hkumath.hku.hk/web/course/undergrad?q=COMP3251"
+  ],
+  "extractedAt": "2026-05-27T17:08:03.221Z",
+  "topics": [
+    {
+      "id": "divide-and-conquer-1-3-5",
+      "label": "Divide and Conquer 1, 3, 5",
+      "description": "Divide and Conquer 1, 3, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "greedy-algorithms-1-3-5",
+      "label": "Greedy algorithms 1, 3, 5",
+      "description": "Greedy algorithms 1, 3, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "graph-algorithms-1-3-5",
+      "label": "Graph algorithms 1, 3, 5",
+      "description": "Graph algorithms 1, 3, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "dynamic-programming-2-3-5",
+      "label": "Dynamic programming 2, 3, 5",
+      "description": "Dynamic programming 2, 3, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "network-flow-2-3-5",
+      "label": "Network flow 2, 3, 5",
+      "description": "Network flow 2, 3, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "intractability",
+      "label": "Intractability",
+      "description": "Intractability (COMP3251 detailed description)"
+    },
+    {
+      "id": "problem-reduction-and-np-completeness-2-3-4-5",
+      "label": "Problem reduction and NP-completeness 2, 3, 4, 5",
+      "description": "Problem reduction and NP-completeness 2, 3, 4, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "approximation-algorithms-3-4-5",
+      "label": "Approximation Algorithms 3, 4, 5",
+      "description": "Approximation Algorithms 3, 4, 5 (COMP3251 detailed description)"
+    },
+    {
+      "id": "teaching-plan",
+      "label": "Teaching Plan",
+      "description": "Teaching Plan (COMP3251 detailed description)"
+    },
+    {
+      "id": "don-t-have-an-account-yet",
+      "label": "Don't have an account yet?",
+      "description": "Don't have an account yet? (COMP3251 detailed description)"
+    },
+    {
+      "id": "register-now",
+      "label": "Register Now!",
+      "description": "Register Now! (COMP3251 detailed description)"
+    },
+    {
+      "id": "sign-in-to-your-account",
+      "label": "Sign in to your account",
+      "description": "Sign in to your account (COMP3251 detailed description)"
+    }
+  ]
 }

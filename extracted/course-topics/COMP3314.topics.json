@@ -1,9 +1,84 @@
 {
   "courseCode": "COMP3314",
-  "courseName": "Machine Learning",
-  "status": "missing",
+  "courseName": "Introduction to Machine Learning",
+  "status": "ready",
   "source": "online-syllabus-lookup",
-  "extractedAt": "2026-05-23T12:29:13.857Z",
-  "error": "No syllabus topics available from online syllabus lookup.",
-  "topics": []
+  "sourceUrl": "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2025%2Fcomp3314.html",
+  "searchedUrls": [
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2025%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2024%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2023%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2022%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2021%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2020%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2019%2Fcomp3314.html",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?infile=2018%2Fcomp3314.html",
+    "https://www4.hku.hk/pubunit/drcd/?q=COMP3314",
+    "https://ug.hkubs.hku.hk/course/?q=COMP3314",
+    "https://www.cs.hku.hk/index.php/programmes/course-offered?q=COMP3314",
+    "https://hkumath.hku.hk/web/course/undergrad?q=COMP3314"
+  ],
+  "extractedAt": "2026-05-27T17:08:12.543Z",
+  "topics": [
+    {
+      "id": "principles-of-data-driven-systems-and-ai-1",
+      "label": "Principles of data-driven systems and AI 1",
+      "description": "Principles of data-driven systems and AI 1 (COMP3314 detailed description)"
+    },
+    {
+      "id": "decision-theory-1-2",
+      "label": "Decision theory 1, 2",
+      "description": "Decision theory 1, 2 (COMP3314 detailed description)"
+    },
+    {
+      "id": "supervised-learning",
+      "label": "Supervised learning",
+      "description": "Supervised learning (COMP3314 detailed description)"
+    },
+    {
+      "id": "linear-classifiers-2-3",
+      "label": "Linear classifiers 2, 3",
+      "description": "Linear classifiers 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "logistic-regression-2-3",
+      "label": "Logistic regression 2, 3",
+      "description": "Logistic regression 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "neural-networks-2-3",
+      "label": "Neural networks 2, 3",
+      "description": "Neural networks 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "performance-evaluation-and-tuning-2-3",
+      "label": "Performance evaluation and tuning 2, 3",
+      "description": "Performance evaluation and tuning 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "unsupervised-learning",
+      "label": "Unsupervised learning",
+      "description": "Unsupervised learning (COMP3314 detailed description)"
+    },
+    {
+      "id": "clustering-2-3",
+      "label": "Clustering 2, 3",
+      "description": "Clustering 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "mixture-models-2-3",
+      "label": "Mixture models 2, 3",
+      "description": "Mixture models 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "principal-components-analysis-2-3",
+      "label": "Principal components analysis 2, 3",
+      "description": "Principal components analysis 2, 3 (COMP3314 detailed description)"
+    },
+    {
+      "id": "advanced-and-applications",
+      "label": "Advanced and applications",
+      "description": "Advanced and applications (COMP3314 detailed description)"
+    }
+  ]
 }

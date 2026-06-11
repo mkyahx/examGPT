@@ -1,4 +1,5 @@
 export type QuestionReviewStatus = "pending" | "accepted" | "declined";
+export type QuestionBankStatus = "pending" | "good" | "rejected";
 
 export type ExamQuestion = {
   id: string;
@@ -6,6 +7,8 @@ export type ExamQuestion = {
   prompt: string;
   marks: number;
   rubric?: string;
+  sourceQuestionId?: string;
+  sourcePdfPath?: string;
   /** Per-question review after generation; defaults to pending for older saves */
   reviewStatus?: QuestionReviewStatus;
 };
@@ -53,10 +56,12 @@ export type ExtractedQuestionSource = {
 
 export type ExtractedQuestion = {
   id: string;
+  status?: QuestionBankStatus;
   source: ExtractedQuestionSource;
   type: ExtractedQuestionType;
   questionNo: string;
   prompt: string;
+  marks?: number;
   questionTypeTag?: ExtractedQuestionType;
   topicTags?: QuestionTopicTag[];
   taggingStatus?: QuestionTaggingStatus;
@@ -65,9 +70,41 @@ export type ExtractedQuestion = {
   taggingError?: string;
 };
 
+export type PaperReviewQuestion = ExtractedQuestion & {
+  status: QuestionBankStatus;
+  editedPrompt?: string;
+  reviewNote?: string;
+};
+
+export type PaperReviewUpload = {
+  id: string;
+  fileName: string;
+  fileSize: number;
+  pdfPath: string;
+  uploadedAt: string;
+  courseCode: string;
+  courseName: string;
+  examYearMonth: string;
+  academicYear?: string;
+  semester?: string;
+  examType: string;
+  contributorNote: string;
+  extractionStatus: string;
+  extractionReason?: string;
+  stats?: {
+    pages?: number;
+    pagesWithText?: number;
+    chars?: number;
+  };
+  questions: PaperReviewQuestion[];
+  approvedAt?: string | null;
+  bankInsertedCount?: number;
+};
+
 export type MockExam = {
   id: string;
   courseCode: string;
+  generationMode?: "original" | "simulated";
   createdAt: string;
   focusHints: string;
   sourceSummary: string;
@@ -78,6 +115,47 @@ export type MockExam = {
   repositorySyncedAt?: string | null;
   /** Increments when declined questions are partially regenerated */
   contentRevision?: number;
+};
+
+export type CourseAnalysisDistributionItem = {
+  id: string;
+  label?: string;
+  count: number;
+  shareOfQuestions?: number;
+  shareOfTaggedItems?: number;
+  paperCount?: number;
+};
+
+export type CourseGenerationAnalysis = {
+  paperCount?: number;
+  questionCount?: number;
+  questionCountPerPaper?: {
+    average?: number;
+    min?: number;
+    max?: number;
+  };
+  totalMarksPerPaper?: {
+    average?: number;
+    min?: number;
+    max?: number;
+  };
+  questionTypeDistribution?: {
+    items?: CourseAnalysisDistributionItem[];
+  };
+  primaryTopicDistribution?: {
+    items?: CourseAnalysisDistributionItem[];
+  };
+  questionPositionPatterns?: unknown[];
+  papers?: unknown[];
+  generatedAt?: string;
+  source?: string;
+};
+
+export type CourseGenerationProfile = {
+  courseCode: string;
+  courseName: string;
+  analysis: CourseGenerationAnalysis;
+  papers: unknown[];
 };
 
 export type FeedbackEntry = {
@@ -126,6 +204,15 @@ export type CreditLedgerItem = {
   reason: string;
 };
 
+export type AuthUser = {
+  id: string;
+  email: string;
+  displayName: string;
+  role: "student" | "admin";
+  createdAt: string;
+  lastLoginAt?: string | null;
+};
+
 export type AppSnapshot = {
   credits: number;
   byok: boolean;
@@ -135,6 +222,7 @@ export type AppSnapshot = {
   extractedQuestions: ExtractedQuestion[];
   courseSyllabi: CourseSyllabusCache[];
   pastExamUploads: PastExamUpload[];
+  paperReviewUploads: PaperReviewUpload[];
   feedbackEntries: FeedbackEntry[];
   ledger: CreditLedgerItem[];
   professorStyleNotes: string[];

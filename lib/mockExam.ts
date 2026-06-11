@@ -1,4 +1,11 @@
-import type { ExamQuestion, ExtractedQuestion, MockExam } from "@/lib/types";
+import { marksForExtractedQuestion, TARGET_ORIGINAL_PAPER_MARKS } from "@/lib/questionMetadata";
+import type {
+  CourseAnalysisDistributionItem,
+  CourseGenerationProfile,
+  ExamQuestion,
+  ExtractedQuestion,
+  MockExam,
+} from "@/lib/types";
 
 function id(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
@@ -79,32 +86,184 @@ function buildQuestions(courseCode: string, focusHints: string): ExamQuestion[] 
   ];
 }
 
-function marksForExtractedQuestion(question: ExtractedQuestion): number {
-  const explicit = question.prompt.match(/\((\d{1,3})\s*(?:points?|marks?)\)/i);
-  if (explicit) {
-    return Number(explicit[1]);
-  }
-
-  switch (question.type) {
-    case "multiple_choice":
-    case "fill_blank":
-      return 4;
-    case "coding":
-    case "long_answer":
-      return 20;
-    case "short_answer":
-      return 10;
-    default:
-      return 10;
-  }
-}
-
 function stableScore(value: string): number {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) {
     hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
   }
   return hash;
+}
+
+function primaryTopicId(question: ExtractedQuestion): string {
+  return question.topicTags?.[0]?.topicId ?? "unknown";
+}
+
+function questionTypeId(question: ExtractedQuestion): string {
+  return question.questionTypeTag ?? question.type ?? "unknown";
+}
+
+function targetQuestionCount(
+  analysis: CourseGenerationProfile["analysis"] | undefined,
+  questions: ExtractedQuestion[],
+): number {
+  const fromAnalysis = analysis?.questionCountPerPaper?.average;
+  if (typeof fromAnalysis === "number" && Number.isFinite(fromAnalysis) && fromAnalysis > 0) {
+    return Math.max(1, Math.round(fromAnalysis));
+  }
+
+  const byPaper = new Map<string, number>();
+  for (const question of questions) {
+    const key = question.source.pdfPath || question.source.examYearMonth || "unknown";
+    byPaper.set(key, (byPaper.get(key) ?? 0) + 1);
+  }
+  if (byPaper.size === 0) return 6;
+  const average = [...byPaper.values()].reduce((sum, count) => sum + count, 0) / byPaper.size;
+  return Math.max(1, Math.round(average));
+}
+
+function distributionTarget(items: CourseAnalysisDistributionItem[] | undefined): Map<string, number> {
+  const valid = (items ?? []).filter((item) => item.id && item.count > 0);
+  const total = valid.reduce((sum, item) => sum + item.count, 0);
+  const map = new Map<string, number>();
+  for (const item of valid) {
+    const share =
+      typeof item.shareOfQuestions === "number" && Number.isFinite(item.shareOfQuestions)
+        ? item.shareOfQuestions
+        : total > 0
+          ? item.count / total
+          : 0;
+    map.set(item.id, share);
+  }
+  return map;
+}
+
+function countMap(
+  questions: ExtractedQuestion[],
+  keyForQuestion: (question: ExtractedQuestion) => string,
+): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const question of questions) {
+    const key = keyForQuestion(question);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return counts;
+}
+
+function distributionPenalty(
+  counts: Map<string, number>,
+  total: number,
+  target: Map<string, number>,
+): number {
+  if (target.size === 0 || total === 0) return 0;
+  const keys = new Set([...target.keys(), ...counts.keys()]);
+  let penalty = 0;
+  for (const key of keys) {
+    const actual = (counts.get(key) ?? 0) / total;
+    penalty += Math.abs(actual - (target.get(key) ?? 0));
+  }
+  return penalty;
+}
+
+type SelectionState = {
+  questions: ExtractedQuestion[];
+  marks: number;
+};
+
+function selectionScore(
+  state: SelectionState,
+  courseCode: string,
+  targetCount: number,
+  typeTarget: Map<string, number>,
+  topicTarget: Map<string, number>,
+): number {
+  const count = state.questions.length;
+  const typePenalty = distributionPenalty(countMap(state.questions, questionTypeId), count, typeTarget);
+  const topicPenalty = distributionPenalty(countMap(state.questions, primaryTopicId), count, topicTarget);
+  const uniqueTopics = new Set(state.questions.map(primaryTopicId)).size;
+  const spreadPenalty = count === 0 ? 0 : 1 - uniqueTopics / count;
+  const countPenalty = Math.abs(count - targetCount) / Math.max(targetCount, 1);
+  const tieBreak = state.questions.reduce(
+    (sum, question) => sum + stableScore(`${courseCode}:${question.id}`) / 0xffffffff,
+    0,
+  ) / Math.max(count, 1);
+
+  return countPenalty * 2.5 + typePenalty * 4 + topicPenalty * 5 + spreadPenalty * 1.5 + tieBreak * 0.01;
+}
+
+function stateSignature(state: SelectionState): string {
+  return state.questions
+    .map((question) => question.id)
+    .sort()
+    .join("|");
+}
+
+function pruneStates(
+  states: SelectionState[],
+  courseCode: string,
+  targetCount: number,
+  typeTarget: Map<string, number>,
+  topicTarget: Map<string, number>,
+): SelectionState[] {
+  const bySignature = new Map<string, SelectionState>();
+  for (const state of states) {
+    bySignature.set(stateSignature(state), state);
+  }
+  return [...bySignature.values()]
+    .sort(
+      (a, b) =>
+        selectionScore(a, courseCode, targetCount, typeTarget, topicTarget) -
+        selectionScore(b, courseCode, targetCount, typeTarget, topicTarget),
+    )
+    .slice(0, 180);
+}
+
+function pickOriginalQuestions(
+  questions: ExtractedQuestion[],
+  courseCode: string,
+  analysis: CourseGenerationProfile["analysis"] | undefined,
+): ExtractedQuestion[] {
+  const targetCount = targetQuestionCount(analysis, questions);
+  const typeTarget = distributionTarget(analysis?.questionTypeDistribution?.items);
+  const topicTarget = distributionTarget(analysis?.primaryTopicDistribution?.items);
+  const seed = `${courseCode}:${new Date().toISOString().slice(0, 10)}`;
+  const candidates = [...questions]
+    .filter((question) => question.status !== "pending" && question.status !== "rejected")
+    .map((question) => ({ question, marks: marksForExtractedQuestion(question) }))
+    .filter(({ marks }) => marks > 0 && marks <= TARGET_ORIGINAL_PAPER_MARKS)
+    .sort(
+      (a, b) =>
+        stableScore(`${seed}:${a.question.id}`) - stableScore(`${seed}:${b.question.id}`),
+    );
+
+  const statesByMarks = new Map<number, SelectionState[]>([
+    [0, [{ questions: [], marks: 0 }]],
+  ]);
+
+  for (const { question, marks } of candidates) {
+    const entries = [...statesByMarks.entries()];
+    for (const [currentMarks, states] of entries) {
+      const nextMarks = currentMarks + marks;
+      if (nextMarks > TARGET_ORIGINAL_PAPER_MARKS) continue;
+      const nextStates = states.map((state) => ({
+        questions: [...state.questions, question],
+        marks: nextMarks,
+      }));
+      const merged = [...(statesByMarks.get(nextMarks) ?? []), ...nextStates];
+      statesByMarks.set(
+        nextMarks,
+        pruneStates(merged, courseCode, targetCount, typeTarget, topicTarget),
+      );
+    }
+  }
+
+  const exactStates = statesByMarks.get(TARGET_ORIGINAL_PAPER_MARKS) ?? [];
+  if (exactStates.length === 0) return [];
+  exactStates.sort(
+    (a, b) =>
+      selectionScore(a, courseCode, targetCount, typeTarget, topicTarget) -
+      selectionScore(b, courseCode, targetCount, typeTarget, topicTarget),
+  );
+  return exactStates[0].questions;
 }
 
 function pickRealQuestions(
@@ -154,13 +313,21 @@ function pickRealQuestions(
 function buildRealExamQuestions(
   realQuestions: ExtractedQuestion[],
   courseCode: string,
+  generationMode: "original" | "simulated",
+  analysis?: CourseGenerationProfile["analysis"],
 ): ExamQuestion[] {
-  return pickRealQuestions(realQuestions, courseCode).map((question) => ({
+  const picked =
+    generationMode === "original"
+      ? pickOriginalQuestions(realQuestions, courseCode, analysis)
+      : pickRealQuestions(realQuestions, courseCode);
+  return picked.map((question) => ({
     id: id("real-q"),
     section: `Real past paper — ${question.source.courseCode} ${question.source.examYearMonth} — ${question.type}`,
     prompt: question.prompt,
     marks: marksForExtractedQuestion(question),
-    rubric: `Past-paper item imported from ${question.source.pdfPath}; no official solution attached.`,
+    rubric: `Direct backend question ${question.id} from ${question.source.pdfPath}; no official solution attached.`,
+    sourceQuestionId: question.id,
+    sourcePdfPath: question.source.pdfPath,
     reviewStatus: "pending",
   }));
 }
@@ -170,26 +337,50 @@ export function buildMockExam(params: {
   focusHints: string;
   fileNames: string[];
   realQuestions?: ExtractedQuestion[];
+  generationProfile?: CourseGenerationProfile;
+  generationMode?: "original" | "simulated";
+  allowTemplateFallback?: boolean;
 }): MockExam {
   const courseCode = params.courseCode.trim() || "HKU-COURSE";
   const focusHints = params.focusHints.trim();
   const realQuestions = params.realQuestions ?? [];
-  const realExamQuestions = buildRealExamQuestions(realQuestions, courseCode);
+  const generationMode = params.generationMode ?? "simulated";
+  const allowTemplateFallback = params.allowTemplateFallback ?? generationMode !== "original";
+  const realExamQuestions = buildRealExamQuestions(
+    realQuestions,
+    courseCode,
+    generationMode,
+    params.generationProfile?.analysis,
+  );
   const templateQuestions = buildQuestions(courseCode, focusHints);
   const questions =
     realExamQuestions.length > 0
-      ? [
-          ...realExamQuestions,
-          ...templateQuestions.slice(0, Math.max(0, 4 - realExamQuestions.length)),
-        ]
-      : templateQuestions;
+      ? allowTemplateFallback
+        ? [
+            ...realExamQuestions,
+            ...templateQuestions.slice(0, Math.max(0, 4 - realExamQuestions.length)),
+          ]
+        : realExamQuestions
+      : allowTemplateFallback
+        ? templateQuestions
+        : [];
 
   const sourceSummary =
     realExamQuestions.length > 0
       ? [
-          `Used ${realExamQuestions.length} imported real past-paper question(s).`,
+          generationMode === "original"
+            ? `Used ${realExamQuestions.length} certified Exambase original question(s).`
+            : `Used ${realExamQuestions.length} backend real past-paper question(s).`,
+          generationMode === "original"
+            ? `Total marks: ${realExamQuestions.reduce((sum, q) => sum + q.marks, 0)}.`
+            : "",
+          params.generationProfile?.analysis?.generatedAt
+            ? `Course analysis: ${params.generationProfile.analysis.generatedAt}.`
+            : "",
           `Sources: ${[
-            ...new Set(realQuestions.map((q) => `${q.source.courseCode} ${q.source.examYearMonth}`)),
+            ...new Set(
+              realExamQuestions.map((q) => q.sourcePdfPath ?? q.sourceQuestionId ?? q.id),
+            ),
           ].join(", ")}.`,
           params.fileNames.length > 0 ? `Attached filenames: ${params.fileNames.join(", ")}.` : "",
         ]
@@ -202,6 +393,7 @@ export function buildMockExam(params: {
   return {
     id: id("exam"),
     courseCode,
+    generationMode,
     createdAt: new Date().toISOString(),
     focusHints: focusHints || "(none)",
     sourceSummary,

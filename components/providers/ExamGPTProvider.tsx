@@ -10,6 +10,7 @@ import {
 } from "react";
 import { CREDITS, STORAGE_KEY, TAG_CONFIDENCE_THRESHOLD } from "@/lib/constants";
 import { normalizeMockExams } from "@/lib/examStatus";
+import { marksForExtractedQuestion, TARGET_ORIGINAL_PAPER_MARKS } from "@/lib/questionMetadata";
 import {
   normalizeCourseCodeForTags,
   tagQuestionsWithFallback,
@@ -19,11 +20,14 @@ import { applyDeclinedQuestionRegeneration, buildMockExam } from "@/lib/mockExam
 import type {
   AppSnapshot,
   CourseSyllabusCache,
+  CourseGenerationProfile,
   CreditLedgerItem,
   FeedbackEntry,
   ExtractedQuestion,
   MockExam,
+  PaperReviewUpload,
   PastExamUpload,
+  QuestionBankStatus,
   QuestionReviewStatus,
   VerifiedQuestion,
 } from "@/lib/types";
@@ -85,6 +89,11 @@ function parseExtractedQuestionsPayload(payload: unknown):
       type: q.type ?? "unknown",
       questionNo: q.questionNo,
       prompt: q.prompt,
+      marks: marksForExtractedQuestion({
+        marks: q.marks,
+        prompt: q.prompt,
+        type: q.type ?? "unknown",
+      }),
       questionTypeTag: q.questionTypeTag,
       topicTags: q.topicTags,
       taggingStatus: q.taggingStatus ?? "untagged",
@@ -110,6 +119,7 @@ const defaultState: FullState = {
   extractedQuestions: [],
   courseSyllabi: [],
   pastExamUploads: [],
+  paperReviewUploads: [],
   feedbackEntries: [],
   ledger: [],
   professorStyleNotes: [
@@ -127,6 +137,7 @@ type ExamGPTContextValue = {
   extractedQuestions: ExtractedQuestion[];
   courseSyllabi: CourseSyllabusCache[];
   pastExamUploads: PastExamUpload[];
+  paperReviewUploads: PaperReviewUpload[];
   feedbackEntries: FeedbackEntry[];
   ledger: CreditLedgerItem[];
   professorStyleNotes: string[];
@@ -139,6 +150,9 @@ type ExamGPTContextValue = {
     focusHints: string;
     fileNames: string[];
     realQuestions?: ExtractedQuestion[];
+    generationProfile?: CourseGenerationProfile;
+    generationMode?: "original" | "simulated";
+    allowTemplateFallback?: boolean;
   }) => { ok: true; exam: MockExam } | { ok: false; reason: string };
   importExtractedQuestionFile: (payload: unknown) => Promise<
     | { ok: true; imported: number; skipped: number }
@@ -170,6 +184,30 @@ type ExamGPTContextValue = {
     files: File[];
     contributorNote: string;
   }) => { ok: true } | { ok: false; reason: string };
+  uploadPastExamForReview: (input: {
+    courseCode: string;
+    academicYear: string;
+    semester: string;
+    examType: string;
+    files: File[];
+    contributorNote: string;
+  }) => Promise<
+    | { ok: true; uploads: PaperReviewUpload[]; questions: number }
+    | { ok: false; reason: string }
+  >;
+  setPaperReviewQuestionStatus: (
+    uploadId: string,
+    questionId: string,
+    status: QuestionBankStatus,
+  ) => { ok: true } | { ok: false; reason: string };
+  updatePaperReviewQuestionPrompt: (
+    uploadId: string,
+    questionId: string,
+    prompt: string,
+  ) => { ok: true } | { ok: false; reason: string };
+  approvePaperReviewUpload: (
+    uploadId: string,
+  ) => Promise<{ ok: true; approved: number } | { ok: false; reason: string }>;
   spendInquiry: () => { ok: true } | { ok: false; reason: string };
   setQuestionReview: (
     examId: string,
@@ -271,6 +309,7 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
             extractedQuestions: parsed.extractedQuestions ?? [],
             courseSyllabi: parsed.courseSyllabi ?? [],
             pastExamUploads: parsed.pastExamUploads ?? [],
+            paperReviewUploads: parsed.paperReviewUploads ?? [],
           };
           merged = {
             ...merged,
@@ -294,6 +333,39 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
     void hasStoredKey;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(persistable));
   }, [state, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    let cancelled = false;
+
+    void fetch("/api/review-uploads")
+      .then(async (response) => {
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          uploads?: PaperReviewUpload[];
+        };
+        if (!response.ok || !payload.ok || !Array.isArray(payload.uploads) || cancelled) return;
+        const uploads = payload.uploads;
+        setState((s) => {
+          const localApproved = s.paperReviewUploads.filter((upload) => upload.approvedAt);
+          const seen = new Set(uploads.map((upload) => upload.id));
+          return {
+            ...s,
+            paperReviewUploads: [
+              ...uploads,
+              ...localApproved.filter((upload) => !seen.has(upload.id)),
+            ],
+          };
+        });
+      })
+      .catch(() => {
+        // Review uploads are DB-backed; if the DB is unavailable, keep the local snapshot visible.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated]);
 
   const setByok = useCallback((value: boolean) => {
     setState((s) => ({ ...s, byok: value }));
@@ -327,12 +399,37 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       focusHints: string;
       fileNames: string[];
       realQuestions?: ExtractedQuestion[];
+      generationProfile?: CourseGenerationProfile;
+      generationMode?: "original" | "simulated";
+      allowTemplateFallback?: boolean;
     }) => {
       const cost = state.byok ? 0 : CREDITS.generateMock;
       if (!state.byok && state.credits + cost < 0) {
         return { ok: false as const, reason: "Not enough credits. Enable BYOK or top up." };
       }
+      if (input.generationMode === "original" && (input.realQuestions?.length ?? 0) === 0) {
+        return {
+          ok: false as const,
+          reason: "No certified Exambase original questions are available for this course yet.",
+        };
+      }
+      if (input.generationMode === "original" && !input.generationProfile?.analysis) {
+        return {
+          ok: false as const,
+          reason: "No Supabase course analysis is available for this course yet.",
+        };
+      }
       const exam = buildMockExam(input);
+      if (input.generationMode === "original") {
+        const totalMarks = exam.questions.reduce((sum, question) => sum + question.marks, 0);
+        if (exam.questions.length === 0 || totalMarks !== TARGET_ORIGINAL_PAPER_MARKS) {
+          return {
+            ok: false as const,
+            reason:
+              "No exact 100-mark original-paper combination is available for this course. Add or approve more marked questions first.",
+          };
+        }
+      }
       setState((s) => {
         const nextCredits = s.byok ? s.credits : s.credits + cost;
         const ledger =
@@ -637,6 +734,189 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const uploadPastExamForReview = useCallback(
+    async (input: {
+      courseCode: string;
+      academicYear: string;
+      semester: string;
+      examType: string;
+      files: File[];
+      contributorNote: string;
+    }) => {
+      if (input.files.length === 0) {
+        return { ok: false as const, reason: "Please upload at least one PDF file." };
+      }
+
+      const uploads: PaperReviewUpload[] = [];
+      for (const file of input.files) {
+        const form = new FormData();
+        form.append("file", file);
+        form.append("courseCode", input.courseCode);
+        form.append("academicYear", input.academicYear);
+        form.append("semester", input.semester);
+        form.append("examType", input.examType);
+        form.append("contributorNote", input.contributorNote);
+
+        const response = await fetch("/api/review-uploads", {
+          method: "POST",
+          body: form,
+        });
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          reason?: string;
+          upload?: PaperReviewUpload;
+        };
+        if (!response.ok || !payload.ok || !payload.upload) {
+          return {
+            ok: false as const,
+            reason: `${file.name}: ${payload.reason ?? "Could not extract uploaded paper."}`,
+          };
+        }
+        uploads.push(payload.upload);
+      }
+
+      setState((s) => ({
+        ...s,
+        paperReviewUploads: [...uploads, ...s.paperReviewUploads],
+      }));
+
+      return {
+        ok: true as const,
+        uploads,
+        questions: uploads.reduce((sum, upload) => sum + upload.questions.length, 0),
+      };
+    },
+    [],
+  );
+
+  const setPaperReviewQuestionStatus = useCallback(
+    (uploadId: string, questionId: string, status: QuestionBankStatus) => {
+      let ok = false;
+      setState((s) => ({
+        ...s,
+        paperReviewUploads: s.paperReviewUploads.map((upload) => {
+          if (upload.id !== uploadId || upload.approvedAt) return upload;
+          const hasQuestion = upload.questions.some((question) => question.id === questionId);
+          if (!hasQuestion) return upload;
+          ok = true;
+          return {
+            ...upload,
+            questions: upload.questions.map((question) =>
+              question.id === questionId ? { ...question, status } : question,
+            ),
+          };
+        }),
+      }));
+      return ok
+        ? ({ ok: true } as const)
+        : ({ ok: false, reason: "Review question not found or already approved." } as const);
+    },
+    [],
+  );
+
+  const updatePaperReviewQuestionPrompt = useCallback(
+    (uploadId: string, questionId: string, prompt: string) => {
+      let ok = false;
+      setState((s) => ({
+        ...s,
+        paperReviewUploads: s.paperReviewUploads.map((upload) => {
+          if (upload.id !== uploadId || upload.approvedAt) return upload;
+          const hasQuestion = upload.questions.some((question) => question.id === questionId);
+          if (!hasQuestion) return upload;
+          ok = true;
+          return {
+            ...upload,
+            questions: upload.questions.map((question) =>
+              question.id === questionId ? { ...question, editedPrompt: prompt } : question,
+            ),
+          };
+        }),
+      }));
+      return ok
+        ? ({ ok: true } as const)
+        : ({ ok: false, reason: "Review question not found or already approved." } as const);
+    },
+    [],
+  );
+
+  const approvePaperReviewUpload = useCallback(
+    async (uploadId: string) => {
+      const upload = state.paperReviewUploads.find((item) => item.id === uploadId);
+      if (!upload) return { ok: false as const, reason: "Review upload not found." };
+      if (upload.approvedAt) {
+        return { ok: false as const, reason: "This review upload is already in the bank." };
+      }
+      const approvedQuestions = upload.questions.filter((question) => question.status === "good");
+      if (approvedQuestions.length === 0) {
+        return { ok: false as const, reason: "Mark at least one question as good first." };
+      }
+
+      const response = await fetch("/api/review-uploads/approve", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ upload }),
+      });
+      const payload = (await response.json()) as {
+        ok?: boolean;
+        reason?: string;
+        approvedQuestions?: number;
+      };
+      if (!response.ok || !payload.ok) {
+        return {
+          ok: false as const,
+          reason: payload.reason ?? "Could not approve questions into the bank.",
+        };
+      }
+
+      setState((s) => {
+        const seen = new Set(s.extractedQuestions.map((question) => question.id));
+        const approvedForLocal = approvedQuestions
+          .map((question) => ({
+            ...question,
+            prompt: question.editedPrompt?.trim() || question.prompt,
+          }))
+          .filter((question) => {
+            if (seen.has(question.id)) return false;
+            seen.add(question.id);
+            return true;
+          });
+        return {
+          ...s,
+          credits: s.credits + CREDITS.pastPaperContribution,
+          extractedQuestions: [...s.extractedQuestions, ...approvedForLocal],
+          paperReviewUploads: s.paperReviewUploads.map((item) =>
+            item.id === uploadId
+              ? (() => {
+                  const remainingQuestions = item.questions.filter(
+                    (question) => question.status !== "good",
+                  );
+                  return {
+                    ...item,
+                    questions: remainingQuestions,
+                    approvedAt:
+                      remainingQuestions.length === 0 ? new Date().toISOString() : item.approvedAt,
+                    bankInsertedCount:
+                      (item.bankInsertedCount ?? 0) +
+                      (payload.approvedQuestions ?? approvedQuestions.length),
+                  };
+                })()
+              : item,
+          ),
+          ledger: [
+            newLedgerItem(CREDITS.pastPaperContribution, "Approved uploaded paper into bank"),
+            ...s.ledger,
+          ],
+        };
+      });
+
+      return {
+        ok: true as const,
+        approved: payload.approvedQuestions ?? approvedQuestions.length,
+      };
+    },
+    [state.paperReviewUploads],
+  );
+
   const spendInquiry = useCallback(() => {
     if (state.byok) return { ok: true as const };
     if (state.credits < Math.abs(CREDITS.answerInquiry)) {
@@ -741,6 +1021,7 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       extractedQuestions: state.extractedQuestions,
       courseSyllabi: state.courseSyllabi,
       pastExamUploads: state.pastExamUploads,
+      paperReviewUploads: state.paperReviewUploads,
       feedbackEntries: state.feedbackEntries,
       ledger: state.ledger,
       professorStyleNotes: state.professorStyleNotes,
@@ -754,6 +1035,10 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       updateFeedback,
       contributeQuestion,
       contributePastExam,
+      uploadPastExamForReview,
+      setPaperReviewQuestionStatus,
+      updatePaperReviewQuestionPrompt,
+      approvePaperReviewUpload,
       spendInquiry,
       setQuestionReview,
       regenerateDeclinedQuestions,
@@ -771,6 +1056,10 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       updateFeedback,
       contributeQuestion,
       contributePastExam,
+      uploadPastExamForReview,
+      setPaperReviewQuestionStatus,
+      updatePaperReviewQuestionPrompt,
+      approvePaperReviewUpload,
       spendInquiry,
       setQuestionReview,
       regenerateDeclinedQuestions,

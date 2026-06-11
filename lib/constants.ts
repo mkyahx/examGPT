@@ -1,5 +1,5 @@
 export const STORAGE_KEY = "examgpt-hku-v1";
-export const TAG_CONFIDENCE_THRESHOLD = 0.65;
+export const TAG_CONFIDENCE_THRESHOLD = 0.5;
 
 export const CREDITS = {
   initial: 100,

@@ -247,6 +247,12 @@ export default function ExamDetailPage() {
                   )}
                 </div>
                 <p className="mt-1 text-xs text-[var(--eg-muted)]">{q.section}</p>
+                {q.sourceQuestionId && (
+                  <p className="mt-1 font-mono text-xs text-[var(--eg-muted)]">
+                    Source question: {q.sourceQuestionId}
+                    {q.sourcePdfPath ? ` · ${q.sourcePdfPath}` : ""}
+                  </p>
+                )}
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{q.prompt}</p>
                 {q.rubric && (
                   <p className="mt-2 text-xs text-[var(--eg-muted)]">Rubric: {q.rubric}</p>

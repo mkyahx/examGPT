@@ -32,6 +32,10 @@ yarn-error.log*
 .pnpm-debug.log*
 debug-*.png
 
+# local paper review artifacts
+/review-uploads/
+.mcp.json
+
 # Exambase local artifacts
 .exambase-session.json
 /downloads/*

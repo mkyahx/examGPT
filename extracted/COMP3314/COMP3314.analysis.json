@@ -1,7 +1,7 @@
 {
   "courseCode": "COMP3314",
   "courseName": "Machine Learning",
-  "generatedAt": "2026-05-23T12:29:39.942Z",
+  "generatedAt": "2026-05-27T17:24:20.857Z",
   "inputs": {
     "papersDir": "extracted/COMP3314",
     "topicsPath": "extracted/course-topics/COMP3314.topics.json"
@@ -18,10 +18,10 @@
       "mode": 1
     },
     "tagging": {
-      "topicStatus": "missing",
-      "knownTopicCount": 0,
-      "taggedQuestionCount": 0,
-      "unknownQuestionCount": 34
+      "topicStatus": "ready",
+      "knownTopicCount": 12,
+      "taggedQuestionCount": 21,
+      "unknownQuestionCount": 13
     }
   },
   "patterns": {
@@ -62,8 +62,58 @@
         "shareOfTaggedItems": 0.0294
       }
     ],
-    "recurringTopics": [],
-    "uncoveredSyllabusTopics": [],
+    "recurringTopics": [
+      {
+        "id": "linear-classifiers-2-3",
+        "label": "Linear classifiers 2, 3",
+        "count": 5,
+        "shareOfQuestions": 0.1471,
+        "shareOfTaggedItems": 0.2381,
+        "paperCount": 5
+      },
+      {
+        "id": "clustering-2-3",
+        "label": "Clustering 2, 3",
+        "count": 4,
+        "shareOfQuestions": 0.1176,
+        "shareOfTaggedItems": 0.1905,
+        "paperCount": 2
+      },
+      {
+        "id": "mixture-models-2-3",
+        "label": "Mixture models 2, 3",
+        "count": 3,
+        "shareOfQuestions": 0.0882,
+        "shareOfTaggedItems": 0.1429,
+        "paperCount": 2
+      },
+      {
+        "id": "decision-theory-1-2",
+        "label": "Decision theory 1, 2",
+        "count": 2,
+        "shareOfQuestions": 0.0588,
+        "shareOfTaggedItems": 0.0952,
+        "paperCount": 2
+      },
+      {
+        "id": "supervised-learning",
+        "label": "Supervised learning",
+        "count": 2,
+        "shareOfQuestions": 0.0588,
+        "shareOfTaggedItems": 0.0952,
+        "paperCount": 2
+      }
+    ],
+    "uncoveredSyllabusTopics": [
+      {
+        "id": "principles-of-data-driven-systems-and-ai-1",
+        "label": "Principles of data-driven systems and AI 1"
+      },
+      {
+        "id": "advanced-and-applications",
+        "label": "Advanced and applications"
+      }
+    ],
     "commonQuestionPositions": [
       {
         "questionNo": "1",
@@ -93,11 +143,25 @@
         ],
         "commonPrimaryTopics": [
           {
+            "id": "linear-classifiers-2-3",
+            "label": "Linear classifiers 2, 3",
+            "count": 2,
+            "shareOfQuestions": 0.2857,
+            "shareOfTaggedItems": 0.2857
+          },
+          {
+            "id": "supervised-learning",
+            "label": "Supervised learning",
+            "count": 2,
+            "shareOfQuestions": 0.2857,
+            "shareOfTaggedItems": 0.2857
+          },
+          {
             "id": "unknown",
             "label": "unknown",
-            "count": 7,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 2,
+            "shareOfQuestions": 0.2857,
+            "shareOfTaggedItems": 0.2857
           }
         ]
       },
@@ -131,9 +195,23 @@
           {
             "id": "unknown",
             "label": "unknown",
-            "count": 6,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 2,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
+          },
+          {
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.1667,
+            "shareOfTaggedItems": 0.1667
+          },
+          {
+            "id": "decision-theory-1-2",
+            "label": "Decision theory 1, 2",
+            "count": 1,
+            "shareOfQuestions": 0.1667,
+            "shareOfTaggedItems": 0.1667
           }
         ]
       },
@@ -160,9 +238,23 @@
           {
             "id": "unknown",
             "label": "unknown",
-            "count": 5,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 2,
+            "shareOfQuestions": 0.4,
+            "shareOfTaggedItems": 0.4
+          },
+          {
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.2,
+            "shareOfTaggedItems": 0.2
+          },
+          {
+            "id": "linear-classifiers-2-3",
+            "label": "Linear classifiers 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.2,
+            "shareOfTaggedItems": 0.2
           }
         ]
       },
@@ -189,9 +281,23 @@
           {
             "id": "unknown",
             "label": "unknown",
-            "count": 4,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 2,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          },
+          {
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.25,
+            "shareOfTaggedItems": 0.25
+          },
+          {
+            "id": "decision-theory-1-2",
+            "label": "Decision theory 1, 2",
+            "count": 1,
+            "shareOfQuestions": 0.25,
+            "shareOfTaggedItems": 0.25
           }
         ]
       },
@@ -238,11 +344,25 @@
         ],
         "commonPrimaryTopics": [
           {
+            "id": "mixture-models-2-3",
+            "label": "Mixture models 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
+          },
+          {
+            "id": "neural-networks-2-3",
+            "label": "Neural networks 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
+          },
+          {
             "id": "unknown",
             "label": "unknown",
-            "count": 3,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 1,
+            "shareOfQuestions": 0.3333,
+            "shareOfTaggedItems": 0.3333
           }
         ]
       },
@@ -267,11 +387,18 @@
         ],
         "commonPrimaryTopics": [
           {
+            "id": "mixture-models-2-3",
+            "label": "Mixture models 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          },
+          {
             "id": "unknown",
             "label": "unknown",
-            "count": 2,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
           }
         ]
       },
@@ -289,11 +416,18 @@
         ],
         "commonPrimaryTopics": [
           {
-            "id": "unknown",
-            "label": "unknown",
-            "count": 2,
-            "shareOfQuestions": 1,
-            "shareOfTaggedItems": 1
+            "id": "linear-classifiers-2-3",
+            "label": "Linear classifiers 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
+          },
+          {
+            "id": "mixture-models-2-3",
+            "label": "Mixture models 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.5,
+            "shareOfTaggedItems": 0.5
           }
         ]
       },
@@ -311,8 +445,8 @@
         ],
         "commonPrimaryTopics": [
           {
-            "id": "unknown",
-            "label": "unknown",
+            "id": "performance-evaluation-and-tuning-2-3",
+            "label": "Performance evaluation and tuning 2, 3",
             "count": 1,
             "shareOfQuestions": 1,
             "shareOfTaggedItems": 1
@@ -333,8 +467,8 @@
         ],
         "commonPrimaryTopics": [
           {
-            "id": "unknown",
-            "label": "unknown",
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
             "count": 1,
             "shareOfQuestions": 1,
             "shareOfTaggedItems": 1
@@ -387,17 +521,172 @@
     },
     "topics": {
       "primary": {
-        "total": 0,
+        "total": 21,
         "denominator": 34,
-        "items": []
+        "items": [
+          {
+            "id": "linear-classifiers-2-3",
+            "label": "Linear classifiers 2, 3",
+            "count": 5,
+            "shareOfQuestions": 0.1471,
+            "shareOfTaggedItems": 0.2381,
+            "paperCount": 5
+          },
+          {
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
+            "count": 4,
+            "shareOfQuestions": 0.1176,
+            "shareOfTaggedItems": 0.1905,
+            "paperCount": 2
+          },
+          {
+            "id": "mixture-models-2-3",
+            "label": "Mixture models 2, 3",
+            "count": 3,
+            "shareOfQuestions": 0.0882,
+            "shareOfTaggedItems": 0.1429,
+            "paperCount": 2
+          },
+          {
+            "id": "decision-theory-1-2",
+            "label": "Decision theory 1, 2",
+            "count": 2,
+            "shareOfQuestions": 0.0588,
+            "shareOfTaggedItems": 0.0952,
+            "paperCount": 2
+          },
+          {
+            "id": "logistic-regression-2-3",
+            "label": "Logistic regression 2, 3",
+            "count": 2,
+            "shareOfQuestions": 0.0588,
+            "shareOfTaggedItems": 0.0952,
+            "paperCount": 1
+          },
+          {
+            "id": "neural-networks-2-3",
+            "label": "Neural networks 2, 3",
+            "count": 2,
+            "shareOfQuestions": 0.0588,
+            "shareOfTaggedItems": 0.0952,
+            "paperCount": 1
+          },
+          {
+            "id": "supervised-learning",
+            "label": "Supervised learning",
+            "count": 2,
+            "shareOfQuestions": 0.0588,
+            "shareOfTaggedItems": 0.0952,
+            "paperCount": 2
+          },
+          {
+            "id": "performance-evaluation-and-tuning-2-3",
+            "label": "Performance evaluation and tuning 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.0294,
+            "shareOfTaggedItems": 0.0476,
+            "paperCount": 1
+          }
+        ]
       },
       "allTags": {
-        "total": 0,
+        "total": 43,
         "denominator": 34,
-        "items": []
+        "items": [
+          {
+            "id": "linear-classifiers-2-3",
+            "label": "Linear classifiers 2, 3",
+            "count": 7,
+            "shareOfQuestions": 0.2059,
+            "shareOfTaggedItems": 0.1628,
+            "averageConfidence": 0.7571
+          },
+          {
+            "id": "logistic-regression-2-3",
+            "label": "Logistic regression 2, 3",
+            "count": 6,
+            "shareOfQuestions": 0.1765,
+            "shareOfTaggedItems": 0.1395,
+            "averageConfidence": 0.95
+          },
+          {
+            "id": "neural-networks-2-3",
+            "label": "Neural networks 2, 3",
+            "count": 6,
+            "shareOfQuestions": 0.1765,
+            "shareOfTaggedItems": 0.1395,
+            "averageConfidence": 0.8
+          },
+          {
+            "id": "clustering-2-3",
+            "label": "Clustering 2, 3",
+            "count": 5,
+            "shareOfQuestions": 0.1471,
+            "shareOfTaggedItems": 0.1163,
+            "averageConfidence": 0.95
+          },
+          {
+            "id": "decision-theory-1-2",
+            "label": "Decision theory 1, 2",
+            "count": 5,
+            "shareOfQuestions": 0.1471,
+            "shareOfTaggedItems": 0.1163,
+            "averageConfidence": 0.5
+          },
+          {
+            "id": "supervised-learning",
+            "label": "Supervised learning",
+            "count": 5,
+            "shareOfQuestions": 0.1471,
+            "shareOfTaggedItems": 0.1163,
+            "averageConfidence": 0.68
+          },
+          {
+            "id": "mixture-models-2-3",
+            "label": "Mixture models 2, 3",
+            "count": 3,
+            "shareOfQuestions": 0.0882,
+            "shareOfTaggedItems": 0.0698,
+            "averageConfidence": 0.65
+          },
+          {
+            "id": "unsupervised-learning",
+            "label": "Unsupervised learning",
+            "count": 3,
+            "shareOfQuestions": 0.0882,
+            "shareOfTaggedItems": 0.0698,
+            "averageConfidence": 0.8
+          },
+          {
+            "id": "principal-components-analysis-2-3",
+            "label": "Principal components analysis 2, 3",
+            "count": 2,
+            "shareOfQuestions": 0.0588,
+            "shareOfTaggedItems": 0.0465,
+            "averageConfidence": 0.685
+          },
+          {
+            "id": "performance-evaluation-and-tuning-2-3",
+            "label": "Performance evaluation and tuning 2, 3",
+            "count": 1,
+            "shareOfQuestions": 0.0294,
+            "shareOfTaggedItems": 0.0233,
+            "averageConfidence": 0.5
+          }
+        ]
       },
-      "unknownQuestionCount": 34,
-      "uncoveredTopics": []
+      "unknownQuestionCount": 13,
+      "uncoveredTopics": [
+        {
+          "id": "principles-of-data-driven-systems-and-ai-1",
+          "label": "Principles of data-driven systems and AI 1"
+        },
+        {
+          "id": "advanced-and-applications",
+          "label": "Advanced and applications"
+        }
+      ]
     }
   },
   "papers": [
@@ -438,7 +727,48 @@
           "shareOfTaggedItems": 0.125
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "logistic-regression-2-3",
+          "label": "Logistic regression 2, 3",
+          "count": 2,
+          "shareOfQuestions": 0.25,
+          "shareOfTaggedItems": 0.2857,
+          "paperCount": 1
+        },
+        {
+          "id": "mixture-models-2-3",
+          "label": "Mixture models 2, 3",
+          "count": 2,
+          "shareOfQuestions": 0.25,
+          "shareOfTaggedItems": 0.2857,
+          "paperCount": 1
+        },
+        {
+          "id": "clustering-2-3",
+          "label": "Clustering 2, 3",
+          "count": 1,
+          "shareOfQuestions": 0.125,
+          "shareOfTaggedItems": 0.1429,
+          "paperCount": 1
+        },
+        {
+          "id": "decision-theory-1-2",
+          "label": "Decision theory 1, 2",
+          "count": 1,
+          "shareOfQuestions": 0.125,
+          "shareOfTaggedItems": 0.1429,
+          "paperCount": 1
+        },
+        {
+          "id": "linear-classifiers-2-3",
+          "label": "Linear classifiers 2, 3",
+          "count": 1,
+          "shareOfQuestions": 0.125,
+          "shareOfTaggedItems": 0.1429,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2018_05_COMP3314.questions.json",
@@ -456,7 +786,16 @@
           "shareOfTaggedItems": 1
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "supervised-learning",
+          "label": "Supervised learning",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2019_05_COMP3314.questions.json",
@@ -474,7 +813,16 @@
           "shareOfTaggedItems": 1
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "linear-classifiers-2-3",
+          "label": "Linear classifiers 2, 3",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2020_12_COMP3314.questions.json",
@@ -492,7 +840,16 @@
           "shareOfTaggedItems": 1
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "linear-classifiers-2-3",
+          "label": "Linear classifiers 2, 3",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2021_12_COMP3314.questions.json",
@@ -510,7 +867,16 @@
           "shareOfTaggedItems": 1
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "linear-classifiers-2-3",
+          "label": "Linear classifiers 2, 3",
+          "count": 1,
+          "shareOfQuestions": 1,
+          "shareOfTaggedItems": 1,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2023_05_COMP3314.questions.json",
@@ -535,7 +901,32 @@
           "shareOfTaggedItems": 0.2222
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "decision-theory-1-2",
+          "label": "Decision theory 1, 2",
+          "count": 1,
+          "shareOfQuestions": 0.1111,
+          "shareOfTaggedItems": 0.3333,
+          "paperCount": 1
+        },
+        {
+          "id": "linear-classifiers-2-3",
+          "label": "Linear classifiers 2, 3",
+          "count": 1,
+          "shareOfQuestions": 0.1111,
+          "shareOfTaggedItems": 0.3333,
+          "paperCount": 1
+        },
+        {
+          "id": "supervised-learning",
+          "label": "Supervised learning",
+          "count": 1,
+          "shareOfQuestions": 0.1111,
+          "shareOfTaggedItems": 0.3333,
+          "paperCount": 1
+        }
+      ]
     },
     {
       "filePath": "extracted/COMP3314/2023_12_COMP3314.questions.json",
@@ -560,7 +951,40 @@
           "shareOfTaggedItems": 0.0769
         }
       ],
-      "topics": []
+      "topics": [
+        {
+          "id": "clustering-2-3",
+          "label": "Clustering 2, 3",
+          "count": 3,
+          "shareOfQuestions": 0.2308,
+          "shareOfTaggedItems": 0.4286,
+          "paperCount": 1
+        },
+        {
+          "id": "neural-networks-2-3",
+          "label": "Neural networks 2, 3",
+          "count": 2,
+          "shareOfQuestions": 0.1538,
+          "shareOfTaggedItems": 0.2857,
+          "paperCount": 1
+        },
+        {
+          "id": "mixture-models-2-3",
+          "label": "Mixture models 2, 3",
+          "count": 1,
+          "shareOfQuestions": 0.0769,
+          "shareOfTaggedItems": 0.1429,
+          "paperCount": 1
+        },
+        {
+          "id": "performance-evaluation-and-tuning-2-3",
+          "label": "Performance evaluation and tuning 2, 3",
+          "count": 1,
+          "shareOfQuestions": 0.0769,
+          "shareOfTaggedItems": 0.1429,
+          "paperCount": 1
+        }
+      ]
     }
   ]
 }
