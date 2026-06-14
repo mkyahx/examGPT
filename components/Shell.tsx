@@ -13,13 +13,17 @@ const nav = [
   { href: "/history", label: "History" },
   { href: "/contribute", label: "Contribute" },
   { href: "/bank", label: "Bank" },
-  { href: "/settings", label: "Credits" },
+  { href: "/account", label: "Account" },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { credits, byok, hydrated } = useExamGPT();
   const { user, hydrated: authHydrated, logout } = useAuth();
+
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
 
   return (
     <div className="flex min-h-full flex-col bg-[var(--eg-bg)] text-[var(--eg-fg)]">
@@ -57,7 +61,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               ) : user ? (
                 <>
                   <a
-                    href="/login"
+                    href="/account"
                     className="max-w-36 truncate rounded-full border border-[var(--eg-border)] px-3 py-1.5 text-xs font-medium text-[var(--eg-fg)] hover:bg-[var(--eg-surface)]"
                     title={user.email}
                   >
@@ -72,7 +76,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   </button>
                 </>
               ) : (
-                <a className="eg-btn-ghost px-3 py-1.5 text-xs" href="/login">
+                <a className="eg-btn-ghost px-3 py-1.5 text-xs" href="/account">
                   Sign in
                 </a>
               )}
@@ -96,16 +100,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </a>
             );
           })}
-          <a
-            href="/login"
-            className={`rounded-full px-2 py-1 text-xs transition sm:hidden ${
-              pathname === "/login"
-                ? "bg-[var(--eg-accent)] text-[var(--eg-on-accent)]"
-                : "text-[var(--eg-muted)] hover:bg-[var(--eg-surface)] hover:text-[var(--eg-fg)]"
-            }`}
-          >
-            {user ? "Account" : "Sign in"}
-          </a>
         </nav>
       </header>
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-0 py-4 sm:px-4 sm:py-6">

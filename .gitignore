@@ -31,6 +31,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 debug-*.png
+dev-server.*.log
+.npm-cache/
 
 # local paper review artifacts
 /review-uploads/
