@@ -313,7 +313,7 @@ function pickRealQuestions(
 function buildRealExamQuestions(
   realQuestions: ExtractedQuestion[],
   courseCode: string,
-  generationMode: "original" | "simulated",
+  generationMode: "original" | "ai" | "simulated",
   analysis?: CourseGenerationProfile["analysis"],
 ): ExamQuestion[] {
   const picked =
@@ -332,13 +332,26 @@ function buildRealExamQuestions(
   }));
 }
 
+function normalizeGeneratedQuestions(questions: ExamQuestion[] | undefined): ExamQuestion[] {
+  return (questions ?? [])
+    .filter((question) => question.prompt.trim() && question.marks > 0)
+    .map((question, index) => ({
+      ...question,
+      id: question.id || id("ai-q"),
+      section: question.section || `AI generated question ${index + 1}`,
+      marks: Math.trunc(question.marks),
+      reviewStatus: question.reviewStatus ?? "pending",
+    }));
+}
+
 export function buildMockExam(params: {
   courseCode: string;
   focusHints: string;
   fileNames: string[];
   realQuestions?: ExtractedQuestion[];
+  generatedQuestions?: ExamQuestion[];
   generationProfile?: CourseGenerationProfile;
-  generationMode?: "original" | "simulated";
+  generationMode?: "original" | "ai" | "simulated";
   allowTemplateFallback?: boolean;
 }): MockExam {
   const courseCode = params.courseCode.trim() || "HKU-COURSE";
@@ -346,6 +359,7 @@ export function buildMockExam(params: {
   const realQuestions = params.realQuestions ?? [];
   const generationMode = params.generationMode ?? "simulated";
   const allowTemplateFallback = params.allowTemplateFallback ?? generationMode !== "original";
+  const generatedQuestions = normalizeGeneratedQuestions(params.generatedQuestions);
   const realExamQuestions = buildRealExamQuestions(
     realQuestions,
     courseCode,
@@ -354,7 +368,9 @@ export function buildMockExam(params: {
   );
   const templateQuestions = buildQuestions(courseCode, focusHints);
   const questions =
-    realExamQuestions.length > 0
+    generationMode === "ai" && generatedQuestions.length > 0
+      ? generatedQuestions
+      : realExamQuestions.length > 0
       ? allowTemplateFallback
         ? [
             ...realExamQuestions,
@@ -366,7 +382,16 @@ export function buildMockExam(params: {
         : [];
 
   const sourceSummary =
-    realExamQuestions.length > 0
+    generationMode === "ai" && generatedQuestions.length > 0
+      ? [
+          `Generated ${generatedQuestions.length} AI question(s) for ${courseCode}.`,
+          `Total marks: ${generatedQuestions.reduce((sum, q) => sum + q.marks, 0)}.`,
+          focusHints ? `Focus: ${focusHints}.` : "",
+          params.fileNames.length > 0 ? `Attached filenames: ${params.fileNames.join(", ")}.` : "",
+        ]
+          .filter(Boolean)
+          .join(" ")
+      : realExamQuestions.length > 0
       ? [
           generationMode === "original"
             ? `Used ${realExamQuestions.length} certified Exambase original question(s).`

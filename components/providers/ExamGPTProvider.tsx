@@ -150,8 +150,9 @@ type ExamGPTContextValue = {
     focusHints: string;
     fileNames: string[];
     realQuestions?: ExtractedQuestion[];
+    generatedQuestions?: MockExam["questions"];
     generationProfile?: CourseGenerationProfile;
-    generationMode?: "original" | "simulated";
+    generationMode?: "original" | "ai" | "simulated";
     allowTemplateFallback?: boolean;
   }) => { ok: true; exam: MockExam } | { ok: false; reason: string };
   importExtractedQuestionFile: (payload: unknown) => Promise<
@@ -399,8 +400,9 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       focusHints: string;
       fileNames: string[];
       realQuestions?: ExtractedQuestion[];
+      generatedQuestions?: MockExam["questions"];
       generationProfile?: CourseGenerationProfile;
-      generationMode?: "original" | "simulated";
+      generationMode?: "original" | "ai" | "simulated";
       allowTemplateFallback?: boolean;
     }) => {
       const cost = state.byok ? 0 : CREDITS.generateMock;
@@ -419,6 +421,12 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
           reason: "No Supabase course analysis is available for this course yet.",
         };
       }
+      if (input.generationMode === "ai" && (input.generatedQuestions?.length ?? 0) === 0) {
+        return {
+          ok: false as const,
+          reason: "AI did not return a usable paper. Try again with more course focus.",
+        };
+      }
       const exam = buildMockExam(input);
       if (input.generationMode === "original") {
         const totalMarks = exam.questions.reduce((sum, question) => sum + question.marks, 0);
@@ -435,7 +443,15 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
         const ledger =
           cost === 0
             ? s.ledger
-            : [newLedgerItem(cost, "Generate mock exam (RAG)"), ...s.ledger];
+            : [
+                newLedgerItem(
+                  cost,
+                  input.generationMode === "original"
+                    ? "Generate original-question mock"
+                    : "Generate AI mock exam",
+                ),
+                ...s.ledger,
+              ];
         return {
           ...s,
           credits: nextCredits,

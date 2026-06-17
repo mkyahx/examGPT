@@ -104,7 +104,7 @@ export type PaperReviewUpload = {
 export type MockExam = {
   id: string;
   courseCode: string;
-  generationMode?: "original" | "simulated";
+  generationMode?: "original" | "ai" | "simulated";
   createdAt: string;
   focusHints: string;
   sourceSummary: string;

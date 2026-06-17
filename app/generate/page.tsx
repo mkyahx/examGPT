@@ -11,10 +11,10 @@ import {
   normalizeCourseCode,
   type QuestionSearchApiRow,
 } from "@/lib/questionBank";
-import type { CourseGenerationProfile, ExtractedQuestion } from "@/lib/types";
+import type { CourseGenerationProfile, ExamQuestion, ExtractedQuestion } from "@/lib/types";
 
 type BackendStatus = "idle" | "loading" | "ready" | "error";
-type GenerationMode = "original" | "simulated";
+type GenerationMode = "original" | "ai";
 
 type GenerationProfileFetch = {
   questions: ExtractedQuestion[];
@@ -51,8 +51,29 @@ async function fetchGenerationProfile(
   };
 }
 
+async function fetchAiPaper(input: {
+  courseCode: string;
+  focusHints: string;
+  fileNames: string[];
+}): Promise<ExamQuestion[]> {
+  const response = await fetch("/api/mock/generate-ai", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  const payload = (await response.json()) as {
+    ok?: boolean;
+    reason?: string;
+    questions?: ExamQuestion[];
+  };
+  if (!response.ok || !payload.ok || !Array.isArray(payload.questions)) {
+    throw new Error(payload.reason ?? "Could not generate an AI paper.");
+  }
+  return payload.questions;
+}
+
 export default function GeneratePage() {
-  const { generateMockExam, extractedQuestions, credits, byok, hydrated } = useExamGPT();
+  const { generateMockExam, credits, byok, hydrated } = useExamGPT();
   const [generationMode, setGenerationMode] = useState<GenerationMode>("original");
   const [courseCode, setCourseCode] = useState("COMP3251");
   const [selectedCourseCode, setSelectedCourseCode] = useState("");
@@ -69,10 +90,6 @@ export default function GeneratePage() {
 
   const fileNames = useMemo(() => files.map((f) => f.name), [files]);
   const normalizedCourseInput = normalizeCourseCode(courseCode);
-  const localMatchingCourses = useMemo(
-    () => getMatchingCourseSummaries(extractedQuestions, normalizedCourseInput),
-    [extractedQuestions, normalizedCourseInput],
-  );
   const backendMatchingCourses = useMemo(
     () => getMatchingCourseSummaries(backendQuestions, normalizedCourseInput),
     [backendQuestions, normalizedCourseInput],
@@ -80,9 +97,7 @@ export default function GeneratePage() {
   const matchingCourses =
     generationMode === "original"
       ? backendMatchingCourses
-      : backendMatchingCourses.length > 0
-        ? backendMatchingCourses
-        : localMatchingCourses;
+      : [];
   const exactCourse = matchingCourses.find(
     (course) => normalizeCourseCode(course.courseCode) === normalizedCourseInput,
   );
@@ -100,19 +115,10 @@ export default function GeneratePage() {
         : [],
     [backendQuestions, normalizedCourseInput, resolvedCourseCode],
   );
-  const selectedLocalQuestions = useMemo(
-    () =>
-      resolvedCourseCode
-        ? getMatchingExtractedQuestions(extractedQuestions, normalizedCourseInput, resolvedCourseCode)
-        : [],
-    [extractedQuestions, normalizedCourseInput, resolvedCourseCode],
-  );
   const selectedRealQuestions =
     generationMode === "original"
       ? selectedBackendQuestions
-      : selectedBackendQuestions.length > 0
-        ? selectedBackendQuestions
-        : selectedLocalQuestions;
+      : [];
   const selectedGenerationProfile =
     generationMode === "original" &&
     generationProfile &&
@@ -123,8 +129,6 @@ export default function GeneratePage() {
     if (generationMode === "original" && selectedBackendQuestions.length > 0) {
       return "certified Exambase";
     }
-    if (selectedBackendQuestions.length > 0) return "Supabase";
-    if (selectedLocalQuestions.length > 0) return "local import";
     return "";
   })();
   const requiresCourseChoice =
@@ -185,12 +189,31 @@ export default function GeneratePage() {
       setError("Multiple courses match this input. Choose one course before generating.");
       return;
     }
-    if (generationMode === "simulated") {
-      setError("Simulated mock generation is planned next; this MVP currently focuses on certified original questions.");
-      return;
-    }
     setBusy(true);
     try {
+      if (generationMode === "ai") {
+        const generatedQuestions = await fetchAiPaper({
+          courseCode: normalizedCourseInput || courseCode,
+          focusHints,
+          fileNames,
+        });
+        const result = generateMockExam({
+          courseCode: normalizedCourseInput || courseCode,
+          focusHints,
+          fileNames,
+          generatedQuestions,
+          generationMode: "ai",
+          allowTemplateFallback: false,
+        });
+        setBusy(false);
+        if (!result.ok) {
+          setError(result.reason);
+          return;
+        }
+        window.location.assign(`/exam/${result.exam.id}`);
+        return;
+      }
+
       let realQuestions = selectedRealQuestions;
       let profile = selectedGenerationProfile;
       if (selectedBackendQuestions.length === 0 && normalizedCourseInput.length >= 4) {
@@ -223,7 +246,7 @@ export default function GeneratePage() {
       window.location.assign(`/exam/${result.exam.id}`);
     } catch (err) {
       setBusy(false);
-      setError(err instanceof Error ? err.message : "Could not generate from backend questions.");
+      setError(err instanceof Error ? err.message : "Could not generate that paper.");
     }
   }
 
@@ -234,12 +257,12 @@ export default function GeneratePage() {
         info={
           <>
             <p>
-              Choose certified original questions from Exambase, or later generate simulated
-              questions from LLM / highly rated verified mocks.
+              Choose original past-paper questions from the database, or ask AI to generate a fresh
+              paper for this course.
             </p>
             <p>
-              This MVP currently focuses on original-question papers and directly reuses audited
-              backend questions.
+              Original mode samples from the question bank using the course paper pattern. AI mode
+              creates new questions and rubrics on demand.
             </p>
           </>
         }
@@ -251,8 +274,8 @@ export default function GeneratePage() {
             <span className="text-sm font-medium text-[var(--eg-muted)]">Paper type</span>
             <InfoAside ariaLabel="Paper type">
               <p>
-                Original questions use audited `good` questions downloaded from Exambase. Simulated
-                mock will later use LLM-generated or highly rated generated questions.
+                Original uses audited Exambase questions from Supabase. AI generates a fresh
+                100-mark paper with 4 to 6 questions.
               </p>
             </InfoAside>
           </div>
@@ -260,26 +283,29 @@ export default function GeneratePage() {
             {[
               {
                 id: "original" as const,
-                title: "Original questions",
-                meta: "Certified Exambase past-paper items",
+                title: "原题",
+                meta: "按固定试卷 pattern 从数据库抽题",
               },
               {
-                id: "simulated" as const,
-                title: "Simulated mock",
-                meta: "LLM / high-rated generated items, next",
+                id: "ai" as const,
+                title: "AI",
+                meta: "AI 现生成一份新试卷",
               },
             ].map((mode) => {
               const active = generationMode === mode.id;
+              const disabled = mode.id === "ai";
               return (
                 <button
                   key={mode.id}
                   type="button"
-                  className={`rounded-lg border px-3 py-2 text-left transition ${
+                  disabled={disabled}
+                  className={`rounded-lg border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                     active
                       ? "border-[var(--eg-accent)] bg-[var(--eg-surface)]"
                       : "border-[var(--eg-border)] hover:bg-[var(--eg-surface)]"
                   }`}
                   onClick={() => {
+                    if (disabled) return;
                     setGenerationMode(mode.id);
                     setSelectedCourseCode("");
                     setError(null);
@@ -287,6 +313,11 @@ export default function GeneratePage() {
                 >
                   <span className="block text-sm font-semibold text-[var(--eg-fg)]">
                     {mode.title}
+                    {disabled && (
+                      <span className="ml-2 rounded-full border border-[var(--eg-border)] px-2 py-0.5 text-[10px] font-medium uppercase text-[var(--eg-muted)]">
+                        Coming soon
+                      </span>
+                    )}
                   </span>
                   <span className="mt-0.5 block text-xs text-[var(--eg-muted)]">
                     {mode.meta}
@@ -321,14 +352,7 @@ export default function GeneratePage() {
             <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
               <p className="text-sm font-medium text-[var(--eg-fg)]">
                 Found {matchingCourses.reduce((sum, course) => sum + course.count, 0)}{" "}
-                {generationMode === "original" ? "certified original" : "source"} question(s)
-                from{" "}
-                {generationMode === "original"
-                  ? "Exambase"
-                  : backendMatchingCourses.length > 0
-                    ? "Supabase"
-                    : "local import"}
-                .
+                certified original question(s) from Exambase.
               </p>
               {requiresCourseChoice && (
                 <span className="text-xs font-medium text-amber-700 dark:text-amber-200">
@@ -377,8 +401,8 @@ export default function GeneratePage() {
             {backendStatus === "error" && `Supabase question bank unavailable: ${backendError}`}
             {backendStatus !== "loading" && backendStatus !== "error" && selectedQuestionSource && (
               <>
-                {generationMode === "original" ? "Original mode" : "Generation"} will directly
-                reuse {selectedRealQuestions.length} {selectedQuestionSource} question(s).
+                Original mode will sample from {selectedRealQuestions.length}{" "}
+                {selectedQuestionSource} question(s) using the course paper pattern.
                 {selectedGenerationProfile?.analysis?.questionCountPerPaper?.average
                   ? ` Course analysis average: ${selectedGenerationProfile.analysis.questionCountPerPaper.average} questions/paper.`
                   : ""}
@@ -387,7 +411,7 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {generationMode === "simulated" && (
+        {generationMode === "ai" && (
           <div>
             <div className="mb-1 flex flex-wrap items-center gap-2">
               <label className="text-sm font-medium text-[var(--eg-muted)]" htmlFor="files">
@@ -395,8 +419,8 @@ export default function GeneratePage() {
               </label>
               <InfoAside ariaLabel="About file uploads">
                 <p>
-                  Simulated mode will later use uploaded notes/PDFs as RAG context. It is not active
-                  in this MVP pass.
+                  AI mode currently sends filenames as lightweight context. Full PDF/text RAG can be
+                  connected later.
                 </p>
               </InfoAside>
             </div>
@@ -410,7 +434,7 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {generationMode === "simulated" && (
+        {generationMode === "ai" && (
           <div>
             <div className="mb-1 flex flex-wrap items-center gap-2">
               <label className="text-sm font-medium text-[var(--eg-muted)]" htmlFor="hints">
@@ -418,7 +442,7 @@ export default function GeneratePage() {
               </label>
               <InfoAside ariaLabel="About focus text">
                 <p>
-                  Simulated mode will interpret these hints when LLM generation is enabled.
+                  AI mode uses these hints as generation instructions for the new paper.
                 </p>
               </InfoAside>
             </div>
@@ -427,7 +451,7 @@ export default function GeneratePage() {
               className="eg-input min-h-[80px] resize-y sm:min-h-[100px]"
               value={focusHints}
               onChange={(e) => setFocusHints(e.target.value)}
-              placeholder="Professor focus for the final…"
+              placeholder="Professor focus for the final..."
             />
           </div>
         )}
@@ -449,7 +473,7 @@ export default function GeneratePage() {
             )}
           </p>
           <button type="submit" className="eg-btn w-full sm:w-auto" disabled={!canAfford || busy}>
-            {busy ? "…" : generationMode === "original" ? "Generate originals" : "Generate"}
+            {busy ? "..." : generationMode === "original" ? "Generate originals" : "Generate AI paper"}
           </button>
         </div>
       </form>
