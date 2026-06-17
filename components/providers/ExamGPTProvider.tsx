@@ -16,7 +16,11 @@ import {
   tagQuestionsWithFallback,
   type TaggedQuestionResult,
 } from "@/lib/internalTagging";
-import { applyDeclinedQuestionRegeneration, buildMockExam } from "@/lib/mockExam";
+import {
+  applyDeclinedQuestionRegeneration,
+  buildMockExam,
+  replaceOriginalDeclinedQuestions,
+} from "@/lib/mockExam";
 import type {
   AppSnapshot,
   CourseSyllabusCache,
@@ -440,6 +444,13 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
       }
       setState((s) => {
         const nextCredits = s.byok ? s.credits : s.credits + cost;
+        const extractedSeen = new Set(s.extractedQuestions.map((question) => question.id));
+        const nextExtractedQuestions = [...s.extractedQuestions];
+        for (const question of input.realQuestions ?? []) {
+          if (extractedSeen.has(question.id)) continue;
+          extractedSeen.add(question.id);
+          nextExtractedQuestions.push(question);
+        }
         const ledger =
           cost === 0
             ? s.ledger
@@ -455,6 +466,7 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
         return {
           ...s,
           credits: nextCredits,
+          extractedQuestions: nextExtractedQuestions,
           mockExams: [exam, ...s.mockExams],
           ledger,
         };
@@ -995,11 +1007,18 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
         outcome = { ok: false, reason: "Not enough credits. Enable BYOK or top up." };
         return s;
       }
-      const next = applyDeclinedQuestionRegeneration(exam, instruction);
+      const replacementPool = exam.sourceCandidates ?? s.extractedQuestions;
+      const next =
+        exam.generationMode === "original"
+          ? replaceOriginalDeclinedQuestions(exam, replacementPool)
+          : applyDeclinedQuestionRegeneration(exam, instruction);
       if (!next) {
         outcome = {
           ok: false,
-          reason: "Mark one or more questions as declined before regenerating.",
+          reason:
+            exam.generationMode === "original"
+              ? "No matching replacement question is available. Decline a different question or add more approved originals."
+              : "Mark one or more questions as declined before regenerating.",
         };
         return s;
       }
@@ -1010,7 +1029,9 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
           : [
               newLedgerItem(
                 cost,
-                "Regenerate declined questions (partial mock rewrite)",
+                exam.generationMode === "original"
+                  ? "Replace declined original questions"
+                  : "Regenerate declined questions (partial mock rewrite)",
               ),
               ...s.ledger,
             ];

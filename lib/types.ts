@@ -115,6 +115,8 @@ export type MockExam = {
   repositorySyncedAt?: string | null;
   /** Increments when declined questions are partially regenerated */
   contentRevision?: number;
+  /** Candidate pool used for original-question replacement regeneration */
+  sourceCandidates?: ExtractedQuestion[];
 };
 
 export type CourseAnalysisDistributionItem = {

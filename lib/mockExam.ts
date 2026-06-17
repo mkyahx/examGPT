@@ -427,6 +427,7 @@ export function buildMockExam(params: {
     inRepository: false,
     repositorySyncedAt: null,
     contentRevision: 0,
+    sourceCandidates: generationMode === "original" ? realQuestions : undefined,
   };
 }
 
@@ -487,6 +488,98 @@ export function applyDeclinedQuestionRegeneration(exam: MockExam, instruction?: 
   return {
     ...exam,
     contentRevision: revision,
+    questions,
+    markingScheme: buildMarkingScheme(
+      exam.courseCode,
+      questions,
+      rawFocusFromExam(exam.focusHints),
+    ),
+  };
+}
+
+function replacementQuestionFromExtracted(question: ExtractedQuestion): ExamQuestion {
+  return {
+    id: id("real-q"),
+    section: `Real past paper - ${question.source.courseCode} ${question.source.examYearMonth} - ${question.type}`,
+    prompt: question.prompt,
+    marks: marksForExtractedQuestion(question),
+    rubric: `Direct backend question ${question.id} from ${question.source.pdfPath}; no official solution attached.`,
+    sourceQuestionId: question.id,
+    sourcePdfPath: question.source.pdfPath,
+    reviewStatus: "pending",
+  };
+}
+
+function replacementScore(candidate: ExtractedQuestion, declined: ExamQuestion): number {
+  const candidateMarks = marksForExtractedQuestion(candidate);
+  const markPenalty = Math.abs(candidateMarks - declined.marks) * 100;
+  const typePenalty = declined.section.toLowerCase().includes(candidate.type.toLowerCase()) ? 0 : 25;
+  const samePaperPenalty =
+    declined.sourcePdfPath && candidate.source.pdfPath === declined.sourcePdfPath ? 5 : 0;
+  const topicText = (candidate.topicTags ?? [])
+    .map((tag) => `${tag.topicId} ${tag.label}`)
+    .join(" ")
+    .toLowerCase();
+  const promptText = declined.prompt.toLowerCase();
+  const topicBonus = topicText
+    .split(/\s+/)
+    .filter((word) => word.length > 3 && promptText.includes(word))
+    .length * -2;
+
+  return (
+    markPenalty +
+    typePenalty +
+    samePaperPenalty +
+    topicBonus +
+    stableScore(`${declined.id}:${candidate.id}`) / 0xffffffff
+  );
+}
+
+/**
+ * Original-mode regeneration replaces declined questions with unused bank questions.
+ * It never rewrites or accepts custom instructions.
+ */
+export function replaceOriginalDeclinedQuestions(
+  exam: MockExam,
+  candidates: ExtractedQuestion[],
+): MockExam | null {
+  const declinedQuestions = exam.questions.filter((question) => question.reviewStatus === "declined");
+  if (declinedQuestions.length === 0) return null;
+
+  const rejectedSourceIds = new Set(
+    declinedQuestions
+      .map((question) => question.sourceQuestionId)
+      .filter((sourceId): sourceId is string => Boolean(sourceId)),
+  );
+  const usedSourceIds = new Set(
+    exam.questions
+      .filter((question) => question.reviewStatus !== "declined")
+      .map((question) => question.sourceQuestionId)
+      .filter((sourceId): sourceId is string => Boolean(sourceId)),
+  );
+  const candidatePool = candidates.filter(
+    (candidate) =>
+      candidate.status !== "pending" &&
+      candidate.status !== "rejected" &&
+      !rejectedSourceIds.has(candidate.id),
+  );
+  if (candidatePool.length === 0) return null;
+
+  const replacements = new Map<string, ExamQuestion>();
+  for (const declined of declinedQuestions) {
+    const replacement = candidatePool
+      .filter((candidate) => !usedSourceIds.has(candidate.id))
+      .sort((a, b) => replacementScore(a, declined) - replacementScore(b, declined))[0];
+
+    if (!replacement) return null;
+    usedSourceIds.add(replacement.id);
+    replacements.set(declined.id, replacementQuestionFromExtracted(replacement));
+  }
+
+  const questions = exam.questions.map((question) => replacements.get(question.id) ?? question);
+  return {
+    ...exam,
+    contentRevision: (exam.contentRevision ?? 0) + 1,
     questions,
     markingScheme: buildMarkingScheme(
       exam.courseCode,

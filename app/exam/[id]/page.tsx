@@ -3,9 +3,14 @@
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { InfoAside, SectionHeading } from "@/components/InfoAside";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useExamGPT } from "@/components/providers/ExamGPTProvider";
 import { CREDITS } from "@/lib/constants";
 import { isExamInRepository } from "@/lib/examStatus";
+import {
+  createMockExamPdfDownload,
+  type PdfDownload,
+} from "@/lib/pdfExport";
 import type { QuestionReviewStatus } from "@/lib/types";
 
 function statusLabel(s: QuestionReviewStatus | undefined) {
@@ -30,8 +35,29 @@ function statusClass(s: QuestionReviewStatus | undefined) {
   }
 }
 
+function redactSourceNotes(markingScheme: string) {
+  const marker = "Per-question notes:";
+  const markerIndex = markingScheme.indexOf(marker);
+  if (markerIndex >= 0) return markingScheme.slice(0, markerIndex).trimEnd();
+
+  return markingScheme
+    .split("\n")
+    .filter((line) => {
+      const lower = line.toLowerCase();
+      return (
+        !lower.includes("source question") &&
+        !lower.includes("backend question") &&
+        !lower.includes("downloads/") &&
+        !lower.includes("source pdf")
+      );
+    })
+    .join("\n")
+    .trimEnd();
+}
+
 export default function ExamDetailPage() {
   const params = useParams<{ id: string }>();
+  const { user } = useAuth();
   const {
     mockExams,
     feedbackEntries,
@@ -53,6 +79,7 @@ export default function ExamDetailPage() {
   );
 
   const locked = exam ? isExamInRepository(exam.id, feedbackEntries) : false;
+  const canViewSources = user?.role === "admin";
 
   const reviewCounts = useMemo(() => {
     if (!exam) return { pending: 0, accepted: 0, declined: 0 };
@@ -69,8 +96,19 @@ export default function ExamDetailPage() {
   }, [exam]);
 
   const declinedCount = reviewCounts.declined;
+  const questionCount = exam?.questions.length ?? 0;
+  const isAcceptedForExport =
+    questionCount > 0 &&
+    reviewCounts.accepted === questionCount &&
+    reviewCounts.pending === 0 &&
+    reviewCounts.declined === 0;
   const canAffordRegen =
     byok || credits >= Math.abs(CREDITS.regenerateQuestions);
+
+  const pdfDownload = useMemo<PdfDownload | null>(() => {
+    if (!exam || !isAcceptedForExport) return null;
+    return createMockExamPdfDownload(exam, { includeSources: canViewSources });
+  }, [exam, isAcceptedForExport, canViewSources]);
 
   if (!exam) {
     return (
@@ -94,6 +132,7 @@ export default function ExamDetailPage() {
   }
 
   const paper = exam;
+  const usesOriginalReplacement = paper.generationMode === "original";
 
   function runInquiry() {
     setInqError(null);
@@ -113,15 +152,34 @@ export default function ExamDetailPage() {
     setQuestionReview(paper.id, questionId, status);
   }
 
+  function onAcceptAll() {
+    if (locked) return;
+    setRegenMsg(null);
+    for (const question of paper.questions) {
+      if ((question.reviewStatus ?? "pending") !== "accepted") {
+        setQuestionReview(paper.id, question.id, "accepted");
+      }
+    }
+  }
+
   function onRegenerate() {
     setRegenMsg(null);
-    const res = regenerateDeclinedQuestions(paper.id, regenNote);
+    const res = regenerateDeclinedQuestions(
+      paper.id,
+      usesOriginalReplacement ? undefined : regenNote,
+    );
     if (!res.ok) {
       setRegenMsg(res.reason);
       return;
     }
     setRegenMsg("Rewrote declined items → pending again.");
     setRegenNote("");
+  }
+
+  function onViewPdf() {
+    if (!pdfDownload) return;
+    const opened = window.open(pdfDownload.url, "_blank", "noopener,noreferrer");
+    if (!opened) window.location.assign(pdfDownload.url);
   }
 
   return (
@@ -131,7 +189,11 @@ export default function ExamDetailPage() {
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{paper.courseCode}</h1>
             <InfoAside ariaLabel="About this mock">
-              <p>{paper.sourceSummary}</p>
+              {canViewSources ? (
+                <p>{paper.sourceSummary}</p>
+              ) : (
+                <p>Source details are hidden for standard accounts.</p>
+              )}
               <p className="text-[var(--eg-fg)]">
                 Focus: <span className="whitespace-pre-wrap">{paper.focusHints}</span>
               </p>
@@ -143,13 +205,37 @@ export default function ExamDetailPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          {isAcceptedForExport && pdfDownload ? (
+            <button
+              type="button"
+              className="eg-btn text-sm"
+              title="Open this accepted mock as a PDF"
+              onClick={onViewPdf}
+            >
+              View PDF
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="eg-btn text-sm disabled:cursor-not-allowed disabled:opacity-50"
+              disabled
+              title="Accept every question before viewing the PDF"
+            >
+              View PDF
+            </button>
+          )}
           <a href="/history" className="eg-btn-ghost text-sm">
             History
           </a>
           {!locked ? (
-            <span className="rounded-full border border-[var(--eg-border)] bg-[var(--eg-surface)] px-3 py-2 text-xs text-[var(--eg-muted)]">
-              Feedback in History
-            </span>
+            <button
+              type="button"
+              className="eg-btn-ghost text-sm disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={onAcceptAll}
+              disabled={questionCount === 0 || reviewCounts.accepted === questionCount}
+            >
+              Accept all
+            </button>
           ) : (
             <span className="rounded-full border border-[var(--eg-border)] px-3 py-2 text-xs text-[var(--eg-muted)]">
               In repo
@@ -165,6 +251,7 @@ export default function ExamDetailPage() {
         <div className="flex flex-col gap-2 rounded-2xl border border-[var(--eg-border)] bg-[var(--eg-surface)] p-3 sm:flex-row sm:flex-wrap sm:items-start">
           <p className="min-w-0 flex-1 text-sm text-[var(--eg-muted)]">
             Local until you submit feedback — then it joins the repository (demo).
+            {!isAcceptedForExport && " Accept all questions to enable PDF view."}
           </p>
           <InfoAside ariaLabel="Repository behaviour">
             <p>
@@ -246,15 +333,17 @@ export default function ExamDetailPage() {
                     </div>
                   )}
                 </div>
-                <p className="mt-1 text-xs text-[var(--eg-muted)]">{q.section}</p>
-                {q.sourceQuestionId && (
+                {canViewSources && (
+                  <p className="mt-1 text-xs text-[var(--eg-muted)]">{q.section}</p>
+                )}
+                {canViewSources && q.sourceQuestionId && (
                   <p className="mt-1 font-mono text-xs text-[var(--eg-muted)]">
                     Source question: {q.sourceQuestionId}
                     {q.sourcePdfPath ? ` · ${q.sourcePdfPath}` : ""}
                   </p>
                 )}
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{q.prompt}</p>
-                {q.rubric && (
+                {canViewSources && q.rubric && (
                   <p className="mt-2 text-xs text-[var(--eg-muted)]">Rubric: {q.rubric}</p>
                 )}
               </li>
@@ -266,22 +355,30 @@ export default function ExamDetailPage() {
       {!locked && (
         <section className="eg-card space-y-3">
           <SectionHeading
-            title="Partial regen"
+            title={usesOriginalReplacement ? "Replace declined" : "Partial regen"}
             info={
-              <p>
-                Only declined questions are replaced; others stay byte-for-byte. Optional note is
-                woven into the simulated rewrite. Cost {CREDITS.regenerateQuestions} credits (0 with
-                BYOK).
-              </p>
+              usesOriginalReplacement ? (
+                <p>
+                  Original mode only swaps declined items. Accepted and pending questions stay
+                  unchanged; declined source questions are excluded from the replacement search.
+                  Cost {CREDITS.regenerateQuestions} credits (0 with BYOK).
+                </p>
+              ) : (
+                <p>
+                  Only declined questions are replaced; others stay byte-for-byte. Optional note is
+                  woven into the simulated rewrite. Cost {CREDITS.regenerateQuestions} credits (0
+                  with BYOK).
+                </p>
+              )
             }
           />
           <textarea
             id="regen"
-            className="eg-input min-h-[64px] resize-y"
+            className={`eg-input min-h-[64px] resize-y ${usesOriginalReplacement ? "hidden" : ""}`}
             value={regenNote}
             onChange={(e) => setRegenNote(e.target.value)}
             placeholder="Optional note for the rewrite…"
-            disabled={declinedCount === 0}
+            disabled={usesOriginalReplacement || declinedCount === 0}
           />
           {regenMsg && (
             <p className="rounded-lg border border-[var(--eg-border)] bg-[var(--eg-bg)] px-3 py-2 text-sm">
@@ -298,7 +395,7 @@ export default function ExamDetailPage() {
               onClick={onRegenerate}
               disabled={declinedCount === 0 || !canAffordRegen}
             >
-              Regenerate declined
+              {usesOriginalReplacement ? "Replace declined" : "Regenerate declined"}
             </button>
           </div>
         </section>
@@ -340,7 +437,7 @@ export default function ExamDetailPage() {
           info={<p>Rubric text regenerated whenever questions change.</p>}
         />
         <pre className="max-h-60 overflow-auto whitespace-pre-wrap rounded-xl bg-[var(--eg-bg)] p-3 font-mono text-xs leading-relaxed sm:max-h-80">
-          {paper.markingScheme}
+          {canViewSources ? paper.markingScheme : redactSourceNotes(paper.markingScheme)}
         </pre>
       </section>
     </div>
