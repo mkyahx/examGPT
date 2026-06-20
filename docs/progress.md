@@ -1,6 +1,6 @@
 # ExamGPT Progress
 
-Last updated: 2026-06-17
+Last updated: 2026-06-20
 
 ## Current Product Goal
 
@@ -16,6 +16,11 @@ Build an HKU-focused mock exam tool that can generate practice papers from a tru
 - Original-question generation has been implemented and verified against Supabase.
 - `/generate` can load the database generation profile for `COMP3251`.
 - Original mode can generate a 100-mark paper from certified Exambase questions.
+- Accepted mocks and submitted contributions have account-level activity records.
+- Signed-in users' mocks and feedback synchronize to Supabase.
+- Past-paper PDFs are stored in private Supabase Storage.
+- Uploaded PDF extraction no longer requires Python; it uses `pdfjs-dist`.
+- Production `next build` succeeds without downloading Google Fonts.
 
 ## Verified Original Mode
 
@@ -38,6 +43,7 @@ Test course: `COMP3251`
   - `Original`: enabled
   - `AI`: visible but disabled as Coming soon
 - Code paths for AI paper generation exist, but they are not the current priority.
+- Production deployment configuration and domain setup.
 
 ## Deferred
 
@@ -57,7 +63,7 @@ Test course: `COMP3251`
 
 ## Next Recommended Steps
 
-1. Commit and push the original-question generation flow.
-2. Do a second browser check for `/generate` after the AI button disable change.
-3. Decide whether to restore or discard the stashed homepage/font experiment.
-4. Later, when ready, fill `OPENAI_API_KEY` and verify AI mode.
+1. Configure the production host with `.env.example`.
+2. Run `db/schema.sql` against the production Supabase project.
+3. Deploy and run the production smoke flow.
+4. Add rate limiting, password reset, and email verification before public registration.

@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ExamGPT
 
-## Getting Started
+HKU-focused mock exam generation from a curated past-paper question bank.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+copy .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://127.0.0.1:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required production configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 20.19 or newer
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- Supabase schema from `db/schema.sql`
+- Private Supabase Storage bucket `review-uploads` (created by the schema)
 
-## Learn More
+`OPENAI_API_KEY` is optional while AI generation remains disabled.
 
-To learn more about Next.js, take a look at the following resources:
+## Verification
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+npm audit --omit=dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Mock exams and feedback are synchronized to the signed-in user's Supabase account. Uploaded PDFs
+are stored in private Supabase Storage; extraction uses temporary server files that are removed
+after processing.

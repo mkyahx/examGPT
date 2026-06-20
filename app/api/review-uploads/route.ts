@@ -1,14 +1,18 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
+import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import {
   inferAcademicYear,
   inferPaperDate,
   inferSemesterFromMonth,
   marksForExtractedQuestion,
 } from "@/lib/questionMetadata";
+import { getCurrentUser } from "@/lib/server/auth";
 import { supabaseRest } from "@/lib/server/supabaseRest";
+import { deleteStorageObject, uploadStorageObject } from "@/lib/server/supabaseStorage";
 import type {
   ExtractedQuestion,
   PaperReviewQuestion,
@@ -17,10 +21,11 @@ import type {
 } from "@/lib/types";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
-const BUNDLED_PYTHON =
-  "/Users/steven/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3";
-const UPLOAD_ROOT = path.resolve("review-uploads");
+const UPLOAD_ROOT = path.join(os.tmpdir(), "examgpt-review-uploads");
+const STORAGE_BUCKET = "review-uploads";
+const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
 
 type SupabaseRow = Record<string, unknown>;
 
@@ -95,41 +100,35 @@ function sha256(value: string) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function findPython() {
-  const candidates = [process.env.EXTRACT_PYTHON, BUNDLED_PYTHON, "python3", "python"].filter(
-    Boolean,
-  ) as string[];
+async function extractPreviewText(pdfPath: string) {
+  const [pdfjs, data] = await Promise.all([
+    import("pdfjs-dist/legacy/build/pdf.mjs"),
+    fs.readFile(pdfPath),
+  ]);
+  pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(
+    path.join(process.cwd(), "node_modules", "pdfjs-dist", "legacy", "build", "pdf.worker.mjs"),
+  ).href;
+  const document = await pdfjs.getDocument({
+    data: new Uint8Array(data),
+    useSystemFonts: true,
+    verbosity: 0,
+  }).promise;
+  const parts: string[] = [];
+  const pageCount = Math.min(document.numPages, 2);
 
-  for (const candidate of candidates) {
-    const result = spawnSync(candidate, ["-c", "import pypdf"], { encoding: "utf8" });
-    if (result.status === 0) return candidate;
+  for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
+    const page = await document.getPage(pageNumber);
+    const content = await page.getTextContent();
+    parts.push(
+      content.items
+        .filter((item): item is typeof item & { str: string } => "str" in item)
+        .map((item) => item.str)
+        .join(" "),
+    );
+    page.cleanup();
   }
-
-  throw new Error("Could not find Python with pypdf for uploaded-paper extraction.");
-}
-
-function extractPreviewText(pdfPath: string) {
-  const code = String.raw`
-import sys
-from pypdf import PdfReader
-
-reader = PdfReader(sys.argv[1])
-parts = []
-for page in reader.pages[:2]:
-    try:
-        parts.append(page.extract_text() or "")
-    except Exception:
-        parts.append("")
-print("\n".join(parts))
-`;
-
-  const result = spawnSync(findPython(), ["-c", code, pdfPath], {
-    encoding: "utf8",
-    maxBuffer: 5 * 1024 * 1024,
-  });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(result.stderr || "Could not read PDF text.");
-  return result.stdout;
+  await document.destroy();
+  return parts.join("\n");
 }
 
 function runExtract({
@@ -441,6 +440,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const user = await getCurrentUser(request);
+    if (!user) {
+      return Response.json(
+        { ok: false, reason: "Sign in before uploading a past paper." },
+        { status: 401 },
+      );
+    }
+
     const form = await request.formData();
     const file = form.get("file");
     if (!(file instanceof File)) {
@@ -452,87 +459,109 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
-
-    const uploadId = makeId();
-    const originalName = safeFileName(file.name);
-    const uploadDir = path.join(UPLOAD_ROOT, "files", uploadId);
-    const extractDir = path.join(UPLOAD_ROOT, "extracted");
-    const reviewDir = path.join(UPLOAD_ROOT, "reviews");
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.mkdir(extractDir, { recursive: true });
-    await fs.mkdir(reviewDir, { recursive: true });
-
-    const pdfPath = path.join(uploadDir, originalName);
-    const bytes = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(pdfPath, bytes);
-
-    const previewText = extractPreviewText(pdfPath);
-    const overrideCourseCode = normalizeCourseCode(form.get("courseCode"));
-    const courseCode =
-      overrideCourseCode || courseFromText(originalName) || courseFromText(previewText);
-    if (!courseCode) {
+    if (file.size <= 0 || file.size > MAX_UPLOAD_BYTES) {
       return Response.json(
-        {
-          ok: false,
-          reason:
-            "Could not identify the course code from this PDF. Add a course override and upload again.",
-        },
+        { ok: false, reason: "PDF files must be between 1 byte and 20 MB." },
         { status: 400 },
       );
     }
 
-    const academicYear = String(form.get("academicYear") ?? "");
-    const semester = String(form.get("semester") ?? "");
-    const examType = String(form.get("examType") ?? "Final");
-    const contributorNote = String(form.get("contributorNote") ?? "");
-    const examYearMonth = inferExamYearMonth(originalName, academicYear, semester);
-    const outPath = path.join(extractDir, `${uploadId}.questions.json`);
-    const sourcePdfPath = path.relative(process.cwd(), pdfPath);
+    const uploadId = makeId();
+    const originalName = safeFileName(file.name);
+    const uploadDir = path.join(UPLOAD_ROOT, uploadId);
+    await fs.mkdir(uploadDir, { recursive: true });
 
-    runExtract({
-      pdfPath,
-      outPath,
-      courseCode,
-      examYearMonth,
-      sourcePdfPath,
+    const pdfPath = path.join(uploadDir, originalName);
+    const bytes = Buffer.from(await file.arrayBuffer());
+    if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-") {
+      await fs.rm(uploadDir, { recursive: true, force: true });
+      return Response.json(
+        { ok: false, reason: "The uploaded file is not a valid PDF." },
+        { status: 400 },
+      );
+    }
+    await fs.writeFile(pdfPath, bytes);
+    const objectPath = `${user.id}/${uploadId}/${originalName}`;
+    const sourcePdfPath = await uploadStorageObject({
+      bucket: STORAGE_BUCKET,
+      objectPath,
+      bytes,
+      contentType: "application/pdf",
     });
 
-    const extracted = JSON.parse(await fs.readFile(outPath, "utf8")) as {
-      status: string;
-      reason?: string;
-      source: {
-        pdfPath: string;
-        courseCode: string;
-        courseName: string;
-        examYearMonth: string;
-      };
-      questions?: ExtractedQuestion[];
-      stats?: PaperReviewUpload["stats"];
-    };
-    const questions = prefixReviewQuestionIds(uploadId, extracted.questions ?? []);
-    const upload: PaperReviewUpload = {
-      id: uploadId,
-      fileName: file.name,
-      fileSize: file.size,
-      pdfPath: sourcePdfPath,
-      uploadedAt: new Date().toISOString(),
-      courseCode: extracted.source.courseCode,
-      courseName: extracted.source.courseName,
-      examYearMonth: extracted.source.examYearMonth,
-      academicYear,
-      semester,
-      examType,
-      contributorNote,
-      extractionStatus: extracted.status,
-      extractionReason: extracted.reason,
-      stats: extracted.stats,
-      questions,
-      approvedAt: null,
-    };
+    try {
+      const previewText = await extractPreviewText(pdfPath);
+      const overrideCourseCode = normalizeCourseCode(form.get("courseCode"));
+      const courseCode =
+        overrideCourseCode || courseFromText(originalName) || courseFromText(previewText);
+      if (!courseCode) {
+        await deleteStorageObject(STORAGE_BUCKET, objectPath);
+        return Response.json(
+          {
+            ok: false,
+            reason:
+              "Could not identify the course code from this PDF. Add a course override and upload again.",
+          },
+          { status: 400 },
+        );
+      }
 
-    await fs.writeFile(path.join(reviewDir, `${uploadId}.json`), `${JSON.stringify(upload, null, 2)}\n`);
-    await savePendingUploadToBank(upload);
-    return Response.json({ ok: true, upload });
+      const academicYear = String(form.get("academicYear") ?? "");
+      const semester = String(form.get("semester") ?? "");
+      const examType = String(form.get("examType") ?? "Final");
+      const contributorNote = String(form.get("contributorNote") ?? "");
+      const examYearMonth = inferExamYearMonth(originalName, academicYear, semester);
+      const outPath = path.join(uploadDir, `${uploadId}.questions.json`);
+
+      runExtract({
+        pdfPath,
+        outPath,
+        courseCode,
+        examYearMonth,
+        sourcePdfPath,
+      });
+
+      const extracted = JSON.parse(await fs.readFile(outPath, "utf8")) as {
+        status: string;
+        reason?: string;
+        source: {
+          pdfPath: string;
+          courseCode: string;
+          courseName: string;
+          examYearMonth: string;
+        };
+        questions?: ExtractedQuestion[];
+        stats?: PaperReviewUpload["stats"];
+      };
+      const questions = prefixReviewQuestionIds(uploadId, extracted.questions ?? []);
+      const upload: PaperReviewUpload = {
+        id: uploadId,
+        fileName: file.name,
+        fileSize: file.size,
+        pdfPath: sourcePdfPath,
+        uploadedAt: new Date().toISOString(),
+        courseCode: extracted.source.courseCode,
+        courseName: extracted.source.courseName,
+        examYearMonth: extracted.source.examYearMonth,
+        academicYear,
+        semester,
+        examType,
+        contributorNote,
+        extractionStatus: extracted.status,
+        extractionReason: extracted.reason,
+        stats: extracted.stats,
+        questions,
+        approvedAt: null,
+      };
+
+      await savePendingUploadToBank(upload);
+      return Response.json({ ok: true, upload });
+    } catch (error) {
+      await deleteStorageObject(STORAGE_BUCKET, objectPath).catch(() => undefined);
+      throw error;
+    } finally {
+      await fs.rm(uploadDir, { recursive: true, force: true });
+    }
   } catch (error) {
     return Response.json(
       {

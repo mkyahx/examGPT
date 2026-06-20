@@ -2,6 +2,13 @@ create extension if not exists pgcrypto;
 create schema if not exists extensions;
 create extension if not exists vector with schema extensions;
 
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('review-uploads', 'review-uploads', false, 20971520, array['application/pdf'])
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
+
 create table if not exists courses (
   id uuid primary key default gen_random_uuid(),
   code text not null unique,
@@ -161,6 +168,32 @@ create table if not exists user_resource_records (
   unique (user_id, resource_type, action, resource_id)
 );
 
+create table if not exists user_mock_exams (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_users(id) on delete cascade,
+  exam_id text not null,
+  course_code text not null default '',
+  generation_mode text,
+  exam_data jsonb not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (user_id, exam_id)
+);
+
+create table if not exists user_feedback_entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_users(id) on delete cascade,
+  feedback_id text not null,
+  exam_id text not null,
+  similarity int not null check (similarity between 1 and 10),
+  difficulty int not null check (difficulty between 1 and 10),
+  notes text not null default '',
+  feedback_data jsonb not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (user_id, exam_id)
+);
+
 alter table courses add column if not exists analysis jsonb not null default '{}'::jsonb;
 alter table courses add column if not exists analysis_generated_at timestamptz;
 alter table courses add column if not exists analysis_source text;
@@ -269,9 +302,15 @@ alter table question_embeddings enable row level security;
 alter table app_users enable row level security;
 alter table auth_sessions enable row level security;
 alter table user_resource_records enable row level security;
+alter table user_mock_exams enable row level security;
+alter table user_feedback_entries enable row level security;
 
 revoke all on table user_resource_records from anon, authenticated;
 grant select, insert, update, delete on table user_resource_records to service_role;
+revoke all on table user_mock_exams from anon, authenticated;
+revoke all on table user_feedback_entries from anon, authenticated;
+grant select, insert, update, delete on table user_mock_exams to service_role;
+grant select, insert, update, delete on table user_feedback_entries to service_role;
 
 create index if not exists idx_courses_code on courses (code);
 create index if not exists idx_exam_papers_course_year on exam_papers (course_id, exam_year, exam_month);
@@ -291,6 +330,12 @@ create index if not exists idx_user_resource_records_user_time
   on user_resource_records (user_id, recorded_at desc);
 create index if not exists idx_user_resource_records_resource
   on user_resource_records (resource_type, action, resource_id);
+create index if not exists idx_user_mock_exams_user_updated
+  on user_mock_exams (user_id, updated_at desc);
+create index if not exists idx_user_feedback_entries_user_updated
+  on user_feedback_entries (user_id, updated_at desc);
+create index if not exists idx_user_feedback_entries_exam
+  on user_feedback_entries (user_id, exam_id);
 
 drop function if exists get_course_generation_profile(text);
 drop function if exists refresh_course_analysis(text);

@@ -427,7 +427,7 @@ export function buildMockExam(params: {
     inRepository: false,
     repositorySyncedAt: null,
     contentRevision: 0,
-    sourceCandidates: generationMode === "original" ? realQuestions : undefined,
+    sourceCandidates: generationMode === "original" ? realQuestions.slice(0, 100) : undefined,
   };
 }
 

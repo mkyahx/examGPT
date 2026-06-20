@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { CREDITS, STORAGE_KEY, TAG_CONFIDENCE_THRESHOLD } from "@/lib/constants";
 import { normalizeMockExams } from "@/lib/examStatus";
 import { marksForExtractedQuestion, TARGET_ORIGINAL_PAPER_MARKS } from "@/lib/questionMetadata";
@@ -21,6 +22,7 @@ import {
   buildMockExam,
   replaceOriginalDeclinedQuestions,
 } from "@/lib/mockExam";
+import { fetchUserData, saveUserData } from "@/lib/userData";
 import type {
   AppSnapshot,
   CourseSyllabusCache,
@@ -37,6 +39,7 @@ import type {
 } from "@/lib/types";
 
 const BYOK_KEY_STORAGE = "examgpt-hku-byok-key";
+const USER_DATA_OWNER_STORAGE = "examgpt-hku-user-data-owner";
 
 type FullState = AppSnapshot;
 
@@ -297,8 +300,10 @@ async function resolveQuestionTags(
 }
 
 export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
+  const { user, hydrated: authHydrated } = useAuth();
   const [hydrated, setHydrated] = useState(false);
   const [state, setState] = useState<FullState>(defaultState);
+  const [remoteHydratedUserId, setRemoteHydratedUserId] = useState<string | null>(null);
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -338,6 +343,74 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
     void hasStoredKey;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(persistable));
   }, [state, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated || !authHydrated) return;
+    let cancelled = false;
+
+    if (!user) {
+      const hadOwner = Boolean(localStorage.getItem(USER_DATA_OWNER_STORAGE));
+      localStorage.removeItem(USER_DATA_OWNER_STORAGE);
+      queueMicrotask(() => {
+        if (!cancelled) {
+          setRemoteHydratedUserId(null);
+          if (hadOwner) {
+            setState((current) => ({
+              ...current,
+              mockExams: [],
+              feedbackEntries: [],
+            }));
+          }
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const ownerId = localStorage.getItem(USER_DATA_OWNER_STORAGE);
+    const canMergeLocal = !ownerId || ownerId === user.id;
+    void fetchUserData().then((remote) => {
+      if (cancelled) return;
+      setState((current) => {
+        const mockMap = new Map(
+          (remote?.mockExams ?? []).map((exam) => [exam.id, exam] as const),
+        );
+        const feedbackMap = new Map(
+          (remote?.feedbackEntries ?? []).map((entry) => [entry.examId, entry] as const),
+        );
+        if (canMergeLocal) {
+          for (const exam of current.mockExams) mockMap.set(exam.id, exam);
+          for (const entry of current.feedbackEntries) feedbackMap.set(entry.examId, entry);
+        }
+        return {
+          ...current,
+          mockExams: normalizeMockExams(
+            [...mockMap.values()],
+            [...feedbackMap.values()],
+          ),
+          feedbackEntries: [...feedbackMap.values()],
+        };
+      });
+      localStorage.setItem(USER_DATA_OWNER_STORAGE, user.id);
+      setRemoteHydratedUserId(user.id);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authHydrated, hydrated, user]);
+
+  useEffect(() => {
+    if (!user || remoteHydratedUserId !== user.id) return;
+    const timeoutId = window.setTimeout(() => {
+      void saveUserData({
+        mockExams: state.mockExams,
+        feedbackEntries: state.feedbackEntries,
+      });
+    }, 250);
+    return () => window.clearTimeout(timeoutId);
+  }, [remoteHydratedUserId, state.feedbackEntries, state.mockExams, user]);
 
   useEffect(() => {
     if (!hydrated) return;

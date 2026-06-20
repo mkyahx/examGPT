@@ -5,8 +5,6 @@ import path from "node:path";
 import process from "node:process";
 import { spawnSync } from "node:child_process";
 
-const BUNDLED_PYTHON =
-  "/Users/steven/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3";
 const COURSE_TOPIC_DIR = path.join("extracted", "course-topics");
 const SYLLABUS_LOOKUP_URLS = [
   "https://www4.hku.hk/pubunit/drcd/",
@@ -32,7 +30,7 @@ if (!pdfPath) {
 await assertReadable(pdfPath);
 
 const metadata = applyMetadataOverrides(metadataFromPdfPath(pdfPath), argv);
-const extracted = extractPdfText(pdfPath);
+const extracted = await extractPdfText(pdfPath);
 const source = {
   pdfPath: argv.sourcePdfPath ? String(argv.sourcePdfPath) : path.relative(process.cwd(), pdfPath),
   courseCode: metadata.courseCode,
@@ -850,60 +848,33 @@ function buildQuestionId({ courseCode, examYearMonth, questionNo, index }) {
   return `${courseCode}_${examYearMonth.replace("-", "_")}_Q${safeQuestionNo}_${sequence}`;
 }
 
-function extractPdfText(pdfPath) {
-  const python = findPython();
-  const code = String.raw`
-import json
-import sys
-from pypdf import PdfReader
+async function extractPdfText(pdfPath) {
+  const [{ getDocument }, data] = await Promise.all([
+    import("pdfjs-dist/legacy/build/pdf.mjs"),
+    readFile(pdfPath),
+  ]);
+  const document = await getDocument({
+    data: new Uint8Array(data),
+    disableWorker: true,
+    useSystemFonts: true,
+    verbosity: 0,
+  }).promise;
+  const pages = [];
 
-pdf_path = sys.argv[1]
-reader = PdfReader(pdf_path)
-pages = []
-for index, page in enumerate(reader.pages, start=1):
-    try:
-        text = page.extract_text() or ""
-    except Exception as exc:
-        text = ""
-    pages.append({"page": index, "text": text})
-print(json.dumps({"pages": pages}))
-`;
-
-  const result = spawnSync(python, ["-c", code, pdfPath], {
-    encoding: "utf8",
-    maxBuffer: 20 * 1024 * 1024,
-  });
-
-  if (result.error) {
-    throw new Error(`Failed to run Python PDF extractor: ${result.error.message}`);
-  }
-  if (result.status !== 0) {
-    throw new Error(`PDF extraction failed:\n${result.stderr}`);
-  }
-
-  return JSON.parse(result.stdout);
-}
-
-function findPython() {
-  const candidates = [
-    process.env.EXTRACT_PYTHON,
-    BUNDLED_PYTHON,
-    "python3",
-    "python",
-  ].filter(Boolean);
-
-  for (const candidate of candidates) {
-    const result = spawnSync(candidate, ["-c", "import pypdf"], {
-      encoding: "utf8",
-    });
-    if (result.status === 0) {
-      return candidate;
+  for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
+    const page = await document.getPage(pageNumber);
+    const content = await page.getTextContent();
+    let text = "";
+    for (const item of content.items) {
+      if (!("str" in item)) continue;
+      text += item.str;
+      text += item.hasEOL ? "\n" : " ";
     }
+    pages.push({ page: pageNumber, text: text.trim() });
+    page.cleanup();
   }
-
-  throw new Error(
-    "Could not find Python with pypdf. Set EXTRACT_PYTHON to a Python executable that can import pypdf.",
-  );
+  await document.destroy();
+  return { pages };
 }
 
 function updateCourseAnalysis(courseCode) {
@@ -1001,7 +972,6 @@ Options:
   --no-analysis    Do not refresh extracted/{course}/{course}.analysis.json after extraction.
 
 Environment:
-  EXTRACT_PYTHON           Optional Python executable with pypdf installed.
   EXTRACT_TOPIC_THRESHOLD  Optional topic confidence threshold. Default: 0.5.
   EXTRACT_SYLLABUS_TIMEOUT_MS
                            Optional per-source online syllabus lookup timeout. Default: 3000.`);

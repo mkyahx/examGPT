@@ -18,7 +18,10 @@ const nextConfig: NextConfig = {
     ],
   },
   outputFileTracingIncludes: {
-    "/api/review-uploads": ["./scripts/extract-questions.mjs"],
+    "/api/review-uploads": [
+      "./scripts/extract-questions.mjs",
+      "./node_modules/pdfjs-dist/**/*",
+    ],
   },
 };
 

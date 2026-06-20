@@ -7,7 +7,7 @@ type SupabaseRestOptions = {
   prefer?: string;
 };
 
-function getSupabaseConfig() {
+export function getSupabaseConfig() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceRoleKey) {
@@ -15,6 +15,7 @@ function getSupabaseConfig() {
   }
 
   return {
+    projectUrl: normalizeSupabaseProjectUrl(supabaseUrl),
     restUrl: `${normalizeSupabaseProjectUrl(supabaseUrl)}/rest/v1`,
     key: serviceRoleKey,
   };
