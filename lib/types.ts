@@ -215,6 +215,18 @@ export type AuthUser = {
   lastLoginAt?: string | null;
 };
 
+export type UserResourceRecord = {
+  id: string;
+  resourceType: "mock_exam" | "contribution";
+  action: "accepted" | "submitted";
+  resourceId: string;
+  courseCode: string;
+  title: string;
+  metadata: Record<string, unknown>;
+  recordedAt: string;
+  updatedAt: string;
+};
+
 export type AppSnapshot = {
   credits: number;
   byok: boolean;

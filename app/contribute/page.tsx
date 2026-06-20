@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { InfoAside, PageHeading } from "@/components/InfoAside";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useExamGPT } from "@/components/providers/ExamGPTProvider";
 import { CREDITS } from "@/lib/constants";
+import { saveUserResourceRecord } from "@/lib/userRecords";
 
 export default function ContributePage() {
+  const { user } = useAuth();
   const { contributeQuestion, uploadPastExamForReview, credits, hydrated } = useExamGPT();
   const [courseCode, setCourseCode] = useState("COMP3278");
   const [text, setText] = useState("");
@@ -37,6 +40,19 @@ export default function ContributePage() {
       setError(result.reason);
       return;
     }
+    if (user) {
+      void saveUserResourceRecord({
+        resourceType: "contribution",
+        action: "submitted",
+        resourceId: result.contributionId,
+        courseCode,
+        title: `${courseCode.trim().toUpperCase()} reconstructed question`,
+        metadata: {
+          contributionType: "question",
+          characterCount: text.trim().length,
+        },
+      });
+    }
     setDone(`Bank · +${CREDITS.questionContribution} cr`);
     setText("");
     setSolutionSketch("");
@@ -63,6 +79,23 @@ export default function ContributePage() {
     if (!result.ok) {
       setPaperError(result.reason);
       return;
+    }
+    if (user) {
+      for (const upload of result.uploads) {
+        void saveUserResourceRecord({
+          resourceType: "contribution",
+          action: "submitted",
+          resourceId: upload.id,
+          courseCode: upload.courseCode,
+          title: upload.fileName,
+          metadata: {
+            contributionType: "past_paper",
+            questionCount: upload.questions.length,
+            examYearMonth: upload.examYearMonth,
+            status: upload.extractionStatus,
+          },
+        });
+      }
     }
     setPaperDone(
       `Review layer · ${result.uploads.length} file(s), ${result.questions} extracted question(s). Open Bank to approve.`,

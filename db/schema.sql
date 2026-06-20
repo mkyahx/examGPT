@@ -147,6 +147,20 @@ create table if not exists auth_sessions (
   check (expires_at > created_at)
 );
 
+create table if not exists user_resource_records (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_users(id) on delete cascade,
+  resource_type text not null check (resource_type in ('mock_exam', 'contribution')),
+  action text not null check (action in ('accepted', 'submitted')),
+  resource_id text not null,
+  course_code text not null default '',
+  title text not null default '',
+  metadata jsonb not null default '{}'::jsonb,
+  recorded_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (user_id, resource_type, action, resource_id)
+);
+
 alter table courses add column if not exists analysis jsonb not null default '{}'::jsonb;
 alter table courses add column if not exists analysis_generated_at timestamptz;
 alter table courses add column if not exists analysis_source text;
@@ -254,6 +268,10 @@ alter table curated_question_overrides enable row level security;
 alter table question_embeddings enable row level security;
 alter table app_users enable row level security;
 alter table auth_sessions enable row level security;
+alter table user_resource_records enable row level security;
+
+revoke all on table user_resource_records from anon, authenticated;
+grant select, insert, update, delete on table user_resource_records to service_role;
 
 create index if not exists idx_courses_code on courses (code);
 create index if not exists idx_exam_papers_course_year on exam_papers (course_id, exam_year, exam_month);
@@ -269,6 +287,10 @@ create index if not exists idx_auth_sessions_user on auth_sessions (user_id);
 create index if not exists idx_auth_sessions_token_hash on auth_sessions (token_hash);
 create index if not exists idx_auth_sessions_active on auth_sessions (expires_at)
   where revoked_at is null;
+create index if not exists idx_user_resource_records_user_time
+  on user_resource_records (user_id, recorded_at desc);
+create index if not exists idx_user_resource_records_resource
+  on user_resource_records (resource_type, action, resource_id);
 
 drop function if exists get_course_generation_profile(text);
 drop function if exists refresh_course_analysis(text);

@@ -12,6 +12,7 @@ import {
   type PdfDownload,
 } from "@/lib/pdfExport";
 import type { QuestionReviewStatus } from "@/lib/types";
+import { saveUserResourceRecord } from "@/lib/userRecords";
 
 function statusLabel(s: QuestionReviewStatus | undefined) {
   switch (s) {
@@ -134,6 +135,23 @@ export default function ExamDetailPage() {
   const paper = exam;
   const usesOriginalReplacement = paper.generationMode === "original";
 
+  function recordAcceptedMock() {
+    if (!user) return;
+    void saveUserResourceRecord({
+      resourceType: "mock_exam",
+      action: "accepted",
+      resourceId: paper.id,
+      courseCode: paper.courseCode,
+      title: `${paper.courseCode} mock exam`,
+      metadata: {
+        generationMode: paper.generationMode ?? "unknown",
+        questionCount: paper.questions.length,
+        totalMarks: paper.questions.reduce((sum, question) => sum + question.marks, 0),
+        route: `/exam/${paper.id}`,
+      },
+    });
+  }
+
   function runInquiry() {
     setInqError(null);
     const res = spendInquiry();
@@ -150,6 +168,15 @@ export default function ExamDetailPage() {
     if (locked) return;
     setRegenMsg(null);
     setQuestionReview(paper.id, questionId, status);
+    if (
+      status === "accepted" &&
+      paper.questions.every(
+        (question) =>
+          question.id === questionId || (question.reviewStatus ?? "pending") === "accepted",
+      )
+    ) {
+      recordAcceptedMock();
+    }
   }
 
   function onAcceptAll() {
@@ -160,6 +187,7 @@ export default function ExamDetailPage() {
         setQuestionReview(paper.id, question.id, "accepted");
       }
     }
+    recordAcceptedMock();
   }
 
   function onRegenerate() {

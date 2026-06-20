@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageHeading, SectionHeading } from "@/components/InfoAside";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useExamGPT } from "@/components/providers/ExamGPTProvider";
 import { CREDITS } from "@/lib/constants";
+import type { UserResourceRecord } from "@/lib/types";
+import { fetchUserResourceRecords } from "@/lib/userRecords";
 
 type AuthMode = "login" | "register";
 
@@ -37,6 +39,18 @@ export default function AccountPage() {
   const [keyInput, setKeyInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [resourceRecords, setResourceRecords] = useState<UserResourceRecord[]>([]);
+
+  useEffect(() => {
+    if (!authHydrated || !user) return;
+    let cancelled = false;
+    void fetchUserResourceRecords().then((records) => {
+      if (!cancelled) setResourceRecords(records);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [authHydrated, user]);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -291,6 +305,54 @@ export default function AccountPage() {
           </section>
         </div>
       </div>
+
+      {user && (
+        <section className="eg-card space-y-3 p-4 sm:space-y-4 sm:p-6">
+          <SectionHeading
+            title="My activity"
+            info={<p>Account-level records for accepted mocks and submitted contributions.</p>}
+          />
+          {resourceRecords.length === 0 ? (
+            <p className="text-sm text-[var(--eg-muted)]">No recorded activity yet.</p>
+          ) : (
+            <ul className="divide-y divide-[var(--eg-border)]">
+              {resourceRecords.map((record) => {
+                const route =
+                  record.resourceType === "mock_exam" &&
+                  typeof record.metadata.route === "string"
+                    ? record.metadata.route
+                    : record.resourceType === "contribution"
+                      ? "/bank"
+                      : null;
+                return (
+                  <li
+                    key={record.id}
+                    className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-[var(--eg-fg)]">
+                        {record.title || record.resourceId}
+                      </p>
+                      <p className="text-xs text-[var(--eg-muted)]">
+                        {record.resourceType === "mock_exam"
+                          ? "Accepted mock"
+                          : "Submitted contribution"}
+                        {record.courseCode ? ` · ${record.courseCode}` : ""} ·{" "}
+                        {new Date(record.recordedAt).toLocaleString()}
+                      </p>
+                    </div>
+                    {route && (
+                      <a href={route} className="eg-btn-ghost text-sm">
+                        View
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      )}
 
       <section className="eg-card space-y-3 p-4 sm:space-y-4 sm:p-6">
         <SectionHeading

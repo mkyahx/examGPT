@@ -180,7 +180,7 @@ type ExamGPTContextValue = {
     text: string;
     solutionSketch: string;
     contributorNote: string;
-  }) => { ok: true } | { ok: false; reason: string };
+  }) => { ok: true; contributionId: string } | { ok: false; reason: string };
   contributePastExam: (input: {
     courseCode: string;
     academicYear: string;
@@ -691,7 +691,7 @@ export function ExamGPTProvider({ children }: { children: React.ReactNode }) {
           ...s.professorStyleNotes,
         ].slice(0, 12),
       }));
-      return { ok: true as const };
+      return { ok: true as const, contributionId: vq.id };
     },
     [],
   );
