@@ -1,5 +1,6 @@
 import { TAG_CONFIDENCE_THRESHOLD } from "@/lib/constants";
 import { inferQuestionType, tagQuestionsWithFallback } from "@/lib/internalTagging";
+import { clientIpFromRequest, rateLimit, rateLimitResponse } from "@/lib/server/rateLimit";
 import type {
   CourseSyllabusCache,
   ExtractedQuestion,
@@ -176,6 +177,13 @@ async function tagQuestionsWithOpenAI(
 
 export async function POST(request: Request) {
   try {
+    const limited = rateLimit({
+      key: `question-tags:${clientIpFromRequest(request)}`,
+      limit: 40,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!limited.ok) return rateLimitResponse(limited);
+
     const body = (await request.json()) as {
       questions?: unknown;
       syllabus?: unknown;

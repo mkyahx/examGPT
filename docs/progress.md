@@ -21,6 +21,9 @@ Build an HKU-focused mock exam tool that can generate practice papers from a tru
 - Past-paper PDFs are stored in private Supabase Storage.
 - Uploaded PDF extraction no longer requires Python; it uses `pdfjs-dist`.
 - Production `next build` succeeds without downloading Google Fonts.
+- Login, registration, review upload, review approval, question tagging, and AI-generation APIs have basic server-side rate limits.
+- Review upload approval is restricted to admin users.
+- Production environment variables can be checked with `npm run verify:prod-env`.
 
 ## Verified Original Mode
 
@@ -44,6 +47,7 @@ Test course: `COMP3251`
   - `AI`: visible but disabled as Coming soon
 - Code paths for AI paper generation exist, but they are not the current priority.
 - Production deployment configuration and domain setup.
+- Final production smoke test after environment variables and schema are applied.
 
 ## Deferred
 
@@ -64,6 +68,7 @@ Test course: `COMP3251`
 ## Next Recommended Steps
 
 1. Configure the production host with `.env.example`.
-2. Run `db/schema.sql` against the production Supabase project.
-3. Deploy and run the production smoke flow.
-4. Add rate limiting, password reset, and email verification before public registration.
+2. Run `npm run verify:prod-env` in the production environment.
+3. Run `db/schema.sql` against the production Supabase project.
+4. Deploy and run the production smoke flow.
+5. Add password reset and email verification before broad public registration.

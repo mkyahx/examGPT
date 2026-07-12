@@ -11,6 +11,7 @@ import {
   marksForExtractedQuestion,
 } from "@/lib/questionMetadata";
 import { getCurrentUser } from "@/lib/server/auth";
+import { clientIpFromRequest, rateLimit, rateLimitResponse } from "@/lib/server/rateLimit";
 import { supabaseRest } from "@/lib/server/supabaseRest";
 import { deleteStorageObject, uploadStorageObject } from "@/lib/server/supabaseStorage";
 import type {
@@ -447,6 +448,12 @@ export async function POST(request: Request) {
         { status: 401 },
       );
     }
+    const limited = rateLimit({
+      key: `review-upload:${user.id}:${clientIpFromRequest(request)}`,
+      limit: 6,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!limited.ok) return rateLimitResponse(limited);
 
     const form = await request.formData();
     const file = form.get("file");

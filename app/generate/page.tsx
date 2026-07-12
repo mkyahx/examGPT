@@ -21,6 +21,27 @@ type GenerationProfileFetch = {
   profile: CourseGenerationProfile;
 };
 
+async function fetchCourseMatches(
+  courseCode: string,
+  signal?: AbortSignal,
+): Promise<ExtractedQuestion[]> {
+  const params = new URLSearchParams({
+    course: courseCode,
+    source: "exambase",
+    pageSize: "100",
+  });
+  const response = await fetch(`/api/questions/search?${params}`, { signal });
+  const payload = (await response.json()) as {
+    ok?: boolean;
+    reason?: string;
+    questions?: QuestionSearchApiRow[];
+  };
+  if (!response.ok || !payload.ok || !Array.isArray(payload.questions)) {
+    throw new Error(payload.reason ?? "Could not search Supabase courses.");
+  }
+  return mapSearchRowsToExtractedQuestions(payload.questions);
+}
+
 async function fetchGenerationProfile(
   courseCode: string,
   signal?: AbortSignal,
@@ -82,6 +103,7 @@ export default function GeneratePage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [backendQuestions, setBackendQuestions] = useState<ExtractedQuestion[]>([]);
+  const [profileQuestions, setProfileQuestions] = useState<ExtractedQuestion[]>([]);
   const [generationProfile, setGenerationProfile] = useState<CourseGenerationProfile | null>(null);
   const [backendStatus, setBackendStatus] = useState<BackendStatus>("idle");
   const [backendError, setBackendError] = useState<string | null>(null);
@@ -109,11 +131,22 @@ export default function GeneratePage() {
         ? matchingCourses[0].courseCode
         : "");
   const selectedBackendQuestions = useMemo(
-    () =>
-      resolvedCourseCode
-        ? getMatchingExtractedQuestions(backendQuestions, normalizedCourseInput, resolvedCourseCode)
-        : [],
-    [backendQuestions, normalizedCourseInput, resolvedCourseCode],
+    () => {
+      if (!resolvedCourseCode) return [];
+      const profileMatches = getMatchingExtractedQuestions(
+        profileQuestions,
+        normalizedCourseInput,
+        resolvedCourseCode,
+      );
+      return profileMatches.length > 0
+        ? profileMatches
+        : getMatchingExtractedQuestions(
+            backendQuestions,
+            normalizedCourseInput,
+            resolvedCourseCode,
+          );
+    },
+    [backendQuestions, normalizedCourseInput, profileQuestions, resolvedCourseCode],
   );
   const selectedRealQuestions =
     generationMode === "original"
@@ -139,6 +172,7 @@ export default function GeneratePage() {
       const normalized = normalizeCourseCode(value);
       if (generationMode !== "original" || normalized.length < 4) {
         setBackendQuestions([]);
+        setProfileQuestions([]);
         setGenerationProfile(null);
         setBackendStatus("idle");
         setBackendError(null);
@@ -148,15 +182,17 @@ export default function GeneratePage() {
       setBackendStatus("loading");
       setBackendError(null);
       try {
-        const result = await fetchGenerationProfile(normalized, signal);
-        setBackendQuestions(result.questions);
-        setGenerationProfile(result.profile);
+        const questions = await fetchCourseMatches(normalized, signal);
+        setBackendQuestions(questions);
+        setProfileQuestions([]);
+        setGenerationProfile(null);
         setBackendStatus("ready");
-        return result.questions;
+        return questions;
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return [];
         const reason = err instanceof Error ? err.message : "Could not load backend questions.";
         setBackendQuestions([]);
+        setProfileQuestions([]);
         setGenerationProfile(null);
         setBackendStatus("error");
         setBackendError(reason);
@@ -176,6 +212,27 @@ export default function GeneratePage() {
       controller.abort();
     };
   }, [loadBackendQuestions, normalizedCourseInput]);
+
+  useEffect(() => {
+    if (generationMode !== "original" || !resolvedCourseCode) {
+      return;
+    }
+
+    const controller = new AbortController();
+    void fetchGenerationProfile(resolvedCourseCode, controller.signal)
+      .then((result) => {
+        setProfileQuestions(result.questions);
+        setGenerationProfile(result.profile);
+        setBackendError(null);
+      })
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setProfileQuestions([]);
+        setGenerationProfile(null);
+        setBackendError(err instanceof Error ? err.message : "Could not load course profile.");
+      });
+    return () => controller.abort();
+  }, [generationMode, resolvedCourseCode]);
 
   function onCourseChange(value: string) {
     setCourseCode(value);
@@ -216,18 +273,19 @@ export default function GeneratePage() {
 
       let realQuestions = selectedRealQuestions;
       let profile = selectedGenerationProfile;
-      if (selectedBackendQuestions.length === 0 && normalizedCourseInput.length >= 4) {
-        const fresh = await fetchGenerationProfile(normalizedCourseInput);
-        setBackendQuestions(fresh.questions);
+      if (
+        (!profile || selectedBackendQuestions.length === 0) &&
+        resolvedCourseCode
+      ) {
+        const fresh = await fetchGenerationProfile(resolvedCourseCode);
+        setProfileQuestions(fresh.questions);
         setGenerationProfile(fresh.profile);
         profile = fresh.profile;
-        realQuestions = resolvedCourseCode
-          ? getMatchingExtractedQuestions(
-              fresh.questions,
-              normalizedCourseInput,
-              resolvedCourseCode,
-            )
-          : fresh.questions;
+        realQuestions = getMatchingExtractedQuestions(
+          fresh.questions,
+          normalizedCourseInput,
+          resolvedCourseCode,
+        );
       }
       const result = generateMockExam({
         courseCode: resolvedCourseCode || normalizedCourseInput || courseCode,

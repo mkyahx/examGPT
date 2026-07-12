@@ -26,7 +26,8 @@
     "upload:extracted": "node scripts/upload-extracted-to-db.mjs",
     "upload:extracted:dry": "node scripts/upload-extracted-to-db.mjs --dry-run",
     "analysis:refresh": "node scripts/refresh-course-analysis.mjs",
-    "verify:generate-ui": "node scripts/verify-generate-ui.mjs"
+    "verify:generate-ui": "node scripts/verify-generate-ui.mjs",
+    "verify:prod-env": "node scripts/verify-prod-env.mjs"
   },
   "dependencies": {
     "next": "^16.2.9",

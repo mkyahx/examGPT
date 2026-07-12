@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
 import { marksForExtractedQuestion } from "@/lib/questionMetadata";
+import { getCurrentUser } from "@/lib/server/auth";
+import { clientIpFromRequest, rateLimit, rateLimitResponse } from "@/lib/server/rateLimit";
 import { supabaseRest } from "@/lib/server/supabaseRest";
 import type { PaperReviewQuestion, PaperReviewUpload } from "@/lib/types";
 
@@ -17,6 +19,20 @@ function approvedPrompt(question: PaperReviewQuestion) {
 
 export async function POST(request: Request) {
   try {
+    const user = await getCurrentUser(request);
+    if (!user) {
+      return Response.json({ ok: false, reason: "Sign in before approving uploads." }, { status: 401 });
+    }
+    if (user.role !== "admin") {
+      return Response.json({ ok: false, reason: "Only admins can approve uploaded papers." }, { status: 403 });
+    }
+    const limited = rateLimit({
+      key: `review-approve:${user.id}:${clientIpFromRequest(request)}`,
+      limit: 30,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!limited.ok) return rateLimitResponse(limited);
+
     const body = (await request.json()) as {
       upload?: PaperReviewUpload;
       dryRun?: boolean;

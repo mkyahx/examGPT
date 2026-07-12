@@ -27,6 +27,7 @@ Open `http://127.0.0.1:3000`.
 ```bash
 npm run lint
 npx tsc --noEmit
+npm run verify:prod-env
 npm run build
 npm audit --omit=dev
 ```

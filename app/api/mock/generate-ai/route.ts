@@ -1,4 +1,5 @@
 import type { ExamQuestion } from "@/lib/types";
+import { clientIpFromRequest, rateLimit, rateLimitResponse } from "@/lib/server/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -66,6 +67,13 @@ function toExamQuestions(questions: AiQuestion[]): ExamQuestion[] {
 
 export async function POST(request: Request) {
   try {
+    const limited = rateLimit({
+      key: `ai-generate:${clientIpFromRequest(request)}`,
+      limit: 10,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!limited.ok) return rateLimitResponse(limited);
+
     const body = (await request.json()) as Record<string, unknown>;
     const courseCode = normalizeCourseCode(body.courseCode);
     const focusHints = asString(body.focusHints);
